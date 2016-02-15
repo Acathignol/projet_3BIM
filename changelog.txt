@@ -1,0 +1,5 @@
+CHANGELOG
+
+15/02
+- Ajout main.cpp Pedest.cpp Pedest.h Image.cpp Image.h README Changelog.txt .gitignore
+

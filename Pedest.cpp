@@ -1,0 +1,80 @@
+
+//=========================== Includes =================================
+#include "Pedest.h"
+#include <cstdio>
+#include <cstdlib>
+
+using namespace std;
+
+//================= Definition of static attributes ====================
+
+
+//=========================== Constructors =============================
+Pedest::Pedest() {
+  x_ = 0;
+  y_ = 0;
+  xp_ = 1.0;
+  yp_ = 1.0;
+  xpp_ = 0.0;
+  ypp_ = 0.0;
+  mood_ = 0;
+}
+
+Pedest::Pedest(const int startX, const int startY){
+  x_ = startX;
+  y_ = startY;
+  xp_ = 1.0;
+  yp_ = 1.0;
+  xpp_ = 0.0;
+  ypp_ = 0.0;
+  mood_ = 0;
+}
+
+//=========================== Destructor ===============================
+
+//=========================== Public Methods ===========================
+int Pedest::x(){
+  return x_;
+}
+
+int Pedest::y(){
+  return y_;
+}
+
+void Pedest::xpp(const double new_xpp){
+  xpp_ = new_xpp;
+}
+
+void Pedest::ypp(const double new_ypp){
+  ypp_ = new_ypp;
+}
+
+void Pedest::set_mood(const int new_mood){
+  mood_ = new_mood;
+}
+
+void Pedest::move(){
+  x_ = x_ + xp_;
+  y_ = y_ + yp_;
+}
+
+void Pedest::accelerate(){
+  if (xpp_ == 0) xpp_ = 0.75;
+  if (ypp_ == 0) ypp_ = 0.75;
+  xpp_ = xpp_ * 1.5;
+  ypp_ = ypp_ * 1.5;
+  xp_ = xp_ + xpp_;
+  yp_ = yp_ + ypp_;
+}
+
+void Pedest::brake(){
+  xp_ = xp_ - xpp_;
+  yp_ = yp_ - ypp_;
+  xpp_ = xpp_ /1.5;
+  ypp_ = ypp_ /1.5;
+  if (xpp_ < 0.1) xpp_ = 0;
+  if (ypp_ < 0.1) ypp_ = 0;
+}
+//=========================== Protected Methods ========================
+
+//=========================== Functions ================================

@@ -1,0 +1,32 @@
+---------------------------------------------------------------------
+             Simulation de piétons en environnement fermé      
+---------------------------------------------------------------------
+
+Dans le cadre du projet 3BIM, INSA-LYON, 2015-2016
+L. Becquey - A. Cathignol - N. Mauvisseau - M. Simon
+
+======== A FAIRE: ===========
+
+- Classe piéton (Pedest):    Pedest.h , Pedest.cpp
+  - Attributs x, y, dx, dy, (d^2)x, (d^2)y pour la position, la vitesse,
+    l'accélération, en 2D
+  - Attribut "historique" pour conserver les coordonnées des points et dessiner
+    la trajectoire
+  - Attribut "humeur" du piéton
+  - Constructeurs/getters/setters
+  - Méthodes "accélérer" et "freiner"
+  - ...
+
+
+- Classe bâtiment:
+  - Attribut "carte" (tableau ?)
+  - Attributs entrée/sortie/points qui font fuir les gens/points qui attirent
+  - Constructeurs/getters/setters
+  - ...
+
+- Programme de démo:  main.cpp
+  - Simule différentes foules homogènes/hétérogènes dans différents batiments
+    pour observer euh... des... comportements
+
+- Théoriser un peu le modèle:
+  - quand et comment modifier la vitesse du perso ?
