@@ -23,8 +23,8 @@ Pedest::Pedest() {
 Pedest::Pedest(const int startX, const int startY){
   x_ = startX;
   y_ = startY;
-  xp_ = 1.0;
-  yp_ = 1.0;
+  xp_ = 0.0;
+  yp_ = 0.0;
   xpp_ = 0.0;
   ypp_ = 0.0;
   mood_ = 0;

@@ -1,5 +1,25 @@
 CHANGELOG
 
 15/02
-- Ajout main.cpp Pedest.cpp Pedest.h Image.cpp Image.h README Changelog.txt .gitignore
+- Création des fichiers README, changelog.txt, .gitignore
+- Création du main.cpp
+- Création de la classe Pedest (Pedest.cpp, Pedest.h)
+- Import pour l'instant inutile de la classe Image PPM du TP (Image.cpp et Image.h)
+- Attributs de la classe Pedest:
+  x_      position x
+  y_      position y
+  xp_     vitesse sur l'axe x
+  yp_     vitesse sur l'axe y
+  xpp_    accélération sur l'axe x
+  ypp_    accélération sur l'axe y
+  mood_   humeur du piéton (à 0 pour l'instant)
 
+- méthodes de la classe Pedest:
+  Constructeur par défaut et avec une coordonnée de départ
+  Getters pour x_ et y_
+  Setters pour les accélérations et l'humeur
+  Méthodes accelerate() et brake() pour accélérer et freiner
+  Méthode move() pour déplacer le piéton
+
+- Amélioration de l'accélération et freinage: La méthode augmente/diminue automatiquement xpp_ et ypp_
+  pour amplifier l'effet (à discuter en groupe)
