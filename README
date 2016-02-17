@@ -19,7 +19,8 @@ L. Becquey - A. Cathignol - N. Mauvisseau - M. Simon
 
 
 - Classe bâtiment:
-  - Attribut "carte" (tableau ?)
+  - Attribut "carte" (tableau à une seule dimension ?)
+  - Obstacles générés au hasard ?
   - Attributs entrée/sortie/points qui font fuir les gens/points qui attirent
   - Constructeurs/getters/setters
   - ...
