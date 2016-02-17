@@ -1,8 +1,6 @@
 
 //=========================== Includes =================================
 #include "Pedest.h"
-#include <cstdio>
-#include <cstdlib>
 
 using namespace std;
 
