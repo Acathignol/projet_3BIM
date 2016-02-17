@@ -2,7 +2,9 @@
 #ifndef Pedest_H__
 #define Pedest_H__
 
-
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
 
 
 class Pedest {
@@ -13,8 +15,8 @@ class Pedest {
   //=========================== Destructor =============================
 
   // =========================== Getters ===============================
-  int x();
-  int y();
+  inline int x() const;
+  inline int y() const;
   //=========================== Setters ================================
   void xpp(const double new_xpp);
   void ypp(const double new_ypp);
@@ -49,7 +51,12 @@ protected :
 //===========================Operators' definitions=====================
 
 //========================Inline functions' definition==================
+inline int Pedest::x() const{
+  return x_;
+}
 
-
+inline int Pedest::y() const{
+  return y_;
+}
 
 #endif // Pedest_H__

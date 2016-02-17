@@ -1,6 +1,4 @@
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
+
 #include "Image.h"
 #include "Pedest.h"
 
