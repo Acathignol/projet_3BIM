@@ -1,6 +1,6 @@
 
-#ifndef Building_hpp
-#define Building_hpp
+#ifndef Building_h
+#define Building_h
 
 #include <stdio.h>
 
@@ -29,4 +29,4 @@ inline int Building::width() const{
   return width_;
 }
 
-#endif /* Building_hpp */
+#endif /* Building_h */
