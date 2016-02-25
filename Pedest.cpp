@@ -11,6 +11,7 @@ using namespace std;
 Pedest::Pedest() {
   x_ = 0;
   y_ = 0;
+  radius_ = 0;
   xp_ = 1.0;
   yp_ = 1.0;
   xpp_ = 0.0;
@@ -18,9 +19,10 @@ Pedest::Pedest() {
   mood_ = 0;
 }
 
-Pedest::Pedest(const int startX, const int startY){
+Pedest::Pedest(const int startX, const int startY, const float radius){
   x_ = startX;
   y_ = startY;
+  radius_ = radius;
   xp_ = 0.0;
   yp_ = 0.0;
   xpp_ = 0.0;
@@ -29,6 +31,8 @@ Pedest::Pedest(const int startX, const int startY){
 }
 
 //=========================== Destructor ===============================
+Pedest::~Pedest(){
+}
 
 //=========================== Public Methods ===========================
 

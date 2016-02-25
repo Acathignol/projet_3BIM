@@ -11,8 +11,9 @@ class Pedest {
  public :
   // =========================== Constructors ==========================
   Pedest();
-  Pedest(const int startX, const int startY);
+  Pedest(const int startX, const int startY, const float radius);
   //=========================== Destructor =============================
+  ~Pedest();
 
   // =========================== Getters ===============================
   inline int x() const;
@@ -34,6 +35,7 @@ protected :
   //=========================== Attributes =============================
   int x_;
   int y_;
+  float radius_;
   double xp_;
   double yp_;
   double xpp_;
