@@ -15,7 +15,7 @@ Building::Building(int length, int width){
 }
 
 //=========================== Destructor ===============================
-Building::~Building{
+Building::~Building(){
   delete[] map_;
   map_ = nullptr;
 }
