@@ -23,7 +23,7 @@ public:
   bool crossing(std::vector<int> v);
   bool merging(std::vector<int> v);
   bool angle90(std::vector<int> v);
-  bool corridor(std::vector<int> v)
+  bool corridor(std::vector<int> v);
   
 protected:
   int length_;
