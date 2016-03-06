@@ -3,6 +3,8 @@
 #define Building_h
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <vector>
 
 class Building{
 public:
@@ -14,6 +16,15 @@ public:
   // =========================== Getters ===============================
   inline int length() const;
   inline int width() const;
+  
+  // =========================== Public Methods ========================
+  int whatIsThis();
+  std::vector<int> sides(int hole, div_t divresult);
+  bool crossing(std::vector<int> v);
+  bool merging(std::vector<int> v);
+  bool angle90(std::vector<int> v);
+  bool corridor(std::vector<int> v)
+  
 protected:
   int length_;
   int width_;
