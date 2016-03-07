@@ -1,0 +1,5 @@
+Problèmes classe Building (Etudiant 3 - Annie Cathignol):
+
+- Faire un rectangle le plus grand possible pour qu'il y ait juste 1 seule valeur jusqu'au bout.
+- => selon les bords définir si Couloir, angle, T , Y ....
+
