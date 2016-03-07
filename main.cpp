@@ -2,10 +2,13 @@
 #include "Image.h"
 #include "Pedest.h"
 #include "Building.h"
+#include "Point.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]){
+  
+  // ==================== Import de la Carte ===========================
   
   string filename = "little-room.ppm";
   if (argc > 1) {
@@ -20,13 +23,16 @@ int main(int argc, char* argv[]){
   cout << "Height: " << Level.height() << endl;
   cout << "Width: " << Level.width() << endl;
   
-  Pedest pieton1 = Pedest(2,2,1,Bataclan.map());
+  // =================== Affichage du Batiment =========================
   
   Bataclan.drawMap();
-  for(int i=2; i<12; i++){
-    Bataclan.setValue(i,2,2);
-  }
-  Bataclan.drawMap();
+  
+  // =================== Création d'un piéton ==========================
+  
+  Pedest pieton1 = Pedest(2,2,1,Bataclan.map(), Bataclan.width(), 
+                          Bataclan.length() );
+  cout << "\nPath to the exit from " << pieton1.x() << ',' << pieton1.y() << " :\n";
+  Bataclan.drawTrajectory( pieton1.pathToExit() );
     
   return EXIT_SUCCESS;
 }

@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "Point.h"
 
 using namespace std;
@@ -15,7 +16,8 @@ class Pedest {
   // =========================== Constructors ==========================
   
   Pedest();
-  Pedest(const int startX, const int startY, const float radius, const int* map);
+  Pedest(const int startX, const int startY, const float radius,
+         const int* map, const int W, const int H);
   
   //=========================== Destructor =============================
   
@@ -25,6 +27,7 @@ class Pedest {
   
   inline int x() const;
   inline int y() const;
+  inline vector<Point> pathToExit(void) const;
   
   //=========================== Setters ================================
   
@@ -33,7 +36,8 @@ class Pedest {
   void set_mood(const int new_mood);
   void accelerate();
   void brake();
-  vector<Point> findExit(const int* map);
+  vector<Point> findExit(const Point& start, const int* map,
+                         const int W, const int H);
   
   //=========================== Operators ==============================
 
@@ -60,12 +64,6 @@ protected :
   
 };
 
-//===========================Getters' definitions=======================
-
-//===========================Setters' definitions=======================
-
-//===========================Operators' definitions=====================
-
 //========================Inline functions' definition==================
 
 inline int Pedest::x() const{
@@ -74,6 +72,10 @@ inline int Pedest::x() const{
 
 inline int Pedest::y() const{
   return y_;
+}
+
+inline vector<Point> Pedest::pathToExit(void) const{
+  return *path_to_exit_;
 }
 
 #endif // Pedest_H__

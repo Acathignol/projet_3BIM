@@ -42,6 +42,7 @@ public:
   bool angle(std::vector<int> v);
   bool corridor(std::vector<int> v);
   void drawMap(void) const;
+  void drawTrajectory(vector<Point> way) const;
   
 protected:
   int length_;
