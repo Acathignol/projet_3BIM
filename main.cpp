@@ -7,27 +7,26 @@ using namespace std;
 
 int main(int argc, char* argv[]){
   
-  string filename = "batiment.ppm";
+  string filename = "little-room.ppm";
   if (argc > 1) {
     filename = argv[1];
     cout << "using custom building..." << endl;
   }
   
   Image Level(filename);
+  Building Bataclan(Level);
+  
   cout << filename << " successfully loaded:" << endl;
   cout << "Height: " << Level.height() << endl;
   cout << "Width: " << Level.width() << endl;
   
   Pedest pieton1 = Pedest(2,2,1);
   
-  for(int i=1; i<10; i++){
-    cout << "X:" << pieton1.x() << ",Y:" << pieton1.y() << endl;
-    pieton1.move();
-    if (double(i/2) == double(i)/2) {
-      pieton1.accelerate();
-      cout << "Accélération !\n";
-    }
+  Bataclan.drawMap();
+  for(int i=2; i<12; i++){
+    Bataclan.setValue(i,2,2);
   }
-  
+  Bataclan.drawMap();
+    
   return EXIT_SUCCESS;
 }

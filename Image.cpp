@@ -24,8 +24,10 @@ Image::Image( const Image& image ){
 
 Image::Image( const string& filename ) {
   ifstream f( filename.c_str() , ios::in);
-  string P6;
-  f >> P6 >> W_ >> H_ >> MaxVal_ ;
+  string garbage;
+  getline(f, garbage); // P6 ou P3
+  getline(f, garbage); // Commentaire de GIMP
+  f >> H_ >> W_ >> MaxVal_ ;
   f.get();
   data_ = new unsigned char[ W_*H_*3 ];
   f.read((char*)data_ , sizeof(unsigned char)*W_*H_*3);

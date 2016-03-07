@@ -26,6 +26,7 @@ class Image
   inline int width() const;
   inline int height() const;
   inline int maxVal() const;
+  inline bool getPixel(size_t x, size_t y) const;
 
   //=========================== Setters ================================
 
@@ -52,6 +53,9 @@ protected :
 inline int Image::height(void) const { return W_; }
 inline int Image::width(void) const { return H_; }
 inline int Image::maxVal(void) const { return MaxVal_; }
+inline bool Image::getPixel(size_t x, size_t y) const {
+  return (data_[(W_*y+x)*3]+data_[(W_*y+x)*3+1]+data_[(W_*y+x)*3+2])/3 == 0;
+}
 
 #endif // IMAGEPPM_H__
 

@@ -14,6 +14,20 @@ Building::Building(int length, int width){
   map_ = new int[length_*width_];
 }
 
+Building::Building(const Image& model){
+  length_ = model.height();
+  width_ = model.width();
+  map_ = new int[length_*width_];
+  
+  for(int i=0; i<width_; i++){
+    for(int j=0; j<length_; j++){
+      map_[ j*width_ + i ] = model.getPixel(i,j);
+      // black = 1
+      // other (for example, white, or red) = 0
+    }
+  }
+}
+
 //=========================== Destructor ===============================
 Building::~Building(){
   delete[] map_;
@@ -244,3 +258,16 @@ bool Building::corridor(std::vector<int> v){
   return a;	
 }
 
+void Building::drawMap(void) const {
+  cout << endl;
+  for(int j=0; j<length_; j++){
+    for(int i=0; i<width_; i++){
+      char pixel = ' ';
+      if (map_[ i+width_*j] ==1 ) pixel = '#';
+      if (map_[ i+width_*j] ==2 ) pixel = 'o'; 
+      cout << pixel << " ";
+    }   
+    cout << endl;
+  }
+  cout << endl;
+}
