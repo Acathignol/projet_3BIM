@@ -17,9 +17,10 @@ Pedest::Pedest() {
   xpp_ = 0.0;
   ypp_ = 0.0;
   mood_ = 0;
+  path_to_exit_ = nullptr;
 }
 
-Pedest::Pedest(const int startX, const int startY, const float radius){
+Pedest::Pedest(const int startX, const int startY, const float radius,const int* map){
   x_ = startX;
   y_ = startY;
   radius_ = radius;
@@ -28,10 +29,13 @@ Pedest::Pedest(const int startX, const int startY, const float radius){
   xpp_ = 0.0;
   ypp_ = 0.0;
   mood_ = 0;
+  path_to_exit_ = new vector<Point> (findExit(map));
 }
 
 //=========================== Destructor ===============================
-Pedest::~Pedest(){
+
+Pedest::~Pedest(void){
+  delete path_to_exit_;
 }
 
 //=========================== Public Methods ===========================
@@ -71,6 +75,12 @@ void Pedest::brake(){
   if (xpp_ < 0.1) xpp_ = 0;
   if (ypp_ < 0.1) ypp_ = 0;
 }
+
+vector<Point> Pedest::findExit(const int* map){
+  vector<Point> A (1, Point(2,2) ); //N'importe quoi en attendant de coder le flood
+  return A;
+}
+
 //=========================== Protected Methods ========================
 
 //=========================== Functions ================================

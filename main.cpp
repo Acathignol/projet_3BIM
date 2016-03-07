@@ -20,7 +20,7 @@ int main(int argc, char* argv[]){
   cout << "Height: " << Level.height() << endl;
   cout << "Width: " << Level.width() << endl;
   
-  Pedest pieton1 = Pedest(2,2,1);
+  Pedest pieton1 = Pedest(2,2,1,Bataclan.map());
   
   Bataclan.drawMap();
   for(int i=2; i<12; i++){

@@ -2,6 +2,7 @@
 #include "Building.h"
 
 //=========================== Constructors =============================
+
 Building::Building(){
   length_ = 0;
   width_ = 0;
@@ -29,6 +30,7 @@ Building::Building(const Image& model){
 }
 
 //=========================== Destructor ===============================
+
 Building::~Building(){
   delete[] map_;
   map_ = nullptr;
@@ -38,7 +40,6 @@ Building::~Building(){
 
 //Annie (Etudiant 3) : Classe Building : Faire des méthodes pour qu'on puisse dire si un obstacle est un croisement, un virage, une fusion de deux couloirs .....  Afin d'y appliquer les bonnes méthodes de la classe Pedest (et en fonction de leurs humeurs)
 //VIRAGE COMPLEX => dire la courbure  ATTENTION ! pas au bordure idem croisement and angle
-
 
 int Building::whatIsThis(){
   int result = 0;//0=nothing, 1=crossing, 2=merging, 3=angle, 4=corridor
@@ -88,12 +89,12 @@ std::vector<int> Building::sides(int hole, div_t divresult){
   return vSides;
 }
 
-
 //101   010
 //000   101
 //101   010
   
 //0 NORTH   1 N-W   2 N-E   3 SOUTH   4 S-W   5 S-E   6 WEST   7 EST 
+
 bool Building::crossing(std::vector<int> v){
   bool a = false;
   
@@ -106,12 +107,12 @@ bool Building::crossing(std::vector<int> v){
   return a;	
 }
 
-
 //111 101 101 101  010 011 101 110   110 101 011 101     011 010 010 110 others?
 //000 100 000 001  101 100 101 001   001 001 100 100     101 101 101 101
 //101 101 111 101  101 011 010 110   101 110 101 011     010 011 110 010
 
 //0 NORTH   1 N-W   2 N-E   3 SOUTH   4 S-W   5 S-E   6 WEST   7 EST
+
 bool Building::merging(std::vector<int> v){
   bool a = false;
   
@@ -171,12 +172,12 @@ bool Building::merging(std::vector<int> v){
   return a;	
 }
  
- 
 //111 101 101 111  010 011 111 110  110 011 101 101  111 011 110 111 others?
 //001 001 100 100  101 101 101 101  101 101 101 101  100 100 001 001 
 //101 111 111 101  111 011 010 110  101 101 011 110  011 111 111 110
 
 //0 NORTH   1 N-W   2 N-E   3 SOUTH   4 S-W   5 S-E   6 WEST   7 EST
+
 bool Building::angle(std::vector<int> v){
   bool a = false;
   
@@ -234,12 +235,12 @@ bool Building::angle(std::vector<int> v){
   return a;	
 }
 
-
 //101  111  011  110
 //101  000  101  101
 //101  111  110  011
 
 //0 NORTH   1 N-W   2 N-E   3 SOUTH   4 S-W   5 S-E   6 WEST   7 EST
+
 bool Building::corridor(std::vector<int> v){
   bool a = false;
   
