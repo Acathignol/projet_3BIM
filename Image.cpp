@@ -1,13 +1,12 @@
 //===================================Includes===========================
+
 #include "Image.h"
-
-
-
 
 //====================== Definition of static attributes ===============
 
 
 //===============================Constructors ==========================
+
 Image::Image() {
   W_=0;
   H_=0;
@@ -55,6 +54,7 @@ Image::Image( int** map , int H, int W){
 }
 
 //=============================== Destructor ===========================
+
 Image::~Image(){
   delete[] data_;
   data_ = nullptr;
@@ -126,7 +126,6 @@ void Image::gaussian_blur( double* matrix ){
   delete[] newdata_;
   newdata_ = nullptr;
 }
-
 
 //=========================== Protected Methods ========================
 
