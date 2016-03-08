@@ -29,7 +29,7 @@ int main(int argc, char* argv[]){
   
   // =================== Création d'un piéton ==========================
   
-  Pedest pieton1 = Pedest(2,2,1,Bataclan.map(), Bataclan.width(), 
+  Pedest pieton1 = Pedest(1,1,1,Bataclan.map(), Bataclan.width(), 
                           Bataclan.length() );
   cout << "\nPath to the exit from " << pieton1.x() << ',' << pieton1.y() << " :\n";
   Bataclan.drawTrajectory( pieton1.pathToExit() );

@@ -13,7 +13,7 @@ class Point{
   inline int x(void) const;
   inline int y(void) const;
   inline void set(int x, int y);
-  void display(void);
+  void display(void) const;
   inline int coord_in(int W) const;
  protected :
   int x_;

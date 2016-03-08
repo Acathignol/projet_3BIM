@@ -12,6 +12,6 @@ Point::Point(int x, int y) {
   y_ = y;
 }
 
-void Point::display(void) {
+void Point::display(void) const {
   cout << '(' << x_ << ',' << y_ << ')' <<endl;
 }

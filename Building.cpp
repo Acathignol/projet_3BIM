@@ -279,7 +279,7 @@ void Building::drawTrajectory(vector<Point> way) const {
       char pixel = ' ';
       if (map_[ i+width_*j] ==1 ) pixel = '#';
       for (size_t k=0; k<way.size(); k++){
-        if ( i==way[k].x() and j==way[k].y() ) pixel = 'o';
+        if ( i==way[k].x() and j==way[k].y() ) pixel = '.';
       }
       cout << pixel << " ";
     }   

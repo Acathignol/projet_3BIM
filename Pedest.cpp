@@ -21,7 +21,7 @@ Pedest::Pedest() {
   path_to_exit_ = nullptr;
 }
 
-Pedest::Pedest(const int startX, const int startY,const float radius,
+Pedest::Pedest(const int startX, const int startY, const float radius,
                const int* map, const int W, const int H){
   x_ = startX;
   y_ = startY;
@@ -31,8 +31,8 @@ Pedest::Pedest(const int startX, const int startY,const float radius,
   xpp_ = 0.0;
   ypp_ = 0.0;
   mood_ = 0;
-  path_to_exit_ = new vector<Point> (findExit( Point(startX, startY), 
-                                               map, W, H));
+  Point start(startX, startY);
+  path_to_exit_ = new vector<Point> (findExit( start, map, W, H));
 }
 
 //=========================== Destructor ===============================
@@ -80,6 +80,7 @@ void Pedest::brake(){
 }
 
 vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H){
+  
   // repère tous les points "sortie":
   vector<Point> list_of_exits;
   for (int i=0; i<W; i++){
@@ -91,26 +92,31 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
     if (not map[j*W+(W-1)]) list_of_exits.push_back( Point((W-1),j) );
   }
   
-  cout << "List of exits:" << endl;
-  for (size_t i=0; i<list_of_exits.size(); i++){
-    list_of_exits[i].display();
-  }
+  
   
   vector<Point> best_way;
+  vector<Point> trajectory;
+  Point coord;
+  Point coo;
+  Point stop;
+  int k;
+  int* grid = nullptr;
+  int* flood = nullptr;
+  
   for (size_t i=0; i<list_of_exits.size(); i++){
     
     //calcule le chemin pour chaque point possible:
-    Point stop = list_of_exits[i];
+    stop = list_of_exits[i];
     
-    int* grid = new int [H*W];
+    grid = new int [H*W];
     for (int i=0; i<H*W; i++){ grid[i] = -map[i]; }
     grid[ start.coord_in(W) ] = 1;
     grid[ stop.coord_in(W) ] = 0;
     
     //innondation jusqu'à atteindre stop ou k=20000
-    int k = 1;
+    k = 1;
     while ( grid[ stop.coord_in(W) ]==0 and k<20000){
-      int* flood = new int[H*W];
+      flood = new int[H*W];
       for (int i=0; i<W*H; i++){ flood[i] = 0; }
       for (int a=0; a<W; a++){
         for (int b=0; b<H; b++){
@@ -130,18 +136,18 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
       
       for (int i=0; i<W*H; i++){ grid[i] += flood[i]; }
       delete[] flood;
+      flood = nullptr;
       k++;
     }
     
     //remonter les coordonnées jusqu'à start:
-    Point coord = stop;
-    vector<Point> trajectory;
-    Point coo;
-    while (coord.x()!=start.x() and coord.y()!=start.y() 
+    coord = stop;
+    int max;
+    while ((coord.x()!=start.x() or coord.y()!=start.y()) 
            and trajectory.size()<50*(unsigned int) W)
     {
       trajectory.push_back(coord);
-      int max = 0;
+      max = 0;
       coo = coord;
       for (int a=-1; a<2; a++){
         for (int b=-1; b<2; b++){
@@ -159,10 +165,12 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
     
     reverse( trajectory.begin(), trajectory.end() );
     delete[] grid;
+    grid = nullptr;
     
     if ( best_way.size() == 0 or trajectory.size() < best_way.size()){
       best_way = trajectory;
     }
+    
   }
   
   return best_way;
