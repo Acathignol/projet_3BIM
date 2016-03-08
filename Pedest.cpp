@@ -118,7 +118,7 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
             for (int l=-1; l<2; l++){
               for (int m=-1; m<2; m++){
                 if (a+l<W and b+m<H and a+l>=0 and b+m>=0){
-                  if (l*m==0 and grid[ a+l+W*(b+m) ] != -1 and flood[ a+l+W*(b+m) ] == 0){
+                  if (grid[ a+l+W*(b+m) ] != -1 and flood[ a+l+W*(b+m) ] == 0){
                     flood[ a+l+W*(b+m) ] ++;
                   }
                 } 
@@ -147,7 +147,7 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
         for (int b=-1; b<2; b++){
           int i = coo.x() + a;
           int j = coo.y() + b;
-          if (a*b==0 and i>=0 and i<W and j>=0 and j<H){
+          if (i>=0 and i<W and j>=0 and j<H){
             if ( grid[i+W*j] > max ){
               max = grid[i+W*j];
               coord.set(i,j);

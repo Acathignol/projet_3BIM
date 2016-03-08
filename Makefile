@@ -20,5 +20,4 @@ Point.o: Point.cpp Point.h
 
 clean:
 	rm *.o
-
-
+ 
