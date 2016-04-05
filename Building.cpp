@@ -40,28 +40,73 @@ Building::~Building(){
 
 //Annie (Etudiant 3) : Classe Building : Faire des méthodes pour qu'on puisse dire si un obstacle est un croisement, un virage, une fusion de deux couloirs .....  Afin d'y appliquer les bonnes méthodes de la classe Pedest (et en fonction de leurs humeurs)
 //VIRAGE COMPLEX => dire la courbure  ATTENTION ! pas au bordure idem croisement and angle
-
+	    
+      
+      //~ if (this->crossing(v)){result = 1 ;} //then put if else once tested if one is never another
+	    //~ if (this->merging(v)){result = 2 ;}
+	    //~ if (this->angle(v)){result = 3 ;}
+	    //~ if (this->corridor(v)){result = 4 ;}
+      
+      
 int Building::whatIsThis(){
   int result = 0;//0=nothing, 1=crossing, 2=merging, 3=angle, 4=corridor
+  int** copyMap=new int*[width_];
+  fillCopyMap(copyMap);
+  for (int x=0; x<width_; x++){
+    for (int y=0; y<length_; y++){
+      //blablabla
+      result++;
+      
+    }
+  }
   
-  for (int i=0; i<(length_*width_); i++){
-    for (int j=0; j<(length_*width_); j++){
-      
-      
-	    if (this->crossing(v)){result = 1 ;} //then put if else once tested if one is never another
-	    if (this->merging(v)){result = 2 ;}
-	    if (this->angle(v)){result = 3 ;}
-	    if (this->corridor(v)){result = 4 ;}
-	    
-	}
-  }//Problem : si === : détectera 3 angles plas ...
+  for (int i=0; i<width_; i++){
+    delete[] copyMap[i];
+  }
+  delete[] copyMap;
+  copyMap = nullptr;
+  
   return result;
 }
 
+void Building::fillCopyMap(int** copyMap){
+  for (int x=0; x<width_; x++){
+    copyMap[x]=new int[length_];
+    for (int y=0; y<length_; y++){
+      copyMap[x][y]=map_[x+y*width_];
+      int test=testLine(x,y);
+      if (test != 0){
+        testAnswer(x,y,test,copyMap);
+      }
+	  }
+  }
 }
 
+int Building::testLine(int x, int y){
+  int test=0;
+  int a=0;
+  int b=0;
+  for (int i=-1; i<=1; i++){
+    for (int j=-1; j<=1; j++){
+      a=x+i;
+      b=y+j;
+      if (checkSides(a,b)){
+        //Blablabla
+        test++;
+      }
+    }
+  }
+  return test;
+}
 
+bool Building::checkSides(int x , int y){
+  if (x>=0 && x<width_ and y>=0 && y<length_){return true;}  
+  else {return false;}
+}
 
+void Building::testAnswer(int x, int y , int test, int** copyMap){
+ copyMap[x][y]=1;
+}
 
 void Building::drawMap(void) const {
   cout << endl;

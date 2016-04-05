@@ -36,11 +36,18 @@ public:
   // =========================== Public Methods ========================
   
   int whatIsThis();
+  void fillCopyMap(int** copyMap);
+  int testLine(int x, int y);
+  bool checkSides(int x , int y);
+  void testAnswer(int x, int y , int test, int** copyMap);
+  //~ bool crossing(std::vector<int> v);
+  //~ bool merging(std::vector<int> v);
+  //~ bool angle(std::vector<int> v);
+  //~ bool corridor(std::vector<int> v);
+  
   std::vector<int> sides(int hole, div_t divresult);
-  bool crossing(std::vector<int> v);
-  bool merging(std::vector<int> v);
-  bool angle(std::vector<int> v);
-  bool corridor(std::vector<int> v);
+
+
   void drawMap(void) const;
   void drawTrajectory(vector<Point> way) const;
   
