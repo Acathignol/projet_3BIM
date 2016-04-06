@@ -37,9 +37,9 @@ public:
   
   int whatIsThis();
   void fillCopyMap(int** copyMap);
-  int testLine(int x, int y);
+  std::vector<int> testLine(int x, int y);
   bool checkSides(int x , int y);
-  void testAnswer(int x, int y , int test, int** copyMap);
+  void testAnswer(int x, int y , std::vector<int> test, int** copyMap);
   //~ bool crossing(std::vector<int> v);
   //~ bool merging(std::vector<int> v);
   //~ bool angle(std::vector<int> v);

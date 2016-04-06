@@ -70,29 +70,43 @@ int Building::whatIsThis(){
 }
 
 void Building::fillCopyMap(int** copyMap){
+  std::vector<int> test;
   for (int x=0; x<width_; x++){
     copyMap[x]=new int[length_];
     for (int y=0; y<length_; y++){
       copyMap[x][y]=map_[x+y*width_];
-      int test=testLine(x,y);
-      if (test != 0){
+      test=testLine(x,y);
+      if (test.size() != 0){
         testAnswer(x,y,test,copyMap);
       }
+      while (test.size() != 0){test.pop_back();}
 	  }
   }
 }
 
-int Building::testLine(int x, int y){
-  int test=0;
+std::vector<int> Building::testLine(int x, int y){
+  std::vector<int> test;
   int a=0;
   int b=0;
-  for (int i=-1; i<=1; i++){
-    for (int j=-1; j<=1; j++){
-      a=x+i;
-      b=y+j;
-      if (checkSides(a,b)){
-        //Blablabla
-        test++;
+  if (map_[x+y*width_]==1){
+    for (int i=-1; i<=1; i++){
+      for (int j=-1; j<=1; j++){// CAREFULL HERE I AM ALSO TAKING N-E N-W S-E S-W
+        a=x+i;
+        b=y+j;
+        if (checkSides(a,b)){
+          if (i==-1 and j==0){ // West
+            numbers.push_back(map_[a+b*width_]);
+          }
+          else if (i==1 and j==0){ // Est
+            numbers.push_back(map_[a+b*width_]);
+          }
+          else if (i==0 and j==1){ // North
+            numbers.push_back(map_[a+b*width_]);
+          }
+          else if (i==0 and j==-1){ // South
+            numbers.push_back(map_[a+b*width_]);
+          }
+        }
       }
     }
   }
@@ -104,7 +118,7 @@ bool Building::checkSides(int x , int y){
   else {return false;}
 }
 
-void Building::testAnswer(int x, int y , int test, int** copyMap){
+void Building::testAnswer(int x, int y , std::vector<int> test, int** copyMap){
  copyMap[x][y]=1;
 }
 
