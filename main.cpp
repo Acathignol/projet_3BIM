@@ -27,6 +27,10 @@ int main(int argc, char* argv[]){
   
   Bataclan.drawMap();
   
+  // ==================== Affichage de Copymap =========================
+  
+  Bataclan.whatIsThis();
+  
   // =================== Création d'un piéton ==========================
   
   Pedest pieton1 = Pedest(1,1,1,Bataclan.map(), Bataclan.width(), 

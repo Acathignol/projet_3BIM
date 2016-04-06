@@ -74,14 +74,31 @@ void Building::fillCopyMap(int** copyMap){
   for (int x=0; x<width_; x++){
     copyMap[x]=new int[length_];
     for (int y=0; y<length_; y++){
-      copyMap[x][y]=map_[x+y*width_];
+      copyMap[x][y]=0;
+      cout<<"bouh1"<<endl;
       test=testLine(x,y);
       if (test.size() != 0){
+        
+        cout<<test.size()<<endl;
         testAnswer(x,y,test,copyMap);
       }
+      cout<<"ko3"<<endl;
       while (test.size() != 0){test.pop_back();}
 	  }
   }
+  drawMap();
+  cout<<endl;
+  cout<<endl;
+  for (int x=0; x<width_; x++){
+    for (int y=0; y<length_; y++){
+      if (copyMap[x][y]==1){
+        cout<<"#";
+      }
+      else{cout<<" ";}
+    }
+    cout<<endl;
+  }
+  cout<<endl;
 }
 
 std::vector<int> Building::testLine(int x, int y){
@@ -95,16 +112,30 @@ std::vector<int> Building::testLine(int x, int y){
         b=y+j;
         if (checkSides(a,b)){
           if (i==-1 and j==0){ // West
-            numbers.push_back(map_[a+b*width_]);
+            test.push_back(map_[a+b*width_]);
           }
           else if (i==1 and j==0){ // Est
-            numbers.push_back(map_[a+b*width_]);
+            test.push_back(map_[a+b*width_]);
           }
           else if (i==0 and j==1){ // North
-            numbers.push_back(map_[a+b*width_]);
+            test.push_back(map_[a+b*width_]);
           }
           else if (i==0 and j==-1){ // South
-            numbers.push_back(map_[a+b*width_]);
+            test.push_back(map_[a+b*width_]);
+          }
+        }
+        else{
+          if (i==-1 and j==0){ // West
+            test.push_back(9);
+          }
+          else if (i==1 and j==0){ // Est
+            test.push_back(9);
+          }
+          else if (i==0 and j==1){ // North
+            test.push_back(9);
+          }
+          else if (i==0 and j==-1){ // South
+            test.push_back(9);
           }
         }
       }
@@ -119,7 +150,88 @@ bool Building::checkSides(int x , int y){
 }
 
 void Building::testAnswer(int x, int y , std::vector<int> test, int** copyMap){
- copyMap[x][y]=1;
+  if (test.size() == 4){ // CAREFULL I AM NOT TESTING THE BORDERS, AM I?
+    if (test[0]==0){                           // A OPTIMISER
+      for (int i=0; i<width_; i++){
+        copyMap[x][i]=1;
+      }
+      //~ if (test[1]==0){
+        //~ for (int j=0; j<length_; j++){
+          //~ copyMap[x][j]=1;
+        //~ }
+      //~ }
+    }
+    
+    //~ if (test[2]==0){                           // A OPTIMISER
+      //~ for (int j=0; j<length_; j++){
+        //~ copyMap[x][j]=1;
+      //~ }
+      //~ if (test[3]==0){
+        //~ for (int i=0; i<width_; i++){
+          //~ copyMap[i][y]=1;
+        //~ }
+      //~ }
+    //~ }
+      
+    //~ if (test[0]==1){                           // A OPTIMISER
+      //~ for (int i=0; i<width_; i++){
+        //~ copyMap[i][y]=1;
+      //~ }
+      //~ if (test[1]==0){
+        //~ for (int j=0; j<length_; j++){
+          //~ copyMap[x][j]=1;
+          //~ cout<<"DE ";
+        //~ }
+      //~ }
+    //~ }
+    //~ else if (test[0]==0 and test[1]==1){
+      //~ for (int i=0; i<width_; i++){
+        //~ copyMap[i][y]=1;
+        //~ cout<<"Bique !"<<endl;
+      //~ }
+      //~ for (int j=0; j<length_; j++){
+        //~ copyMap[x][j]=1;
+        //~ 
+      //~ }
+    //~ }
+    //~ else if (test[0]==0 and test[1]==0){
+      //~ for (int i=0; i<width_; i++){
+        //~ copyMap[i][y]=1;
+      //~ }
+      //~ for (int j=0; j<length_; j++){
+        //~ copyMap[x][j]=1;
+      //~ }
+    //~ }
+    //~ 
+    //~ if (test[2]==1){
+      //~ for (int j=0; j<length_; j++){
+        //~ copyMap[x][j]=1;
+        //~ cout<<"méchant ";
+      //~ }
+      //~ if (test[3]==0){
+        //~ for (int i=0; i<width_; i++){
+          //~ copyMap[i][y]=1;
+          //~ cout<<"bonhomme !"<<endl;
+        //~ }
+      //~ }
+    //~ }
+    //~ else if (test[2]==0 and test[3]==1){
+      //~ for (int i=0; i<width_; i++){
+        //~ copyMap[i][y]=1;
+      //~ }
+      //~ for (int j=0; j<length_; j++){
+        //~ copyMap[x][j]=1;
+      //~ }
+    //~ }
+    //~ else if (test[2]==0 and test[3]==0){
+      //~ for (int i=0; i<width_; i++){
+        //~ copyMap[i][y]=1;
+      //~ }
+      //~ for (int j=0; j<length_; j++){
+        //~ copyMap[x][j]=1;
+      //~ }
+    //~ }
+  }
 }
 
 void Building::drawMap(void) const {
