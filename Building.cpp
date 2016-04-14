@@ -50,11 +50,14 @@ Building::~Building(){
       
 int Building::whatIsThis(){
   int result = 0;//0=nothing, 1=crossing, 2=merging, 3=angle, 4=corridor
+  //New map 
   int** copyMap=new int*[width_];
+  //Filling the map 
   fillCopyMap(copyMap);
   for (int x=0; x<width_; x++){
     for (int y=0; y<length_; y++){
-      //blablabla
+      //Depending on how the map is filled , we obtain different results (angle, corridor...)
+      //To do the Maze solver stuf
       result++;
       
     }
@@ -145,7 +148,7 @@ std::vector<int> Building::testLine(int x, int y){
 }
 
 bool Building::checkSides(int x , int y){
-  if (x>=0 && x<width_ and y>=0 && y<length_){return true;}  
+  if (x>=0 and x<width_ and y>=0 and y<length_){return true;}  
   else {return false;}
 }
 
