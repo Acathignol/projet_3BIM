@@ -7,7 +7,6 @@
 #include <vector>
 #include <iostream>
 #include "Image.h"
-#include "Point.h"
 
 using namespace std;
 
@@ -50,7 +49,7 @@ public:
 
 
   void drawMap(void) const;
-  void drawTrajectory(vector<Point> way) const;
+  void drawTrajectory(vector<pair<int, int>> way) const;
   
 protected:
   int length_;

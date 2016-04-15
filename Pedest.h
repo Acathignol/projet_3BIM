@@ -7,7 +7,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "Point.h"
 
 using namespace std;
 
@@ -27,7 +26,7 @@ class Pedest {
   
   inline int x() const;
   inline int y() const;
-  inline vector<Point> pathToExit(void) const;
+  inline vector<pair<int, int>> pathToExit(void) const;
   
   //=========================== Setters ================================
   
@@ -36,7 +35,7 @@ class Pedest {
   void set_mood(const int new_mood);
   void accelerate();
   void brake();
-  vector<Point> findExit(const Point& start, const int* map,
+  vector<pair<int, int>> findExit(const pair<int, int>& start, const int* map,
                          const int W, const int H);
   
   //=========================== Operators ==============================
@@ -60,7 +59,7 @@ protected :
   double xpp_;
   double ypp_;
   int mood_;
-  vector<Point>* path_to_exit_;
+  vector<pair<int, int>>* path_to_exit_;
   
 };
 
@@ -74,7 +73,7 @@ inline int Pedest::y() const{
   return y_;
 }
 
-inline vector<Point> Pedest::pathToExit(void) const{
+inline vector<pair<int, int>> Pedest::pathToExit(void) const{
   return *path_to_exit_;
 }
 

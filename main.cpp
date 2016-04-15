@@ -2,7 +2,6 @@
 #include "Image.h"
 #include "Pedest.h"
 #include "Building.h"
-#include "Point.h"
 
 using namespace std;
 

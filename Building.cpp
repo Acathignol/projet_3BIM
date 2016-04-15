@@ -250,14 +250,14 @@ void Building::drawMap(void) const {
   cout << endl;
 }
 
-void Building::drawTrajectory(vector<Point> way) const {
+void Building::drawTrajectory(vector<pair<int, int>> way) const {
   cout << endl;
   for(int j=0; j<length_; j++){
     for(int i=0; i<width_; i++){
       char pixel = ' ';
       if (map_[ i+width_*j] ==1 ) pixel = '#';
       for (size_t k=0; k<way.size(); k++){
-        if ( i==way[k].x() and j==way[k].y() ) pixel = '.';
+        if ( i==way[k].first and j==way[k].second ) pixel = '.';
       }
       cout << pixel << " ";
     }   
