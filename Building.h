@@ -28,6 +28,7 @@ public:
   inline int length() const;
   inline int width() const;
   inline int* map() const;
+  inline int map(size_t x, size_t y) const;
   
   // =========================== Setters ===============================
   
@@ -70,6 +71,10 @@ inline int Building::width() const{
 
 inline int* Building::map() const{
   return map_;
+}
+
+inline int Building::map(size_t x, size_t y) const{
+  return map_[width_*y+x];
 }
 
 inline void Building::setValue(size_t x, size_t y, int value){
