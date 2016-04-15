@@ -52,8 +52,8 @@ protected :
   
   //=========================== Attributes =============================
   
-  int x_;
-  int y_;
+  double x_;
+  double y_;
   float radius_;
   double xp_;
   double yp_;
