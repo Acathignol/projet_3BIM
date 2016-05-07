@@ -1,20 +1,20 @@
 //===================================Includes===========================
 
-#include "Image.h"
+#include "ImagePPM.h"
 
 //====================== Definition of static attributes ===============
 
 
 //===============================Constructors ==========================
 
-Image::Image() {
+ImagePPM::ImagePPM() {
   W_=0;
   H_=0;
   MaxVal_=255;
   data_ = nullptr;
 }
 
-Image::Image( const Image& image ){
+ImagePPM::ImagePPM( const ImagePPM& image ){
   W_      = image.W_;
   H_      = image.H_;
   MaxVal_ = image.MaxVal_;
@@ -22,7 +22,7 @@ Image::Image( const Image& image ){
   memcpy(data_, image.data_, sizeof(unsigned char)*W_*H_*3);
 }
 
-Image::Image( const string& filename ) {
+ImagePPM::ImagePPM( const string& filename ) {
   ifstream f( filename.c_str() , ios::in);
   string garbage;
   getline(f, garbage); // P6 ou P3
@@ -34,7 +34,7 @@ Image::Image( const string& filename ) {
   f.close();
 }
 
-Image::Image( int** map , int H, int W){
+ImagePPM::ImagePPM( int** map , int H, int W){
   W_ = W;
   H_ = H;
   MaxVal_ = 255;
@@ -57,21 +57,21 @@ Image::Image( int** map , int H, int W){
 
 //=============================== Destructor ===========================
 
-Image::~Image(){
+ImagePPM::~ImagePPM(){
   delete[] data_;
   data_ = nullptr;
 }
 
 //=========================== Public Methods ===========================
 
-void Image::save( string filename ){
+void ImagePPM::save( string filename ){
   fstream f( filename.c_str(), ios::out | ios::trunc | ios::binary);
   f << "P6\n" << W_ << " " << H_ << "\n" << MaxVal_ << "\n";
   f.write((char*)data_ , sizeof(char)*W_*H_*3);
   f.close();
 }
 
-void Image::desaturate(){
+void ImagePPM::desaturate(){
   for (int x = 0; x < W_; x++)
   {
     for (int y = 0; y < H_; y++)
@@ -90,7 +90,7 @@ void Image::desaturate(){
   }
 }
 
-void Image::gaussian_blur( double* matrix ){
+void ImagePPM::gaussian_blur( double* matrix ){
   unsigned char* newdata_ = new unsigned char[W_*H_*3];
   for (int x = 0; x < W_; x++)
   {

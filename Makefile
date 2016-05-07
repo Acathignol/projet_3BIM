@@ -3,14 +3,14 @@ CFLAGS = -g -Wall -Wextra --std=c++11
 
 all: main
 
-main: main.o Image.o Pedest.o Building.o
-	$(CC) $(CFLAGS) main.o Image.o Pedest.o Building.o -o main
+main: main.o ImagePPM.o Pedest.o Building.o
+	$(CC) $(CFLAGS) main.o ImagePPM.o Pedest.o Building.o -lsfml-graphics -lsfml-window -lsfml-system -o main
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) -c main.cpp
 
-Image.o: Image.cpp Image.h
-	$(CC) $(CFLAGS) -c Image.cpp
+ImagePPM.o: ImagePPM.cpp ImagePPM.h
+	$(CC) $(CFLAGS) -c ImagePPM.cpp
 
 Pedest.o: Pedest.cpp Pedest.h
 	$(CC) $(CFLAGS) -c Pedest.cpp

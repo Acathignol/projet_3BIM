@@ -7,19 +7,19 @@
 
 using namespace std;
 
-class Image
+class ImagePPM
 {
  public :
   // =========================== Constructors ==========================
  
-  Image();
-  Image( const string& filename );
-  Image( const Image& image );
-  Image( int** map , int H, int W);
+  ImagePPM();
+  ImagePPM( const string& filename );
+  ImagePPM( const ImagePPM& image );
+  ImagePPM( int** map , int H, int W);
 
   //=========================== Destructor =============================
 
-  ~Image();
+  ~ImagePPM();
 
   // =========================== Getters ===============================
 
@@ -50,10 +50,10 @@ protected :
 };
 
 
-inline int Image::height(void) const { return W_; }
-inline int Image::width(void) const { return H_; }
-inline int Image::maxVal(void) const { return MaxVal_; }
-inline bool Image::getPixel(size_t x, size_t y) const {
+inline int ImagePPM::height(void) const { return W_; }
+inline int ImagePPM::width(void) const { return H_; }
+inline int ImagePPM::maxVal(void) const { return MaxVal_; }
+inline bool ImagePPM::getPixel(size_t x, size_t y) const {
   return (data_[(W_*y+x)*3]+data_[(W_*y+x)*3+1]+data_[(W_*y+x)*3+2])/3 == 0;
 }
 

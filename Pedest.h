@@ -7,8 +7,10 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <SFML/Graphics.hpp>
 
 using namespace std;
+using namespace sf;
 
 class Pedest {
  public :
@@ -17,6 +19,7 @@ class Pedest {
   Pedest();
   Pedest(const int startX, const int startY, const float radius,
          const int* map, const int W, const int H);
+  void operator=(const Pedest& model);
   
   //=========================== Destructor =============================
   
@@ -27,6 +30,7 @@ class Pedest {
   inline int x() const;
   inline int y() const;
   inline vector<pair<int, int>> pathToExit(void) const;
+  inline CircleShape img() const;
   
   //=========================== Setters ================================
   
@@ -60,6 +64,7 @@ protected :
   double ypp_;
   int mood_;
   vector<pair<int, int>>* path_to_exit_;
+  CircleShape img_;
   
 };
 
@@ -75,6 +80,10 @@ inline int Pedest::y() const{
 
 inline vector<pair<int, int>> Pedest::pathToExit(void) const{
   return *path_to_exit_;
+}
+
+inline CircleShape Pedest::img(void) const{
+  return img_;
 }
 
 #endif // Pedest_H__

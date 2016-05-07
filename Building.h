@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
-#include "Image.h"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include "ImagePPM.h"
 
 using namespace std;
 
@@ -16,7 +18,7 @@ public:
   
   Building();
   Building(int length, int width);
-  Building(const Image& model);
+  Building(const ImagePPM& model);
   
   // =========================== Destructor ============================
   

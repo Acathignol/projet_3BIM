@@ -19,6 +19,7 @@ Pedest::Pedest() {
   ypp_ = 0.0;
   mood_ = 0;
   path_to_exit_ = nullptr;
+  img_ = CircleShape();
 }
 
 Pedest::Pedest(const int startX, const int startY, const float radius,
@@ -33,6 +34,22 @@ Pedest::Pedest(const int startX, const int startY, const float radius,
   mood_ = 0;
   pair<int, int> start(startX, startY);
   path_to_exit_ = new vector<pair<int, int>> (findExit( start, map, W, H));
+  img_ = CircleShape(radius);
+  img_.setPosition(10*x_, 10*y_);
+  img_.setFillColor(Color( rand()%255 , rand()%255 , rand()%255));
+}
+
+void Pedest::operator=(const Pedest& model){
+  x_ = model.x_;
+  y_ = model.y_;
+  radius_ = model.radius_;
+  xp_ = model.xp_;
+  yp_ = model.yp_;
+  xpp_ = model.xpp_;
+  ypp_ = model.ypp_;
+  mood_ = model.mood_;
+  path_to_exit_ = new vector<pair<int, int>> ( *model.path_to_exit_ );
+  img_ = model.img_;
 }
 
 //=========================== Destructor ===============================
@@ -176,6 +193,5 @@ vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* 
   return best_way;
 }
 
-//=========================== Protected Methods ========================
-
 //=========================== Functions ================================
+

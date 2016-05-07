@@ -15,7 +15,7 @@ Building::Building(int length, int width){
   map_ = new int[length_*width_];
 }
 
-Building::Building(const Image& model){
+Building::Building(const ImagePPM& model){
   length_ = model.height();
   width_ = model.width();
   map_ = new int[length_*width_];
@@ -83,11 +83,11 @@ void Building::fillCopyMap(int** copyMap){
       if (test.size() != 0){
         
         cout<<test.size()<<endl;
-        testAnswer(x,y,test,copyMap);
+        //~ testAnswer(x,y,test,copyMap);
       }
       cout<<"ko3"<<endl;
       while (test.size() != 0){test.pop_back();}
-	  }
+    }
   }
   drawMap();
   cout<<endl;
