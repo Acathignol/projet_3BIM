@@ -1,22 +1,22 @@
+CC = g++
+CFLAGS = -g -Wall -Wextra --std=c++11
+
 all: main
 
-main: main.o Image.o Pedest.o Building.o Point.o
-	g++ -g -Wall -o main main.o Image.o Pedest.o Building.o Point.o --std=c++11
+main: main.o Image.o Pedest.o Building.o
+	$(CC) $(CFLAGS) main.o Image.o Pedest.o Building.o -o main
 
 main.o: main.cpp
-	g++ -c -g -Wall -o main.o main.cpp --std=c++11
+	$(CC) $(CFLAGS) -c main.cpp
 
 Image.o: Image.cpp Image.h
-	g++ -c -g -Wall -o Image.o Image.cpp --std=c++11
+	$(CC) $(CFLAGS) -c Image.cpp
 
 Pedest.o: Pedest.cpp Pedest.h
-	g++ -c -g -Wall -o Pedest.o Pedest.cpp --std=c++11
+	$(CC) $(CFLAGS) -c Pedest.cpp
 
 Building.o: Building.cpp Building.h
-	g++ -c -g -Wall -o Building.o Building.cpp --std=c++11
-
-Point.o: Point.cpp Point.h
-	g++ -c -g -Wall -o Point.o Point.cpp --std=c++11
+	$(CC) $(CFLAGS) -c Building.cpp
 
 clean:
 	rm *.o

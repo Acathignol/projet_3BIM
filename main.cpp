@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
   
   // ==================== Affichage de Copymap =========================
   
-  Bataclan.whatIsThis();
+  //~ Bataclan.whatIsThis();
   
   // =================== Création d'un piéton ==========================
   
