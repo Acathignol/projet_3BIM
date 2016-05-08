@@ -1,3 +1,8 @@
+#ifndef SFML_H
+#define SFML_H
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#endif /* SFML_H */
 
 #ifndef Building_h
 #define Building_h
@@ -6,11 +11,10 @@
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include "ImagePPM.h"
+
 
 using namespace std;
+using namespace sf;
 
 class Building {
 public:
@@ -18,7 +22,7 @@ public:
   
   Building();
   Building(int length, int width);
-  Building(const ImagePPM& model);
+  Building(const string& filename);
   
   // =========================== Destructor ============================
   

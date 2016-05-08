@@ -15,16 +15,21 @@ Building::Building(int length, int width){
   map_ = new int[length_*width_];
 }
 
-Building::Building(const ImagePPM& model){
-  length_ = model.height();
-  width_ = model.width();
-  map_ = new int[length_*width_];
+Building::Building(const string& filename){
+  Image Level;
+  if (!Level.loadFromFile(filename))
+    exit(-1);
   
-  for(int i=0; i<width_; i++){
-    for(int j=0; j<length_; j++){
-      map_[ j*width_ + i ] = model.getPixel(i,j);
-      // black = 1
-      // other (for example, white, or red) = 0
+  const Uint8* map = Level.getPixelsPtr();
+  
+  Vector2u size = Level.getSize();
+  length_ = size.y;
+  width_ = size.x;
+  map_ = new int[length_*width_];
+  for (int i=0; i<length_; i++){
+    for (int j=0; j<width_; j++){
+      int r = map[j*4 + size.x*4*i];
+      map_[j+width_*i] = 1-r%254;
     }
   }
 }

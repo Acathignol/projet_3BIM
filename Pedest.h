@@ -1,3 +1,7 @@
+#ifndef SFML_H
+#define SFML_H
+#include <SFML/Graphics.hpp>
+#endif /* SFML_H */
 
 #ifndef Pedest_H__
 #define Pedest_H__
@@ -7,7 +11,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <SFML/Graphics.hpp>
 
 using namespace std;
 using namespace sf;
