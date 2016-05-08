@@ -26,7 +26,7 @@ int main(int argc, char* argv[]){
   //~ Bataclan.drawMap();
   
   // =================== Création des piétons ==========================
-  unsigned int N = 1; // nombre de piétons à créer
+  unsigned int N = 15; // nombre de piétons à créer
   
   Pedest* people = new Pedest[N];
   for (unsigned int i=0; i<N; i++){
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
   }
   cout << N << " pedestrians randomly placed in this floor." << endl;
   
-  cout << "\nPath to the exit from " << people[0].x() << ',' << people[0].y() << " :\n";
+  cout << "\nPath to the exit from (" << people[0].x() << ',' << people[0].y() << ") :\n";
   Bataclan.drawTrajectory( people[0].pathToExit() );
   
   // =================== Affichage du Batiment =========================

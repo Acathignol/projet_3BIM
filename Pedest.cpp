@@ -192,7 +192,6 @@ vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* 
     
   }
   
-  //~ return best_way;
   return best_way;
 }
 
