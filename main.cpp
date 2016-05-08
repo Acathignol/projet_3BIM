@@ -23,10 +23,10 @@ int main(int argc, char* argv[]){
   cout << "Height: " << Bataclan.length() << endl;
   cout << "Width: " << Bataclan.width() << endl;
   
-  Bataclan.drawMap();
+  //~ Bataclan.drawMap();
   
   // =================== Création des piétons ==========================
-  unsigned int N = 5; // nombre de piétons à créer
+  unsigned int N = 1; // nombre de piétons à créer
   
   Pedest* people = new Pedest[N];
   for (unsigned int i=0; i<N; i++){

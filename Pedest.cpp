@@ -112,19 +112,19 @@ vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* 
   
   
   vector<pair<int, int>> best_way;
-  vector<pair<int, int>> trajectory;
   pair<int, int> coord;
   pair<int, int> coo;
   pair<int, int> stop;
   int k;
   int* grid = nullptr;
   int* flood = nullptr;
+
+  //calcule le chemin pour chaque point possible:
   
   for (size_t i=0; i<list_of_exits.size(); i++){
     
-    //calcule le chemin pour chaque point possible:
+    vector<pair<int, int>> trajectory;
     stop = list_of_exits[i];
-    
     grid = new int [H*W];
     for (int i=0; i<H*W; i++){ grid[i] = -map[i]; }
     grid[ start.first + W*start.second ] = 1;
@@ -171,7 +171,9 @@ vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* 
           int i = coo.first + a;
           int j = coo.second + b;
           if (i>=0 and i<W and j>=0 and j<H){
-            if ( grid[i+W*j] > max ){
+            if ( grid[i+W*j]-0.2*(a*b!=0) >= max ){
+              // ce 0.2 autorise les déplacements en diagonale, mais
+              // privilégie ceux en ligne droite du coup ! ;)
               max = grid[i+W*j];
               coord = make_pair(i,j);
             }
@@ -184,12 +186,13 @@ vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* 
     delete[] grid;
     grid = nullptr;
     
-    if ( best_way.size() == 0 or trajectory.size() < best_way.size()){
-      best_way = trajectory;
+    if ( best_way.size() == 0 or trajectory.size() <= best_way.size()){
+      best_way = vector<pair<int, int>>(trajectory);
     }
     
   }
   
+  //~ return best_way;
   return best_way;
 }
 

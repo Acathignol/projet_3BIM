@@ -53,7 +53,6 @@ public:
   
   std::vector<int> sides(int hole, div_t divresult);
 
-
   void drawMap(void) const;
   void drawTrajectory(vector<pair<int, int>> way) const;
   
@@ -66,24 +65,10 @@ protected:
 
 //========================Inline functions' definition==================
 
-inline int Building::length() const{
-  return length_;
-}
-
-inline int Building::width() const{
-  return width_;
-}
-
-inline int* Building::map() const{
-  return map_;
-}
-
-inline int Building::map(size_t x, size_t y) const{
-  return map_[width_*y+x];
-}
-
-inline void Building::setValue(size_t x, size_t y, int value){
-  map_[width_*y+x] = value;
-}
+inline int Building::length() const{ return length_; }
+inline int Building::width() const{ return width_; }
+inline int* Building::map() const{ return map_; }
+inline int Building::map(size_t x, size_t y) const{ return map_[width_*y+x]; }
+inline void Building::setValue(size_t x, size_t y, int value){ map_[width_*y+x] = value; }
 
 #endif /* Building_h */

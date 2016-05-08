@@ -73,20 +73,9 @@ protected :
 
 //========================Inline functions' definition==================
 
-inline int Pedest::x() const{
-  return x_;
-}
-
-inline int Pedest::y() const{
-  return y_;
-}
-
-inline vector<pair<int, int>> Pedest::pathToExit(void) const{
-  return *path_to_exit_;
-}
-
-inline CircleShape Pedest::img(void) const{
-  return img_;
-}
+inline int Pedest::x() const{ return x_; }
+inline int Pedest::y() const{ return y_; }
+inline vector<pair<int, int>> Pedest::pathToExit(void) const{ return *path_to_exit_; }
+inline CircleShape Pedest::img(void) const{ return img_; }
 
 #endif // Pedest_H__

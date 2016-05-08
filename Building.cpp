@@ -9,12 +9,6 @@ Building::Building(){
   map_ = nullptr;
 }
 
-Building::Building(int length, int width){
-  length_ = length;
-  width_ = width;
-  map_ = new int[length_*width_];
-}
-
 Building::Building(const string& filename){
   Image Level;
   if (!Level.loadFromFile(filename))
@@ -45,14 +39,11 @@ Building::~Building(){
 
 //Annie (Etudiant 3) : Classe Building : Faire des méthodes pour qu'on puisse dire si un obstacle est un croisement, un virage, une fusion de deux couloirs .....  Afin d'y appliquer les bonnes méthodes de la classe Pedest (et en fonction de leurs humeurs)
 //VIRAGE COMPLEX => dire la courbure  ATTENTION ! pas au bordure idem croisement and angle
-	    
-      
-      //~ if (this->crossing(v)){result = 1 ;} //then put if else once tested if one is never another
-	    //~ if (this->merging(v)){result = 2 ;}
-	    //~ if (this->angle(v)){result = 3 ;}
-	    //~ if (this->corridor(v)){result = 4 ;}
-      
-      
+    //~ if (this->crossing(v)){result = 1 ;} //then put if else once tested if one is never another
+    //~ if (this->merging(v)){result = 2 ;}
+    //~ if (this->angle(v)){result = 3 ;}
+    //~ if (this->corridor(v)){result = 4 ;}
+  
 int Building::whatIsThis(){
   int result = 0;//0=nothing, 1=crossing, 2=merging, 3=angle, 4=corridor
   //New map 
@@ -170,16 +161,16 @@ void Building::testAnswer(int x, int y , std::vector<int> test, int** copyMap){
       //~ }
     }
     
-    //~ if (test[2]==0){                           // A OPTIMISER
-      //~ for (int j=0; j<length_; j++){
-        //~ copyMap[x][j]=1;
-      //~ }
-      //~ if (test[3]==0){
-        //~ for (int i=0; i<width_; i++){
-          //~ copyMap[i][y]=1;
-        //~ }
-      //~ }
-    //~ }
+    if (test[2]==0){                           // A OPTIMISER
+      for (int j=0; j<length_; j++){
+        copyMap[x][j]=1;
+      }
+      if (test[3]==0){
+        for (int i=0; i<width_; i++){
+          copyMap[i][y]=1;
+        }
+      }
+    }
       
     //~ if (test[0]==1){                           // A OPTIMISER
       //~ for (int i=0; i<width_; i++){

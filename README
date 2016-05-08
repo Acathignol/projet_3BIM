@@ -7,7 +7,7 @@ L. Becquey - A. Cathignol - N. Mauvisseau - M. Simon
 
 ========= INSTRUCTIONS ==========
 - Dépendances:
-Vous avez besoin de la bibliothèque SFML ( http://www.sfml-dev.org/index-fr.html )
+Vous avez besoin de la bibliothèque SFML ( http://www.sfml-dev.org/index-fr.php )
 Sur Ubuntu, Linux Mint, Debian:
   sudo apt-get install libsfml-dev
 Sur Fedora:
@@ -23,4 +23,4 @@ Depuis un terminal, lancez:
 Depuis un terminal, lancez:
   ./main
 Ou, si vous voulez charger un batiment personnalisé:
-  ./main 'path/to/building/plan.ppm'
+  ./main 'path/to/building/plan.bmp'
