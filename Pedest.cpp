@@ -36,7 +36,7 @@ Pedest::Pedest(const int startX, const int startY, const float radius,
   path_to_exit_ = new vector<pair<int, int>> (findExit( start, map, W, H));
   img_ = CircleShape(radius);
   img_.setPosition(10*x_, 10*y_);
-  img_.setFillColor(Color( rand()%255 , rand()%255 , rand()%255));
+  img_.setFillColor(Color(Color::Green));
 }
 
 void Pedest::operator=(const Pedest& model){
