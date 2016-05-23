@@ -9,22 +9,80 @@ Building::Building(){
   map_ = nullptr;
 }
 
-Building::Building(int length, int width){
-  length_ = length;
-  width_ = width;
-  map_ = new int[length_*width_];
-}
-
-Building::Building(const Image& model){
-  length_ = model.height();
-  width_ = model.width();
-  map_ = new int[length_*width_];
+Building::Building(const string& filename){
+  //Ouverture de l'image:
+  Image Level;
+  if (!Level.loadFromFile(filename))
+    exit(-1);
   
-  for(int i=0; i<width_; i++){
-    for(int j=0; j<length_; j++){
-      map_[i+j*width_] = model.getPixel(i,j);
-      // black = 1
-      // other (for example, white, or red) = 0
+  const Uint8* map = Level.getPixelsPtr();
+  
+  //Construction de map_ :
+  Vector2u size = Level.getSize();
+  length_ = size.y;
+  width_ = size.x;
+  map_ = new int[length_*width_];
+  for (int i=0; i<length_; i++){
+    for (int j=0; j<width_; j++){
+      int r = map[j*4 + size.x*4*i];
+      map_[j+width_*i] = 1-r%254;
+    }
+  }
+  
+    
+  //test des murs horizontaux:
+  for (int i=0; i<length_; i++){
+    unsigned int start = 0;
+    bool state = false;
+    for (int j=0; j<width_; j++){
+      if (map_[j+width_*i] and not state){
+        start = j;
+        state = true;
+      }
+      if (state and not map_[j+width_*i]){
+        if (j-1-start){
+          RectangleShape wall(Vector2f(10*(j-1-start),10));
+          wall.setPosition(10*start, 10*i);
+          walls_.push_back( wall );
+        }
+        state = false;
+      }
+      else if (state and j==width_-1){
+        if (j-start){
+          RectangleShape wall(Vector2f(10*(j-start),10));
+          wall.setPosition(10*start, 10*i);
+          walls_.push_back( wall );
+        }
+        state = false;
+      }
+    }
+  }
+  
+  //test des murs verticaux:
+  for (int j=0; j<width_; j++){
+    unsigned int start = 0;
+    bool state = false;
+    for (int i=0; i<length_; i++){
+      if (map_[j+width_*i] and not state){
+        start = i;
+        state = true;
+      }
+      if (state and not map_[j+width_*i]){
+        if (i-1-start){
+          RectangleShape wall(Vector2f(10,10*(i-start)));
+          wall.setPosition(10*j, 10*start);
+          walls_.push_back( wall );
+        }
+        state = false;
+      }
+      else if (state and i==length_-1){
+        if (i-start){
+          RectangleShape wall(Vector2f(10,10*(i-start+1)));
+          wall.setPosition(10*j, 10*start);
+          walls_.push_back( wall );
+        }
+        state = false;
+      }
     }
   }
 }
@@ -154,15 +212,14 @@ void Building::drawMap(void) const {
   cout << endl;
 }
 
-
-void Building::drawTrajectory(vector<Point> way) const {
+void Building::drawTrajectory(vector<pair<int, int>> way) const {
   cout << endl;
   for(int j=0; j<length_; j++){
     for(int i=0; i<width_; i++){
       char pixel = ' ';
       if (map_[ i+width_*j] ==1 ) pixel = '#';
       for (size_t k=0; k<way.size(); k++){
-        if ( i==way[k].x() and j==way[k].y() ) pixel = '.';
+        if ( i==way[k].first and j==way[k].second ) pixel = '.';
       }
       cout << pixel << " ";
     }   

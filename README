@@ -5,30 +5,22 @@
 Dans le cadre du projet 3BIM, INSA-LYON, 2015-2016
 L. Becquey - A. Cathignol - N. Mauvisseau - M. Simon
 
-======== A FAIRE: ===========
-
-- Classe piéton (Pedest):    Pedest.h , Pedest.cpp
-  - Attributs x, y, dx, dy, (d^2)x, (d^2)y pour la position, la vitesse,
-    l'accélération, en 2D
-  - Attribut "historique" pour conserver les coordonnées des points et dessiner
-    la trajectoire
-  - Attribut "humeur" du piéton
-  - Constructeurs/getters/setters
-  - Méthodes "accélérer" et "freiner"
-  - ...
+========= INSTRUCTIONS ==========
+- Dépendances:
+Vous avez besoin de la bibliothèque SFML ( http://www.sfml-dev.org/index-fr.php )
+Sur Ubuntu, Linux Mint, Debian:
+  sudo apt-get install libsfml-dev
+Sur Fedora:
+  sudo dnf install SFML
+(Attention, rediriger manuellement les include de SFML vers /usr/include sur Fedora :/ )
 
 
-- Classe bâtiment:
-  - Attribut "carte" (tableau à une seule dimension ?)
-  - Obstacles générés au hasard ?
-  - Attributs entrée/sortie/points qui font fuir les gens/points qui attirent
-  - Constructeurs/getters/setters
-  - ...
-
-- Programme de démo:  main.cpp
-  - Simule différentes foules homogènes/hétérogènes dans différents batiments
-    pour observer euh... des... comportements
-
-- Théoriser un peu le modèle:
-  - quand et comment modifier la vitesse du perso ?
-  - quand et comment modifier l'humeur du perso ?
+- Compilation:
+Depuis un terminal, lancez:
+  make
+  
+- Execution:
+Depuis un terminal, lancez:
+  ./main
+Ou, si vous voulez charger un batiment personnalisé:
+  ./main 'path/to/building/plan.bmp'

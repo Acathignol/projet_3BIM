@@ -19,6 +19,7 @@ Pedest::Pedest() {
   ypp_ = 0.0;
   mood_ = 0;
   path_to_exit_ = nullptr;
+  img_ = CircleShape();
 }
 
 Pedest::Pedest(const int startX, const int startY, const float radius,
@@ -31,8 +32,24 @@ Pedest::Pedest(const int startX, const int startY, const float radius,
   xpp_ = 0.0;
   ypp_ = 0.0;
   mood_ = 0;
-  Point start(startX, startY);
-  path_to_exit_ = new vector<Point> (findExit( start, map, W, H));
+  pair<int, int> start(startX, startY);
+  path_to_exit_ = new vector<pair<int, int>> (findExit( start, map, W, H));
+  img_ = CircleShape(radius);
+  img_.setPosition(10*x_, 10*y_);
+  img_.setFillColor(Color(Color::Green));
+}
+
+void Pedest::operator=(const Pedest& model){
+  x_ = model.x_;
+  y_ = model.y_;
+  radius_ = model.radius_;
+  xp_ = model.xp_;
+  yp_ = model.yp_;
+  xpp_ = model.xpp_;
+  ypp_ = model.ypp_;
+  mood_ = model.mood_;
+  path_to_exit_ = new vector<pair<int, int>> ( *model.path_to_exit_ );
+  img_ = model.img_;
 }
 
 //=========================== Destructor ===============================
@@ -79,43 +96,43 @@ void Pedest::brake(){
   if (ypp_ < 0.1) ypp_ = 0;
 }
 
-vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H){
+vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* map, int W, int H){
   
   // repère tous les points "sortie":
-  vector<Point> list_of_exits;
+  vector<pair<int, int>> list_of_exits;
   for (int i=0; i<W; i++){
-    if (not map[0*W+i]) list_of_exits.push_back( Point(i,0) );
-    if (not map[(H-1)*W+i]) list_of_exits.push_back( Point(i,(H-1)) );
+    if (not map[0*W+i]) list_of_exits.push_back( pair<int, int>(i,0) );
+    if (not map[(H-1)*W+i]) list_of_exits.push_back( pair<int, int>(i,(H-1)) );
   }
   for (int j=0; j<H; j++){
-    if (not map[j*W+0]) list_of_exits.push_back( Point(0,j) );
-    if (not map[j*W+(W-1)]) list_of_exits.push_back( Point((W-1),j) );
+    if (not map[j*W+0]) list_of_exits.push_back( pair<int, int>(0,j) );
+    if (not map[j*W+(W-1)]) list_of_exits.push_back( pair<int, int>((W-1),j) );
   }
   
   
   
-  vector<Point> best_way;
-  vector<Point> trajectory;
-  Point coord;
-  Point coo;
-  Point stop;
+  vector<pair<int, int>> best_way;
+  pair<int, int> coord;
+  pair<int, int> coo;
+  pair<int, int> stop;
   int k;
   int* grid = nullptr;
   int* flood = nullptr;
+
+  //calcule le chemin pour chaque point possible:
   
   for (size_t i=0; i<list_of_exits.size(); i++){
     
-    //calcule le chemin pour chaque point possible:
+    vector<pair<int, int>> trajectory;
     stop = list_of_exits[i];
-    
     grid = new int [H*W];
     for (int i=0; i<H*W; i++){ grid[i] = -map[i]; }
-    grid[ start.coord_in(W) ] = 1;
-    grid[ stop.coord_in(W) ] = 0;
+    grid[ start.first + W*start.second ] = 1;
+    grid[ stop.first + W*stop.second ] = 0;
     
     //innondation jusqu'à atteindre stop ou k=20000
     k = 1;
-    while ( grid[ stop.coord_in(W) ]==0 and k<20000){
+    while ( grid[ stop.first + W*stop.second ]==0 and k<20000){
       flood = new int[H*W];
       for (int i=0; i<W*H; i++){ flood[i] = 0; }
       for (int a=0; a<W; a++){
@@ -143,7 +160,7 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
     //remonter les coordonnées jusqu'à start:
     coord = stop;
     int max;
-    while ((coord.x()!=start.x() or coord.y()!=start.y()) 
+    while ((coord.first!=start.first or coord.second!=start.second) 
            and trajectory.size()<50*(unsigned int) W)
     {
       trajectory.push_back(coord);
@@ -151,12 +168,14 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
       coo = coord;
       for (int a=-1; a<2; a++){
         for (int b=-1; b<2; b++){
-          int i = coo.x() + a;
-          int j = coo.y() + b;
+          int i = coo.first + a;
+          int j = coo.second + b;
           if (i>=0 and i<W and j>=0 and j<H){
-            if ( grid[i+W*j] > max ){
+            if ( grid[i+W*j]-0.2*(a*b!=0) >= max ){
+              // ce 0.2 autorise les déplacements en diagonale, mais
+              // privilégie ceux en ligne droite du coup ! ;)
               max = grid[i+W*j];
-              coord.set(i,j);
+              coord = make_pair(i,j);
             }
           }
         }
@@ -167,8 +186,8 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
     delete[] grid;
     grid = nullptr;
     
-    if ( best_way.size() == 0 or trajectory.size() < best_way.size()){
-      best_way = trajectory;
+    if ( best_way.size() == 0 or trajectory.size() <= best_way.size()){
+      best_way = vector<pair<int, int>>(trajectory);
     }
     
   }
@@ -176,6 +195,5 @@ vector<Point> Pedest::findExit(const Point& start, const int* map, int W, int H)
   return best_way;
 }
 
-//=========================== Protected Methods ========================
-
 //=========================== Functions ================================
+

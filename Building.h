@@ -1,3 +1,8 @@
+#ifndef SFML_H
+#define SFML_H
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#endif /* SFML_H */
 
 #ifndef Building_h
 #define Building_h
@@ -6,10 +11,10 @@
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
-#include "Image.h"
-#include "Point.h"
+
 
 using namespace std;
+using namespace sf;
 
 class Building {
 public:
@@ -17,7 +22,7 @@ public:
   
   Building();
   Building(int length, int width);
-  Building(const Image& model);
+  Building(const string& filename);
   
   // =========================== Destructor ============================
   
@@ -28,6 +33,8 @@ public:
   inline int length() const;
   inline int width() const;
   inline int* map() const;
+  inline int map(size_t x, size_t y) const;
+  inline vector<RectangleShape> walls() const;
   
   // =========================== Setters ===============================
   
@@ -40,33 +47,25 @@ public:
   bool checkSides(int x , int y);
   std::vector<int> testAnswer(int x, int y , std::vector<int> test, std::vector<int> result);
 
-
   void drawMap(void) const;
-  void drawTrajectory(vector<Point> way) const;
+  void drawTrajectory(vector<pair<int, int>> way) const;
   
 protected:
+//======================== Attributes ==================================
   int length_;
   int width_;
   int* map_;
+  vector<RectangleShape> walls_;
 
 };
 
 //========================Inline functions' definition==================
 
-inline int Building::length() const{
-  return length_;
-}
-
-inline int Building::width() const{
-  return width_;
-}
-
-inline int* Building::map() const{
-  return map_;
-}
-
-inline void Building::setValue(size_t x, size_t y, int value){
-  map_[width_*y+x] = value;
-}
+inline int Building::length() const{ return length_; }
+inline int Building::width() const{ return width_; }
+inline int* Building::map() const{ return map_; }
+inline int Building::map(size_t x, size_t y) const{ return map_[width_*y+x]; }
+inline void Building::setValue(size_t x, size_t y, int value){ map_[width_*y+x] = value; }
+inline vector<RectangleShape> Building::walls() const { return walls_; }
 
 #endif /* Building_h */
