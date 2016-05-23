@@ -28,9 +28,16 @@ int main(int argc, char* argv[]){
   Bataclan.drawMap();
   
   // ==================== Affichage de Copymap =========================
-  
-  Bataclan.whatIsThis();
-  
+  std::vector<int> edges=Bataclan.vectorEdges();
+  for (int i =0 ; i< int(edges.size()); i++){
+	  cout<<edges[i]<<endl;
+	  for (int x=0; x<Bataclan.width(); x++){
+        for (int y=0; y<Bataclan.length(); y++){
+		  if (edges[i]==x+y*Bataclan.width()){cout<<"x="<<x<<" y="<<y<<endl;}
+		}
+	  }
+  }
+  cout<<"number of edges: "<<int(edges.size())<<endl;
   // =================== Création d'un piéton ==========================
   
   Pedest pieton1 = Pedest(1,1,1,Bataclan.map(), Bataclan.width(), 

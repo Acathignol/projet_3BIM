@@ -22,7 +22,7 @@ Building::Building(const Image& model){
   
   for(int i=0; i<width_; i++){
     for(int j=0; j<length_; j++){
-      map_[ j*width_ + i ] = model.getPixel(i,j);
+      map_[i+j*width_] = model.getPixel(i,j);
       // black = 1
       // other (for example, white, or red) = 0
     }
@@ -36,72 +36,24 @@ Building::~Building(){
   map_ = nullptr;
 }
 
-//=========================== Public Methods ===========================
-
-//Annie (Etudiant 3) : Classe Building : Faire des méthodes pour qu'on puisse dire si un obstacle est un croisement, un virage, une fusion de deux couloirs .....  Afin d'y appliquer les bonnes méthodes de la classe Pedest (et en fonction de leurs humeurs)
-//VIRAGE COMPLEX => dire la courbure  ATTENTION ! pas au bordure idem croisement and angle
-	    
+//=========================== Public Methods =========================== 
       
-      //~ if (this->crossing(v)){result = 1 ;} //then put if else once tested if one is never another
-	    //~ if (this->merging(v)){result = 2 ;}
-	    //~ if (this->angle(v)){result = 3 ;}
-	    //~ if (this->corridor(v)){result = 4 ;}
-      
-      
-int Building::whatIsThis(){
-  int result = 0;//0=nothing, 1=crossing, 2=merging, 3=angle, 4=corridor
-  //New map 
-  int** copyMap=new int*[width_];
-  //Filling the map 
-  fillCopyMap(copyMap);
-  for (int x=0; x<width_; x++){
-    for (int y=0; y<length_; y++){
-      //Depending on how the map is filled , we obtain different results (angle, corridor...)
-      //To do the Maze solver stuf
-      result++;
-      
-    }
-  }
-  
-  for (int i=0; i<width_; i++){
-    delete[] copyMap[i];
-  }
-  delete[] copyMap;
-  copyMap = nullptr;
-  
-  return result;
-}
-
-void Building::fillCopyMap(int** copyMap){
+std::vector<int> Building::vectorEdges(){
+  std::vector<int> result;      
   std::vector<int> test;
+  
   for (int x=0; x<width_; x++){
-    copyMap[x]=new int[length_];
     for (int y=0; y<length_; y++){
-      copyMap[x][y]=0;
-      cout<<"bouh1"<<endl;
+
       test=testLine(x,y);
+      
       if (test.size() != 0){
-        
-        cout<<test.size()<<endl;
-        testAnswer(x,y,test,copyMap);
+        result=testAnswer(x,y,test,result);
       }
-      cout<<"ko3"<<endl;
       while (test.size() != 0){test.pop_back();}
 	  }
   }
-  drawMap();
-  cout<<endl;
-  cout<<endl;
-  for (int x=0; x<width_; x++){
-    for (int y=0; y<length_; y++){
-      if (copyMap[x][y]==1){
-        cout<<"#";
-      }
-      else{cout<<" ";}
-    }
-    cout<<endl;
-  }
-  cout<<endl;
+  return result;
 }
 
 std::vector<int> Building::testLine(int x, int y){
@@ -110,20 +62,20 @@ std::vector<int> Building::testLine(int x, int y){
   int b=0;
   if (map_[x+y*width_]==1){
     for (int i=-1; i<=1; i++){
-      for (int j=-1; j<=1; j++){// CAREFULL HERE I AM ALSO TAKING N-E N-W S-E S-W
+      for (int j=-1; j<=1; j++){// CAREFULL HERE I AM NOT TAKING N-E N-W S-E S-W
         a=x+i;
         b=y+j;
         if (checkSides(a,b)){
           if (i==-1 and j==0){ // West
             test.push_back(map_[a+b*width_]);
           }
-          else if (i==1 and j==0){ // Est
+          else if (i==0 and j==-1){ // South
             test.push_back(map_[a+b*width_]);
           }
           else if (i==0 and j==1){ // North
             test.push_back(map_[a+b*width_]);
           }
-          else if (i==0 and j==-1){ // South
+          else if (i==1 and j==0){ // Est
             test.push_back(map_[a+b*width_]);
           }
         }
@@ -131,13 +83,13 @@ std::vector<int> Building::testLine(int x, int y){
           if (i==-1 and j==0){ // West
             test.push_back(9);
           }
-          else if (i==1 and j==0){ // Est
+          else if (i==0 and j==-1){ // South
             test.push_back(9);
           }
           else if (i==0 and j==1){ // North
             test.push_back(9);
           }
-          else if (i==0 and j==-1){ // South
+          else if (i==1 and j==0){ // Est
             test.push_back(9);
           }
         }
@@ -152,89 +104,40 @@ bool Building::checkSides(int x , int y){
   else {return false;}
 }
 
-void Building::testAnswer(int x, int y , std::vector<int> test, int** copyMap){
-  if (test.size() == 4){ // CAREFULL I AM NOT TESTING THE BORDERS, AM I?
-    if (test[0]==0){                           // A OPTIMISER
-      for (int i=0; i<width_; i++){
-        copyMap[x][i]=1;
+std::vector<int> Building::testAnswer(int x, int y , std::vector<int> test, std::vector<int> result){
+  if (test.size() == 4){
+    if (((test[0]==0 and test[3]!=0) xor (test[0]!=0 and test[3]==0) and
+     (test[1]!=1 and test[2]!=1)) xor ((test[1]==0 and test[2]!=0) xor
+      (test[1]!=0 and test[2]==0) and (test[0]!=1 and test[3]!=1))){ 
+	  int count = 0 ;
+      for (int i =0; i<int(result.size()); i++){
+        if (result[i]==x+y*width_){
+		  count++;
+		}
+	  }
+      if (count==0){
+		result.push_back(x+y*width_);
       }
-      //~ if (test[1]==0){
-        //~ for (int j=0; j<length_; j++){
-          //~ copyMap[x][j]=1;
-        //~ }
-      //~ }
     }
-    
-    //~ if (test[2]==0){                           // A OPTIMISER
-      //~ for (int j=0; j<length_; j++){
-        //~ copyMap[x][j]=1;
-      //~ }
-      //~ if (test[3]==0){
-        //~ for (int i=0; i<width_; i++){
-          //~ copyMap[i][y]=1;
-        //~ }
-      //~ }
-    //~ }
-      
-    //~ if (test[0]==1){                           // A OPTIMISER
-      //~ for (int i=0; i<width_; i++){
-        //~ copyMap[i][y]=1;
-      //~ }
-      //~ if (test[1]==0){
-        //~ for (int j=0; j<length_; j++){
-          //~ copyMap[x][j]=1;
-          //~ cout<<"DE ";
-        //~ }
-      //~ }
-    //~ }
-    //~ else if (test[0]==0 and test[1]==1){
-      //~ for (int i=0; i<width_; i++){
-        //~ copyMap[i][y]=1;
-        //~ cout<<"Bique !"<<endl;
-      //~ }
-      //~ for (int j=0; j<length_; j++){
-        //~ copyMap[x][j]=1;
-        //~ 
-      //~ }
-    //~ }
-    //~ else if (test[0]==0 and test[1]==0){
-      //~ for (int i=0; i<width_; i++){
-        //~ copyMap[i][y]=1;
-      //~ }
-      //~ for (int j=0; j<length_; j++){
-        //~ copyMap[x][j]=1;
-      //~ }
-    //~ }
-    //~ 
-    //~ if (test[2]==1){
-      //~ for (int j=0; j<length_; j++){
-        //~ copyMap[x][j]=1;
-        //~ cout<<"méchant ";
-      //~ }
-      //~ if (test[3]==0){
-        //~ for (int i=0; i<width_; i++){
-          //~ copyMap[i][y]=1;
-          //~ cout<<"bonhomme !"<<endl;
-        //~ }
-      //~ }
-    //~ }
-    //~ else if (test[2]==0 and test[3]==1){
-      //~ for (int i=0; i<width_; i++){
-        //~ copyMap[i][y]=1;
-      //~ }
-      //~ for (int j=0; j<length_; j++){
-        //~ copyMap[x][j]=1;
-      //~ }
-    //~ }
-    //~ else if (test[2]==0 and test[3]==0){
-      //~ for (int i=0; i<width_; i++){
-        //~ copyMap[i][y]=1;
-      //~ }
-      //~ for (int j=0; j<length_; j++){
-        //~ copyMap[x][j]=1;
-      //~ }
-    //~ }
+    else if ((test[0]==1 and test[1]==1 and test[2]!=1 and test[3]!=1) or
+     (test[3]==1 and test[2]==1 and test[1]!=1 and test[0]!=1) or
+     (test[0]==1 and test[2]==1 and test[1]!=1 and test[3]!=1) or
+     (test[1]==1 and test[3]==1  and test[0]!=1 and test[2]!=1)){ 
+	  int count = 0 ;
+	  if (not (x==0 and y==0) xor (x==width_-1 and y==0) xor 
+	  (x==0 and y==length_-1) xor (x==width_-1 and y==length_-1)){
+        for (int i =0; i<int(result.size()); i++){
+          if (result[i]==x+y*width_){
+		    count++;
+	  	  }
+	    }
+        if (count==0){
+		  result.push_back(x+y*width_);
+        }
+      }
+    }
   }
+  return result;
 }
 
 void Building::drawMap(void) const {
@@ -242,13 +145,15 @@ void Building::drawMap(void) const {
   for(int j=0; j<length_; j++){
     for(int i=0; i<width_; i++){
       char pixel = ' ';
-      if (map_[ i+width_*j] ==1 ) pixel = '#';
+      if (map_[ i+width_*j] ==1 ) {pixel = '#';}
       cout << pixel << " ";
+     
     }   
     cout << endl;
   }
   cout << endl;
 }
+
 
 void Building::drawTrajectory(vector<Point> way) const {
   cout << endl;
