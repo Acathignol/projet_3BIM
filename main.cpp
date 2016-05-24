@@ -1,5 +1,3 @@
-
-#include "Image.h"
 #include "Pedest.h"
 #include "Building.h"
 #include <ctime>
@@ -28,7 +26,7 @@ int main(int argc, char* argv[]){
   //~ Bataclan.drawMap();
   
   // =================== Création des piétons ==========================
-  unsigned int N = 40; // nombre de piétons à créer
+  unsigned int N = 100; // nombre de piétons à créer
   
   Pedest* people = new Pedest[N];
   for (unsigned int i=0; i<N; i++){
@@ -42,15 +40,18 @@ int main(int argc, char* argv[]){
     people[i] = Pedest(posX, posY, radius, Bataclan.map(), Bataclan.width(), Bataclan.length() );
   }
 
-  // =============== Test de la méthode "vectorEdges" ==================
-  std::vector<int> edges=Bataclan.vectorEdges();
-  for (int i =0 ; i< int(edges.size()); i++){
-	  cout<<edges[i]<<endl;
-	  for (int x=0; x<Bataclan.width(); x++){
-        for (int y=0; y<Bataclan.length(); y++){
-		  if (edges[i]==x+y*Bataclan.width()){cout<<"x="<<x<<" y="<<y<<endl;}
-		}
-	  }
+  cout << N << " pedestrians randomly placed in this floor." << endl;
+
+  // ==================== Détection des angles =========================
+  
+  vector<int> edges = Bataclan.vectorEdges();
+  for (int i=0 ; i<int(edges.size()); i++){
+    cout << edges[i] << endl;
+    for (int x=0; x<Bataclan.width(); x++){
+      for (int y=0; y<Bataclan.length(); y++){
+        if (edges[i]==x+y*Bataclan.width()) cout << "x=" << x << " y=" << y << endl;
+      }
+    }
   }
   cout<<"number of edges: "<<int(edges.size())<<endl;
   
@@ -67,9 +68,6 @@ int main(int argc, char* argv[]){
   
 // =============================================================
 
-
-  cout << N << " pedestrians randomly placed in this floor." << endl;
-  
   cout << "\nPath to the exit from (" << people[0].x() << ',' << people[0].y() << ") :\n";
   Bataclan.drawTrajectory( people[0].pathToExit() );
   
