@@ -1,3 +1,5 @@
+
+#include "Image.h"
 #include "Pedest.h"
 #include "Building.h"
 #include <ctime>
@@ -39,6 +41,21 @@ int main(int argc, char* argv[]){
     unsigned int radius = 5;
     people[i] = Pedest(posX, posY, radius, Bataclan.map(), Bataclan.width(), Bataclan.length() );
   }
+
+  // ==================== Affichage de Copymap =========================
+  std::vector<int> edges=Bataclan.vectorEdges();
+  for (int i =0 ; i< int(edges.size()); i++){
+	  cout<<edges[i]<<endl;
+	  for (int x=0; x<Bataclan.width(); x++){
+        for (int y=0; y<Bataclan.length(); y++){
+		  if (edges[i]==x+y*Bataclan.width()){cout<<"x="<<x<<" y="<<y<<endl;}
+		}
+	  }
+  }
+  cout<<"number of edges: "<<int(edges.size())<<endl;
+// =============================================================
+
+
   cout << N << " pedestrians randomly placed in this floor." << endl;
   
   cout << "\nPath to the exit from (" << people[0].x() << ',' << people[0].y() << ") :\n";
