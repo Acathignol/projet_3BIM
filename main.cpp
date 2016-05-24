@@ -46,7 +46,7 @@ int main(int argc, char* argv[]){
   
   vector<int> edges = Bataclan.vectorEdges();
   for (int i=0 ; i<int(edges.size()); i++){
-    cout << edges[i] << endl;
+    //~ cout << edges[i] << endl;
     for (int x=0; x<Bataclan.width(); x++){
       for (int y=0; y<Bataclan.length(); y++){
         if (edges[i]==x+y*Bataclan.width()) cout << "x=" << x << " y=" << y << endl;
