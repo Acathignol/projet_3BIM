@@ -42,7 +42,7 @@ int main(int argc, char* argv[]){
     people[i] = Pedest(posX, posY, radius, Bataclan.map(), Bataclan.width(), Bataclan.length() );
   }
 
-  // ==================== Affichage de Copymap =========================
+  // =============== Test de la méthode "vectorEdges" ==================
   std::vector<int> edges=Bataclan.vectorEdges();
   for (int i =0 ; i< int(edges.size()); i++){
 	  cout<<edges[i]<<endl;
@@ -53,6 +53,18 @@ int main(int argc, char* argv[]){
 	  }
   }
   cout<<"number of edges: "<<int(edges.size())<<endl;
+  
+  std::pair<std::vector<int>, std::vector<int>> edges2=Bataclan.vectorEdges2D();
+  for (int i =0 ; i< int(edges2.first.size()); i++){
+	  cout<<edges2.first.[i]<<endl;
+  }
+  for (int i =0 ; i< int(edges2.second.size()); i++){
+	  cout<<edges2.second.[i]<<endl;
+  }
+  cout<<"number of x edges: "<<int(edges2.first.size())<<endl;
+  
+  cout<<"number of y edges: "<<int(edges2.second.size())<<endl;
+  
 // =============================================================
 
 
