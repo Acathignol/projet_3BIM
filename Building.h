@@ -41,7 +41,10 @@ public:
   inline void setValue(size_t x, size_t y, int value);
   
   // =========================== Public Methods ========================
-  
+
+
+  std::pair<std::vector<int>,std::vector<int>> vectorEdges2D();
+  std::pair<std::vector<int>,std::vector<int>> testAnswer2D(int x, int y , std::vector<int> test, std::pair<std::vector<int>,std::vector<int>> result);
   std::vector<int> vectorEdges();
   std::vector<int> testLine(int x, int y);
   bool checkSides(int x , int y);

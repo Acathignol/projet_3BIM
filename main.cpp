@@ -53,9 +53,21 @@ int main(int argc, char* argv[]){
       }
     }
   }
-  cout << "number of edges: " << int(edges.size()) << endl;
- 
-  // =============================================================
+  cout<<"number of edges: "<<int(edges.size())<<endl;
+  
+  std::pair<std::vector<int>, std::vector<int>> edges2=Bataclan.vectorEdges2D();
+  for (int i =0 ; i< int(edges2.first.size()); i++){
+	  cout<<edges2.first[i]<<endl;
+  }
+  cout<<endl;
+  for (int i =0 ; i< int(edges2.second.size()); i++){
+	  cout<<edges2.second[i]<<endl;
+  }
+  cout<<"number of x edges: "<<int(edges2.first.size())<<endl;
+  
+  cout<<"number of y edges: "<<int(edges2.second.size())<<endl;
+  
+// =============================================================
 
   cout << "\nPath to the exit from (" << people[0].x() << ',' << people[0].y() << ") :\n";
   Bataclan.drawTrajectory( people[0].pathToExit() );
