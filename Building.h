@@ -42,8 +42,9 @@ public:
   
   // =========================== Public Methods ========================
 
-  std::pair<std::vector<int>,std::vector<int>> Building::vectorEdges2D();
-  std::pair<std::vector<int>,std::vector<int>> Building::testAnswer2D(int x, int y , std::vector<int> test, std::vector<int> resultx, std::vector<int> resulty);
+
+  std::pair<std::vector<int>,std::vector<int>> vectorEdges2D();
+  std::pair<std::vector<int>,std::vector<int>> testAnswer2D(int x, int y , std::vector<int> test, std::pair<std::vector<int>,std::vector<int>> result);
   std::vector<int> vectorEdges();
   std::vector<int> testLine(int x, int y);
   bool checkSides(int x , int y);

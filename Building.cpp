@@ -114,12 +114,10 @@ std::vector<int> Building::vectorEdges(){
   }
   return result;
 }
-      
+
 //Returns a pairing of vectors (x,y) of all the edges on the map (2D)
 std::pair<std::vector<int>,std::vector<int>> Building::vectorEdges2D(){
   std::pair<std::vector<int>,std::vector<int>> result;
-  std::vector<int> resultx;  
-  std::vector<int> resulty;      
   std::vector<int> test;
   
   for (int x=0; x<width_; x++){
@@ -128,7 +126,7 @@ std::pair<std::vector<int>,std::vector<int>> Building::vectorEdges2D(){
       test=testLine(x,y);
       
       if (test.size() != 0){
-        result=testAnswer2D(x,y,test,resultx,resulty);
+        result=testAnswer2D(x,y,test,result);
       }
       while (test.size() != 0){test.pop_back();}
 	  }
@@ -224,51 +222,62 @@ std::vector<int> Building::testAnswer(int x, int y , std::vector<int> test, std:
 }
 
 //Testing if a wall is an edge on the map and if it is, putting it in the vector 2D
-std::pair<std::vector<int>,std::vector<int>> Building::testAnswer2D(int x, int y , std::vector<int> test, std::vector<int> resultx, std::vector<int> resulty){
+std::pair<std::vector<int>,std::vector<int>> Building::testAnswer2D(int x, int y , std::vector<int> test, std::pair<std::vector<int>,std::vector<int>> result){
   if (test.size() == 4){
     if (((test[0]==0 and test[3]!=0) xor (test[0]!=0 and test[3]==0) and
      (test[1]!=1 and test[2]!=1)) xor ((test[1]==0 and test[2]!=0) xor
       (test[1]!=0 and test[2]==0) and (test[0]!=1 and test[3]!=1))){ 
-	  //~ int count = 0 ;
-      //~ for (int i =0; i<int(resultx.size()); i++){
-        //~ if (result[i]==x+y*width_){
-		  //~ count++;
-		//~ }
-	  //~ }
-      if (not x in resultx){
-		    resultx.push_back(x);
-      }
-      if (not y in resultx){
-		    resulty.push_back(y);
-      }
+		int countx = 0 ;
+	    int county = 0 ;
+        for (int i =0; i<int(result.first.size()); i++){
+          if (result.first[i]==x){
+		    countx++;
+	  	  }
+	    }
+        if (countx==0){
+		  result.first.push_back(x);
+        }
+        for (int i =0; i<int(result.second.size()); i++){
+          if (result.second[i]==y){
+		    county++;
+	  	  }
+	    }
+        if (county==0){
+		  result.second.push_back(y);
+        }
     }
     else if ((test[0]==1 and test[1]==1 and test[2]!=1 and test[3]!=1) or
      (test[3]==1 and test[2]==1 and test[1]!=1 and test[0]!=1) or
      (test[0]==1 and test[2]==1 and test[1]!=1 and test[3]!=1) or
      (test[1]==1 and test[3]==1  and test[0]!=1 and test[2]!=1)){ 
-	  int count = 0 ;
+	  int countx = 0 ;
+	  int county = 0 ;
 	  if (not (x==0 and y==0) xor (x==width_-1 and y==0) xor 
 	  (x==0 and y==length_-1) xor (x==width_-1 and y==length_-1)){
-        //~ for (int i =0; i<int(result.size()); i++){
-          //~ if (result[i]==x+y*width_){
-		    //~ count++;
-	  	  //~ }
-	    //~ }
-        //~ if (count==0){
-		  //~ result.push_back(x+y*width_);
-        //~ }
-        
-      if (not x in resultx){
-		    resultx.push_back(x);
-      }
-      if (not y in resultx){
-		    resulty.push_back(y);
-      }
+        for (int i =0; i<int(result.first.size()); i++){
+          if (result.first[i]==x){
+		    countx++;
+	  	  }
+	    }
+        if (countx==0){
+		  result.first.push_back(x);
+        }
+        for (int i =0; i<int(result.second.size()); i++){
+          if (result.second[i]==y){
+		    county++;
+	  	  }
+	    }
+        if (county==0){
+		  result.second.push_back(y);
+        }
+
       }
     }
   }
-  return std::pair(resultx,resulty);
+  
+  return result;
 }
+
 
 void Building::drawMap(void) const {
   cout << endl;
