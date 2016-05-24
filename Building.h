@@ -43,18 +43,17 @@ public:
   // =========================== Public Methods ========================
 
 
-  std::pair<std::vector<int>,std::vector<int>> vectorEdges2D();
-  std::pair<std::vector<int>,std::vector<int>> testAnswer2D(int x, int y , std::vector<int> test, std::pair<std::vector<int>,std::vector<int>> result);
-  std::vector<int> vectorEdges();
-  std::vector<int> testLine(int x, int y);
+  pair<vector<int>,vector<int>> vectorEdges2D();
+  pair<vector<int>,vector<int>> testAnswer2D(int x, int y , vector<int> test, pair<vector<int>,vector<int>> result);
+  vector<int> vectorEdges();
+  vector<int> testLine(int x, int y);
   bool checkSides(int x , int y);
-  std::vector<int> testAnswer(int x, int y , std::vector<int> test, std::vector<int> result);
-
+  vector<int> testAnswer(int x, int y , vector<int> test, vector<int> result);
   void drawMap(void) const;
   void drawTrajectory(vector<pair<int, int>> way) const;
   
 protected:
-//======================== Attributes ==================================
+  //======================== Attributes ==================================
   int length_;
   int width_;
   int* map_;
