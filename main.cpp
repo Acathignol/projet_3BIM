@@ -26,7 +26,7 @@ int main(int argc, char* argv[]){
   //~ Bataclan.drawMap();
   
   // =================== Création des piétons ==========================
-  unsigned int N = 40; // nombre de piétons à créer
+  unsigned int N = 100; // nombre de piétons à créer
   
   Pedest* people = new Pedest[N];
   for (unsigned int i=0; i<N; i++){
