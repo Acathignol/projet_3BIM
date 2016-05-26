@@ -28,6 +28,7 @@ int main(int argc, char* argv[]){
   //~ Bataclan.drawMap();
   
   // =================== Création des piétons ==========================
+  
   unsigned int N = 100; // nombre de piétons à créer
   
   Pedest* people = new Pedest[N];
@@ -44,10 +45,8 @@ int main(int argc, char* argv[]){
 
   cout << N << " pedestrians randomly placed in this floor." << endl;
 
-// =============================================================
-
-  cout << "\nPath to the exit from (" << people[0].x() << ',' << people[0].y() << ") :\n";
-  Bataclan.drawTrajectory( people[0].pathToExit() );
+  //~ cout << "\nPath to the exit from (" << people[0].x() << ',' << people[0].y() << ") :\n";
+  //~ Bataclan.drawTrajectory( people[0].pathToExit() );
   
   // =================== Affichage du Batiment =========================
   
@@ -56,14 +55,14 @@ int main(int argc, char* argv[]){
   vector<RectangleShape> walls_ = Bataclan.walls();
        
   while (fen1.isOpen()){
-    //======================= Gestion des évênements ===================
+    //Gestion des évênements
     Event action;
     while (fen1.pollEvent(action)){
       if (action.type == Event::Closed)
         fen1.close();
     }
     
-    //======================= Rafraichissement du dessin ===============
+    //Rafraichissement du dessin
     fen1.clear(Color::Black);
     for (unsigned int i=0; i<N; i++){
       for (unsigned int i=0; i<walls_.size(); i++){

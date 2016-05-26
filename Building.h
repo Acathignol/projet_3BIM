@@ -44,13 +44,8 @@ public:
   
   // =========================== Public Methods ========================
 
-
-  pair<vector<int>,vector<int>> vectorEdges2D();
-  pair<vector<int>,vector<int>> testAnswer2D(int x, int y , vector<int> test, pair<vector<int>,vector<int>> result);
-  vector<int> vectorEdges();
   vector<int> testLine(int x, int y);
   bool checkSides(int x , int y);
-  vector<int> testAnswer(int x, int y , vector<int> test, vector<int> result);
   void drawMap(void) const;
   void drawTrajectory(vector<pair<int, int>> way) const;
   

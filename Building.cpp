@@ -192,35 +192,6 @@ bool Building::checkSides(int x , int y){
   return (x>=0 and x<width_ and y>=0 and y<length_);
 }
 
-vector<int> Building::testAnswer(int x, int y, vector<int> test, vector<int> result){
-  //Testing if a wall is an edge on the map and if it is, putting it in the vector (1D)
-  if (test.size() == 4){
-    if (((test[0]==0 and test[3]!=0) xor (test[0]!=0 and test[3]==0) and
-     (test[1]!=1 and test[2]!=1)) xor ((test[1]==0 and test[2]!=0) xor
-      (test[1]!=0 and test[2]==0) and (test[0]!=1 and test[3]!=1))){ 
-      int count = 0;
-      for (int i =0; i<int(result.size()); i++){
-        if (result[i]==x+y*width_) count++;
-      }
-      if (count==0) result.push_back(x+y*width_);
-    }
-    else if ((test[0]==1 and test[1]==1 and test[2]!=1 and test[3]!=1) or
-     (test[3]==1 and test[2]==1 and test[1]!=1 and test[0]!=1) or
-     (test[0]==1 and test[2]==1 and test[1]!=1 and test[3]!=1) or
-     (test[1]==1 and test[3]==1  and test[0]!=1 and test[2]!=1)){ 
-      int count = 0 ;
-      if (not (x==0 and y==0) xor (x==width_-1 and y==0) xor 
-      (x==0 and y==length_-1) xor (x==width_-1 and y==length_-1)){
-        for (int i =0; i<int(result.size()); i++){
-          if (result[i]==x+y*width_) count++;
-        }
-        if (count==0) result.push_back(x+y*width_); 
-      }
-    }
-  }
-  return result;
-}
-
 void Building::drawMap(void) const {
   cout << endl;
   for(int j=0; j<length_; j++){
