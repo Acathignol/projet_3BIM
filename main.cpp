@@ -20,8 +20,17 @@ int main(int argc, char* argv[]){
   Building Bataclan(filename);
   
   cout << filename << " successfully loaded:" << endl;
-  cout << "number of x edges: " << int(Bataclan.xborders().size()) << endl;
-  cout << "number of y edges: " << int(Bataclan.yborders().size()) << endl;
+  cout << "number of x edges: " << int(Bataclan.xborders().size()) << " ( ";
+  for (unsigned int i=0; i<Bataclan.xborders().size(); i++){
+    cout << Bataclan.xborders()[i];
+    cout << " ";
+  }
+  cout << ")\nnumber of y edges: " << int(Bataclan.yborders().size()) << " ( ";
+  for (unsigned int i=0; i<Bataclan.yborders().size(); i++){
+    cout << Bataclan.yborders()[i];
+    cout << " ";
+  }
+  cout << ")\n";
   cout << "Height: " << Bataclan.length() << endl;
   cout << "Width: " << Bataclan.width() << endl;
   
@@ -29,7 +38,7 @@ int main(int argc, char* argv[]){
   
   // =================== Création des piétons ==========================
   
-  unsigned int N = 100; // nombre de piétons à créer
+  unsigned int N = 10; // nombre de piétons à créer
   
   Pedest* people = new Pedest[N];
   for (unsigned int i=0; i<N; i++){
@@ -43,7 +52,7 @@ int main(int argc, char* argv[]){
     people[i] = Pedest(posX, posY, radius, Bataclan.map(), Bataclan.width(), Bataclan.length() );
   }
 
-  cout << N << " pedestrians randomly placed in this floor." << endl;
+  cout << N << " pedestrians randomly placed in this floor.\n" << endl;
 
   //~ cout << "\nPath to the exit from (" << people[0].x() << ',' << people[0].y() << ") :\n";
   //~ Bataclan.drawTrajectory( people[0].pathToExit() );

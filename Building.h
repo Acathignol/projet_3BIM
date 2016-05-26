@@ -44,7 +44,6 @@ public:
   
   // =========================== Public Methods ========================
 
-  vector<int> testLine(int x, int y);
   bool checkSides(int x , int y);
   void drawMap(void) const;
   void drawTrajectory(vector<pair<int, int>> way) const;

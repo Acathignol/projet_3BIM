@@ -86,36 +86,37 @@ Building::Building(const string& filename){
   }
   
   //repérage des angles de mur
-  vector<int> test;
   
   for (int x=0; x<width_; x++){
     for (int y=0; y<length_; y++){
-      test=testLine(x,y);
+      vector<int> test;
+      int a=0;
+      int b=0;
+      if (map_[x+y*width_]){
+        for (int i=-1; i<=1; i++){
+          for (int j=-1; j<=1; j++){
+            a=x+i;
+            b=y+j;
+            if ((i+j)*(i+j)==1){
+              if (checkSides(a,b)){ test.push_back(map_[a+b*width_]); }
+              else { test.push_back(9); }
+            }
+          }
+        }
+      }
       if (test.size() == 4){
         
-        if (((test[0]==0 and test[3]!=0) xor (test[0]!=0 and test[3]==0) and
+        if ( (((test[0]==0 and test[3]!=0) xor (test[0]!=0 and test[3]==0) and
         (test[1]!=1 and test[2]!=1)) xor ((test[1]==0 and test[2]!=0) xor
-        (test[1]!=0 and test[2]==0) and (test[0]!=1 and test[3]!=1))){ 
+        (test[1]!=0 and test[2]==0) and (test[0]!=1 and test[3]!=1))) or
+        ((test[0]==1 and test[1]==1 and test[2]!=1 and test[3]!=1) or
+        (test[3]==1 and test[2]==1 and test[1]!=1 and test[0]!=1) or
+        (test[0]==1 and test[2]==1 and test[1]!=1 and test[3]!=1) or
+        (test[1]==1 and test[3]==1  and test[0]!=1 and test[2]!=1)) )
+        { 
           int countx = 0;
           int county = 0;
           
-          for (int i =0; i<int(xborders_.size()); i++){
-            if (xborders_[i]==x) countx++;
-          }
-          if (countx==0) xborders_.push_back(x);
-          
-          for (int i =0; i<int(yborders_.size()); i++){
-            if (yborders_[i]==y) county++;
-          }
-          if (county==0) yborders_.push_back(y);
-        }
-        else if ((test[0]==1 and test[1]==1 and test[2]!=1 and test[3]!=1) or
-        (test[3]==1 and test[2]==1 and test[1]!=1 and test[0]!=1) or
-        (test[0]==1 and test[2]==1 and test[1]!=1 and test[3]!=1) or
-        (test[1]==1 and test[3]==1  and test[0]!=1 and test[2]!=1)){ 
-          int countx = 0 ;
-          int county = 0 ;
-                      
           for (int i =0; i<int(xborders_.size()); i++){
             if (xborders_[i]==x) countx++;
           }
@@ -143,50 +144,6 @@ Building::~Building(){
 
 //=========================== Public Methods =========================== 
       
-vector<int> Building::testLine(int x, int y){
-  //Returns a vector of all the sides of a wall on the map
-  vector<int> test;
-  int a=0;
-  int b=0;
-  if (map_[x+y*width_]==1){
-    for (int i=-1; i<=1; i++){
-      for (int j=-1; j<=1; j++){
-        a=x+i;
-        b=y+j;
-        if (checkSides(a,b)){
-          if (i==-1 and j==0){ // West
-            test.push_back(map_[a+b*width_]);
-          }
-          else if (i==0 and j==-1){ // South
-            test.push_back(map_[a+b*width_]);
-          }
-          else if (i==0 and j==1){ // North
-            test.push_back(map_[a+b*width_]);
-          }
-          else if (i==1 and j==0){ // Est
-            test.push_back(map_[a+b*width_]);
-          }
-        }
-        else{
-          if (i==-1 and j==0){ // West
-            test.push_back(9);
-          }
-          else if (i==0 and j==-1){ // South
-            test.push_back(9);
-          }
-          else if (i==0 and j==1){ // North
-            test.push_back(9);
-          }
-          else if (i==1 and j==0){ // Est
-            test.push_back(9);
-          }
-        }
-      }
-    }
-  }
-  return test;
-}
-
 bool Building::checkSides(int x , int y){
   //Checking if a point is on the map
   return (x>=0 and x<width_ and y>=0 and y<length_);
