@@ -28,7 +28,6 @@ Building::Building(const string& filename){
       map_[j+width_*i] = 1-r%254;
     }
   }
-  
     
   //test des murs horizontaux:
   for (int i=0; i<length_; i++){
@@ -85,6 +84,54 @@ Building::Building(const string& filename){
       }
     }
   }
+  
+  //repérage des angles de mur
+  vector<int> test;
+  
+  for (int x=0; x<width_; x++){
+    for (int y=0; y<length_; y++){
+      test=testLine(x,y);
+      if (test.size() == 4){
+        
+        if (((test[0]==0 and test[3]!=0) xor (test[0]!=0 and test[3]==0) and
+        (test[1]!=1 and test[2]!=1)) xor ((test[1]==0 and test[2]!=0) xor
+        (test[1]!=0 and test[2]==0) and (test[0]!=1 and test[3]!=1))){ 
+          int countx = 0;
+          int county = 0;
+          
+          for (int i =0; i<int(xborders_.size()); i++){
+            if (xborders_[i]==x) countx++;
+          }
+          if (countx==0) xborders_.push_back(x);
+          
+          for (int i =0; i<int(yborders_.size()); i++){
+            if (yborders_[i]==y) county++;
+          }
+          if (county==0) yborders_.push_back(y);
+        }
+        else if ((test[0]==1 and test[1]==1 and test[2]!=1 and test[3]!=1) or
+        (test[3]==1 and test[2]==1 and test[1]!=1 and test[0]!=1) or
+        (test[0]==1 and test[2]==1 and test[1]!=1 and test[3]!=1) or
+        (test[1]==1 and test[3]==1  and test[0]!=1 and test[2]!=1)){ 
+          int countx = 0 ;
+          int county = 0 ;
+                      
+          for (int i =0; i<int(xborders_.size()); i++){
+            if (xborders_[i]==x) countx++;
+          }
+          if (countx==0) xborders_.push_back(x);
+          
+          for (int i =0; i<int(yborders_.size()); i++){
+            if (yborders_[i]==y) county++;
+          }
+          if (county==0) yborders_.push_back(y);
+        }
+        
+      }
+      while (test.size() != 0){test.pop_back();}
+    }
+  }
+  
 }
 
 //=========================== Destructor ===============================
@@ -96,41 +143,6 @@ Building::~Building(){
 
 //=========================== Public Methods =========================== 
       
-vector<int> Building::vectorEdges(){
-  //Returns a vector of all the edges on the map (1D)
-  vector<int> result;      
-  vector<int> test;
-  
-  for (int x=0; x<width_; x++){
-    for (int y=0; y<length_; y++){
-      test=testLine(x,y);
-      if (test.size() != 0){
-        result=testAnswer(x,y,test,result);
-      }
-      while (test.size() != 0){test.pop_back();}
-    }
-  }
-  return result;
-}
-
-  
-pair<std::vector<int>,std::vector<int>> Building::vectorEdges2D(){
-  //Returns a pairing of vectors (x,y) of all the edges on the map (2D)
-  pair<std::vector<int>,std::vector<int>> result;
-  vector<int> test;
-  
-  for (int x=0; x<width_; x++){
-    for (int y=0; y<length_; y++){
-      test=testLine(x,y);
-      if (test.size() != 0){
-        result=testAnswer2D(x,y,test,result);
-      }
-      while (test.size() != 0){test.pop_back();}
-    }
-  }
-  return result;
-}
-
 vector<int> Building::testLine(int x, int y){
   //Returns a vector of all the sides of a wall on the map
   vector<int> test;
@@ -208,47 +220,6 @@ vector<int> Building::testAnswer(int x, int y, vector<int> test, vector<int> res
   }
   return result;
 }
-
-//Testing if a wall is an edge on the map and if it is, putting it in the vector 2D
-pair<vector<int>, vector<int>> Building::testAnswer2D(int x, int y , vector<int> test, pair<vector<int>,vector<int>> result){
-  if (test.size() == 4){
-    if (((test[0]==0 and test[3]!=0) xor (test[0]!=0 and test[3]==0) and
-     (test[1]!=1 and test[2]!=1)) xor ((test[1]==0 and test[2]!=0) xor
-      (test[1]!=0 and test[2]==0) and (test[0]!=1 and test[3]!=1))){ 
-        int countx = 0;
-        int county = 0;
-        for (int i =0; i<int(result.first.size()); i++){
-          if (result.first[i]==x) countx++;
-        }
-        if (countx==0) result.first.push_back(x);
-        for (int i =0; i<int(result.second.size()); i++){
-          if (result.second[i]==y) county++;
-        }
-        if (county==0) result.second.push_back(y);
-    }
-    else if ((test[0]==1 and test[1]==1 and test[2]!=1 and test[3]!=1) or
-     (test[3]==1 and test[2]==1 and test[1]!=1 and test[0]!=1) or
-     (test[0]==1 and test[2]==1 and test[1]!=1 and test[3]!=1) or
-     (test[1]==1 and test[3]==1  and test[0]!=1 and test[2]!=1)){ 
-      int countx = 0 ;
-      int county = 0 ;
-      if (not (x==0 and y==0) xor (x==width_-1 and y==0) xor 
-      (x==0 and y==length_-1) xor (x==width_-1 and y==length_-1)){
-        for (int i =0; i<int(result.first.size()); i++){
-          if (result.first[i]==x) countx++;
-        }
-        if (countx==0) result.first.push_back(x);
-        for (int i =0; i<int(result.second.size()); i++){
-          if (result.second[i]==y) county++;
-        }
-        if (county==0) result.second.push_back(y);
-      }
-    }
-  }
-  
-  return result;
-}
-
 
 void Building::drawMap(void) const {
   cout << endl;

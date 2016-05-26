@@ -20,6 +20,8 @@ int main(int argc, char* argv[]){
   Building Bataclan(filename);
   
   cout << filename << " successfully loaded:" << endl;
+  cout << "number of x edges: " << int(Bataclan.xborders().size()) << endl;
+  cout << "number of y edges: " << int(Bataclan.yborders().size()) << endl;
   cout << "Height: " << Bataclan.length() << endl;
   cout << "Width: " << Bataclan.width() << endl;
   
@@ -42,31 +44,6 @@ int main(int argc, char* argv[]){
 
   cout << N << " pedestrians randomly placed in this floor." << endl;
 
-  // ==================== Détection des angles =========================
-  
-  vector<int> edges = Bataclan.vectorEdges();
-  for (int i=0 ; i<int(edges.size()); i++){
-    //~ cout << edges[i] << endl;
-    for (int x=0; x<Bataclan.width(); x++){
-      for (int y=0; y<Bataclan.length(); y++){
-        if (edges[i]==x+y*Bataclan.width()) cout << "x=" << x << " y=" << y << endl;
-      }
-    }
-  }
-  cout<<"number of edges: "<<int(edges.size())<<endl;
-  
-  std::pair<std::vector<int>, std::vector<int>> edges2=Bataclan.vectorEdges2D();
-  for (int i =0 ; i< int(edges2.first.size()); i++){
-	  cout<<edges2.first[i]<<endl;
-  }
-  cout<<endl;
-  for (int i =0 ; i< int(edges2.second.size()); i++){
-	  cout<<edges2.second[i]<<endl;
-  }
-  cout<<"number of x edges: "<<int(edges2.first.size())<<endl;
-  
-  cout<<"number of y edges: "<<int(edges2.second.size())<<endl;
-  
 // =============================================================
 
   cout << "\nPath to the exit from (" << people[0].x() << ',' << people[0].y() << ") :\n";
