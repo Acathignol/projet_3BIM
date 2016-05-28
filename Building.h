@@ -1,23 +1,18 @@
-#ifndef SFML_H
-#define SFML_H
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#endif /* SFML_H */
-
 #ifndef Building_h
 #define Building_h
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-#include <iostream>
-
+#include "Pedest.h"
+#include <SFML/Window.hpp>
 
 using namespace std;
 using namespace sf;
 
 class Building {
 public:
+  // =========================== Static attributes =====================
+  
+  static int Npedest;
+  
   // =========================== Constructors ==========================
   
   Building();
@@ -37,14 +32,14 @@ public:
   inline vector<RectangleShape> walls() const;
   inline vector<int> xborders() const;
   inline vector<int> yborders() const;
+  inline Pedest people(const int i) const;
   
   // =========================== Setters ===============================
   
   inline void setValue(size_t x, size_t y, int value);
   
   // =========================== Public Methods ========================
-
-  bool checkSides(int x , int y);
+  
   void drawMap(void) const;
   void drawTrajectory(vector<pair<int, int>> way) const;
   
@@ -56,6 +51,7 @@ protected:
   vector<RectangleShape> walls_;
   vector<int> xborders_;
   vector<int> yborders_;
+  Pedest* people_;
 
 };
 
@@ -69,5 +65,6 @@ inline void Building::setValue(size_t x, size_t y, int value){ map_[width_*y+x] 
 inline vector<RectangleShape> Building::walls() const { return walls_; }
 inline vector<int> Building::xborders() const { return xborders_; }
 inline vector<int> Building::yborders() const { return yborders_; }
+inline Pedest Building::people(const int i) const { return people_[i]; }
 
 #endif /* Building_h */

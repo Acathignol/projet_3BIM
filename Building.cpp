@@ -1,6 +1,10 @@
 
 #include "Building.h"
 
+//================= Definition of static attributes ====================
+
+int Building::Npedest = 10;
+
 //=========================== Constructors =============================
 
 Building::Building(){
@@ -98,7 +102,7 @@ Building::Building(const string& filename){
             a=x+i;
             b=y+j;
             if ((i+j)*(i+j)==1){
-              if (checkSides(a,b)){ test.push_back(map_[a+b*width_]); }
+              if (a>=0 and a<width_ and b>=0 and b<length_){ test.push_back(map_[a+b*width_]); }
               else { test.push_back(9); }
             }
           }
@@ -116,23 +120,37 @@ Building::Building(const string& filename){
         { 
           int countx = 0;
           int county = 0;
-          
-          for (int i =0; i<int(xborders_.size()); i++){
+
+          for (int i =0; i<int(xborders_.size()); i++)
+          {
             if (xborders_[i]==x) countx++;
           }
           if (countx==0) xborders_.push_back(x);
-          
-          for (int i =0; i<int(yborders_.size()); i++){
+          for (int i =0; i<int(yborders_.size()); i++)
+          {
             if (yborders_[i]==y) county++;
           }
           if (county==0) yborders_.push_back(y);
         }
         
       }
-      while (test.size() != 0){test.pop_back();}
+      while (test.size()){test.pop_back();}
     }
   }
   
+  //Création des piétons
+  int N = Building::Npedest;
+  people_ = new Pedest[N];
+  for (int i=0; i<N; i++){
+    unsigned int posX = rand()%width_;
+    unsigned int posY = rand()%length_;
+    while (this->map(posX, posY)){
+      posX = rand()%width_;
+      posY = rand()%length_;
+    }
+    unsigned int radius = rand()%3+3;
+    people_[i] = Pedest(posX, posY, radius, map_, width_, length_ );
+  }
 }
 
 //=========================== Destructor ===============================
@@ -142,12 +160,7 @@ Building::~Building(){
   map_ = nullptr;
 }
 
-//=========================== Public Methods =========================== 
-      
-bool Building::checkSides(int x , int y){
-  //Checking if a point is on the map
-  return (x>=0 and x<width_ and y>=0 and y<length_);
-}
+//=========================== Public Methods ===========================
 
 void Building::drawMap(void) const {
   cout << endl;
@@ -156,7 +169,6 @@ void Building::drawMap(void) const {
       char pixel = ' ';
       if (map_[ i+width_*j] ==1 ) {pixel = '#';}
       cout << pixel << " ";
-     
     }   
     cout << endl;
   }
@@ -173,7 +185,7 @@ void Building::drawTrajectory(vector<pair<int, int>> way) const {
         if ( i==way[k].first and j==way[k].second ) pixel = '.';
       }
       cout << pixel << " ";
-    }   
+    }
     cout << endl;
   }
   cout << endl;

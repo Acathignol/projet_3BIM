@@ -13,12 +13,7 @@ Pedest::Pedest() {
   x_ = 0;
   y_ = 0;
   radius_ = 0;
-  xp_ = 1.0;
-  yp_ = 1.0;
-  xpp_ = 0.0;
-  ypp_ = 0.0;
   mood_ = 0;
-  path_to_exit_ = nullptr;
   img_ = CircleShape();
 }
 
@@ -27,74 +22,38 @@ Pedest::Pedest(const int startX, const int startY, const float radius,
   x_ = startX;
   y_ = startY;
   radius_ = radius;
-  xp_ = 0.0;
-  yp_ = 0.0;
-  xpp_ = 0.0;
-  ypp_ = 0.0;
   mood_ = 0;
   pair<int, int> start(startX, startY);
-  path_to_exit_ = new vector<pair<int, int>> (findExit( start, map, W, H));
+  path_to_exit_ = findExit( start, map, W, H);
   img_ = CircleShape(radius);
   img_.setPosition(10*x_, 10*y_);
   img_.setFillColor(Color(Color::Green));
+}
+
+Pedest::Pedest(const Pedest& model){
+  x_ = model.x_;
+  y_ = model.y_;
+  radius_ = model.radius_;
+  mood_ = model.mood_;
+  path_to_exit_ = vector<pair<int, int>> ( model.path_to_exit_ );
+  img_ = model.img_;
 }
 
 void Pedest::operator=(const Pedest& model){
   x_ = model.x_;
   y_ = model.y_;
   radius_ = model.radius_;
-  xp_ = model.xp_;
-  yp_ = model.yp_;
-  xpp_ = model.xpp_;
-  ypp_ = model.ypp_;
   mood_ = model.mood_;
-  path_to_exit_ = new vector<pair<int, int>> ( *model.path_to_exit_ );
+  path_to_exit_ = vector<pair<int, int>> ( model.path_to_exit_ );
   img_ = model.img_;
 }
 
 //=========================== Destructor ===============================
 
 Pedest::~Pedest(void){
-  delete path_to_exit_;
 }
 
 //=========================== Public Methods ===========================
-
-
-void Pedest::xpp(const double new_xpp){
-  xpp_ = new_xpp;
-}
-
-void Pedest::ypp(const double new_ypp){
-  ypp_ = new_ypp;
-}
-
-void Pedest::set_mood(const int new_mood){
-  mood_ = new_mood;
-}
-
-void Pedest::move(){
-  x_ += xp_;
-  y_ += yp_;
-}
-
-void Pedest::accelerate(){
-  if (xpp_ == 0) xpp_ = 0.75;
-  if (ypp_ == 0) ypp_ = 0.75;
-  xpp_ *= 1.5;
-  ypp_ *= 1.5;
-  xp_ += xpp_;
-  yp_ += ypp_;
-}
-
-void Pedest::brake(){
-  xp_ -= xpp_;
-  yp_ -= ypp_;
-  xpp_ = xpp_ /1.5;
-  ypp_ = ypp_ /1.5;
-  if (xpp_ < 0.1) xpp_ = 0;
-  if (ypp_ < 0.1) ypp_ = 0;
-}
 
 vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* map, int W, int H){
   
@@ -108,8 +67,6 @@ vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* 
     if (not map[j*W+0]) list_of_exits.push_back( pair<int, int>(0,j) );
     if (not map[j*W+(W-1)]) list_of_exits.push_back( pair<int, int>((W-1),j) );
   }
-  
-  
   
   vector<pair<int, int>> best_way;
   pair<int, int> coord;
