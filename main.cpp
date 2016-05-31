@@ -10,7 +10,7 @@ int main(int argc, char* argv[]){
   
   // ==================== Import de la Carte ===========================
   
-  string filename = "little-room.bmp";
+  string filename = "couloir.bmp";
   if (argc > 1) {
     filename = argv[1];
     cout << "using custom building..." << endl;
@@ -35,6 +35,7 @@ int main(int argc, char* argv[]){
       if (action.type == Event::Closed)
         fen1.close();
     }
+    if (not Bataclan.notEmpty()) fen1.close();
     
     //Rafraichissement du dessin
     fen1.clear(Color::Black);
@@ -51,5 +52,6 @@ int main(int argc, char* argv[]){
     
   }
   
+  cout << "Everybody found an exit !" << endl;
   return EXIT_SUCCESS;
 }

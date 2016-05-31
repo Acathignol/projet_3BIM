@@ -3,7 +3,7 @@
 
 //================= Definition of static attributes ====================
 
-int Building::Npedest = 50;
+int Building::Npedest = 150;
 
 //=========================== Constructors =============================
 
@@ -165,8 +165,7 @@ Building::Building(const string& filename){
       posX = rand()%width_;
       posY = rand()%length_;
     }
-    unsigned int radius = rand()%3+3;
-    people_[i] = Pedest(posX, posY, radius, map_, width_, length_ );
+    people_[i] = Pedest(posX, posY);
   }
   
   cout << Building::Npedest << " pedestrians randomly placed in this floor.\n" << endl;
@@ -255,7 +254,7 @@ void Building::movePeople(void){
   for (int i=0; i<Building::Npedest; i++){
     int x = people_[i].x();
     int y = people_[i].y();
-    if (x>=width_ or x<0 or y<0 or y>=length_) continue; //ne bouge plus ceux qui sont sortis
+    if (x>=width_-1 or x<0 or y<0 or y>=length_) continue; //ne bouge plus ceux qui sont sortis
     
     int main_dir = getDirection(x,y);
     double I = people_[i].speed();
@@ -272,35 +271,39 @@ void Building::movePeople(void){
       case 0: 
         zone_ymax = (double) y;
         zone_ymin = getZoneLimNear(x,y,main_dir);
-        zone_xmin = (double) x - r/2 - 6/2;
-        zone_xmax = (double) x + r/2 + 6/2;
+        zone_xmin = (double) x - r/10 - 6/10;
+        zone_xmax = (double) x + r/10 + 6/10;
         break;
       case 1:
         zone_xmin = (double) x;
         zone_xmax = getZoneLimNear(x,y,main_dir);
-        zone_ymin = (double) y - r/2 - 6/2;
-        zone_ymax = (double) y + r/2 + 6/2;
+        zone_ymin = (double) y - r/10 - 6/10;
+        zone_ymax = (double) y + r/10 + 6/10;
         break;
       case 2:
         zone_ymin = (double) y;
         zone_ymax = getZoneLimNear(x,y,main_dir);
-        zone_xmin = (double) x - r/2 - 6/2;
-        zone_xmax = (double) x + r/2 + 6/2;
+        zone_xmin = (double) x - r/10 - 6/10;
+        zone_xmax = (double) x + r/10 + 6/10;
         break;
       case 3:
         zone_xmax = (double) x;
         zone_xmin = getZoneLimNear(x,y,main_dir);
-        zone_ymin = (double) y - r/2 - 6/2;
-        zone_ymax = (double) y + r/2 + 6/2;
+        zone_ymin = (double) y - r/10 - 6/10;
+        zone_ymax = (double) y + r/10 + 6/10;
     }
     
-    I += (Pedest::Eqspeed-I)/2;
+    I += (people_[i].eqSpeed()-I)/2;
     
     vector<Pedest> obstacles = scanZone(zone_xmin, zone_xmax, zone_ymin, zone_ymax);
     if ( obstacles.size() ){
       for (unsigned int i=0; i<obstacles.size(); i++){
         double distance = (double) sqrt( pow(abs(x-obstacles[i].x()),2) + pow(abs(y-obstacles[i].y()),2) );
-        if (distance < I ) I = distance; 
+        distance -= (r + obstacles[i].radius())/6;
+        if (distance < I ){
+          I = distance;
+          if (I<0) I=0;
+        }
       }
     }
     double x_move = ( (main_dir==1)-(main_dir==3) )*I;
@@ -320,4 +323,15 @@ vector<Pedest> Building::scanZone(double zone_xmin, double zone_xmax, double zon
     }
   }
   return obstacles;
+}
+
+bool Building::notEmpty(void) const{
+  int x;
+  int y;
+  for (int i=0; i<Building::Npedest; i++){
+    x = people_[i].x();
+    y = people_[i].y();
+    if (not (x>=width_-1 or x<0 or y<0 or y>=length_)) return true;
+  }
+  return false;
 }

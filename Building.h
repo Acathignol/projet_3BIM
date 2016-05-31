@@ -46,6 +46,7 @@ public:
   unsigned int getDirection(unsigned int x, unsigned int y);
   double getZoneLimNear(unsigned int x, unsigned int y, unsigned int main_dir );
   vector<Pedest> scanZone(double zone_xmin, double zone_xmax, double zone_ymin, double zone_ymax);
+  bool notEmpty(void) const;
   
 protected:
   //======================== Attributes ==================================
