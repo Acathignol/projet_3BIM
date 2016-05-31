@@ -18,22 +18,6 @@ int main(int argc, char* argv[]){
 
   Building Bataclan(filename);
   
-  cout << filename << " successfully loaded:" << endl;
-  cout << "number of x edges: " << int(Bataclan.xborders().size()) << " ( ";
-  for (unsigned int i=0; i<Bataclan.xborders().size(); i++){
-    cout << Bataclan.xborders()[i];
-    cout << " ";
-  }
-  cout << ")\nnumber of y edges: " << int(Bataclan.yborders().size()) << " ( ";
-  for (unsigned int i=0; i<Bataclan.yborders().size(); i++){
-    cout << Bataclan.yborders()[i];
-    cout << " ";
-  }
-  cout << ")\n";
-  cout << "Height: " << Bataclan.length() << endl;
-  cout << "Width: " << Bataclan.width() << endl;
-  cout << Building::Npedest << " pedestrians randomly placed in this floor.\n" << endl;
-  
   //~ Bataclan.drawMap();
   //~ cout << "\nPath to the exit from (" << Bataclan.people(0).x() << ',' << Bataclan.people(0).y() << ") :\n";
   //~ Bataclan.drawTrajectory( Bataclan.people(0).pathToExit() );
@@ -61,6 +45,10 @@ int main(int argc, char* argv[]){
       fen1.draw(Bataclan.people(i).img());
     }
     fen1.display();
+    
+    //Déplacement des piétons
+    Bataclan.movePeople();
+    
   }
   
   return EXIT_SUCCESS;

@@ -13,6 +13,10 @@ using namespace sf;
 
 class Pedest {
  public :
+  // =========================== Static attributes =====================
+  
+  static double Eqspeed;
+  
   // =========================== Constructors ==========================
   
   Pedest();
@@ -31,6 +35,8 @@ class Pedest {
   inline int y() const;
   inline vector<pair<int, int>> pathToExit(void) const;
   inline CircleShape img() const;
+  inline double speed(void) const;
+  inline float radius(void) const;
   
   //=========================== Setters ================================
   
@@ -39,7 +45,7 @@ class Pedest {
                          const int W, const int H);
   
   //=========================== Public Methods =========================
-  
+  void move(double x_move , double y_move , double new_speed);
 
 protected :
   //=========================== Attributes =============================
@@ -50,6 +56,7 @@ protected :
   int mood_;
   vector<pair<int, int>> path_to_exit_;
   CircleShape img_;
+  double speed_;
   
 };
 
@@ -60,5 +67,7 @@ inline int Pedest::y() const{ return y_; }
 inline void Pedest::set_mood(const int new_mood){ mood_ = new_mood; }
 inline vector<pair<int, int>> Pedest::pathToExit(void) const{ return path_to_exit_; }
 inline CircleShape Pedest::img(void) const{ return img_; }
+inline double Pedest::speed() const { return speed_; }
+inline float Pedest::radius() const { return radius_; }
 
 #endif // Pedest_H__

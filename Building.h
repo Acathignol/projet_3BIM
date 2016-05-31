@@ -42,6 +42,10 @@ public:
   
   void drawMap(void) const;
   void drawTrajectory(vector<pair<int, int>> way) const;
+  void movePeople(void);
+  unsigned int getDirection(unsigned int x, unsigned int y);
+  double getZoneLimNear(unsigned int x, unsigned int y, unsigned int main_dir );
+  vector<Pedest> scanZone(double zone_xmin, double zone_xmax, double zone_ymin, double zone_ymax);
   
 protected:
   //======================== Attributes ==================================

@@ -6,6 +6,8 @@ using namespace std;
 
 //================= Definition of static attributes ====================
 
+double Pedest::Eqspeed = 0.5;
+
 
 //=========================== Constructors =============================
 
@@ -15,6 +17,7 @@ Pedest::Pedest() {
   radius_ = 0;
   mood_ = 0;
   img_ = CircleShape();
+  speed_ = 0;
 }
 
 Pedest::Pedest(const int startX, const int startY, const float radius,
@@ -28,6 +31,7 @@ Pedest::Pedest(const int startX, const int startY, const float radius,
   img_ = CircleShape(radius);
   img_.setPosition(10*x_, 10*y_);
   img_.setFillColor(Color(Color::Green));
+  speed_ = 0;
 }
 
 Pedest::Pedest(const Pedest& model){
@@ -37,6 +41,7 @@ Pedest::Pedest(const Pedest& model){
   mood_ = model.mood_;
   path_to_exit_ = vector<pair<int, int>> ( model.path_to_exit_ );
   img_ = model.img_;
+  speed_ = model.speed_;
 }
 
 void Pedest::operator=(const Pedest& model){
@@ -46,6 +51,7 @@ void Pedest::operator=(const Pedest& model){
   mood_ = model.mood_;
   path_to_exit_ = vector<pair<int, int>> ( model.path_to_exit_ );
   img_ = model.img_;
+  speed_ = model.speed_;
 }
 
 //=========================== Destructor ===============================
@@ -150,6 +156,14 @@ vector<pair<int, int>> Pedest::findExit(const pair<int, int>& start, const int* 
   }
   
   return best_way;
+}
+
+void Pedest::move(double x_move , double y_move , double new_speed){
+  x_ += x_move;
+  y_ += y_move;
+  img_.setPosition(10*x_, 10*y_);
+  speed_ = new_speed;
+  //~ cout << "x=" << x_ << " y=" << y_ << " speed:" << speed_ << endl;
 }
 
 //=========================== Functions ================================
