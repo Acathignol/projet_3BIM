@@ -3,15 +3,10 @@
 
 //================= Definition of static attributes ====================
 
-int Building::Npedest = 150;
+int Building::NPEDEST = 150;
+int Building::ZOOM = 10;
 
 //=========================== Constructors =============================
-
-Building::Building(){
-  length_ = 0;
-  width_ = 0;
-  map_ = nullptr;
-}
 
 Building::Building(const string& filename){
   //Ouverture de l'image:
@@ -48,16 +43,16 @@ Building::Building(const string& filename){
       }
       if (state and not map_[j+width_*i]){
         if (j-1-start){
-          RectangleShape wall(Vector2f(10*(j-1-start),10));
-          wall.setPosition(10*start, 10*i);
+          RectangleShape wall(Vector2f(Building::ZOOM*(j-1-start),Building::ZOOM));
+          wall.setPosition(Building::ZOOM*start, Building::ZOOM*i);
           walls_.push_back( wall );
         }
         state = false;
       }
       else if (state and j==width_-1){
         if (j-start){
-          RectangleShape wall(Vector2f(10*(j-start),10));
-          wall.setPosition(10*start, 10*i);
+          RectangleShape wall(Vector2f(Building::ZOOM*(j-start),Building::ZOOM));
+          wall.setPosition(Building::ZOOM*start, Building::ZOOM*i);
           walls_.push_back( wall );
         }
         state = false;
@@ -76,16 +71,16 @@ Building::Building(const string& filename){
       }
       if (state and not map_[j+width_*i]){
         if (i-1-start){
-          RectangleShape wall(Vector2f(10,10*(i-start)));
-          wall.setPosition(10*j, 10*start);
+          RectangleShape wall(Vector2f(Building::ZOOM,Building::ZOOM*(i-start)));
+          wall.setPosition(Building::ZOOM*j, Building::ZOOM*start);
           walls_.push_back( wall );
         }
         state = false;
       }
       else if (state and i==length_-1){
         if (i-start){
-          RectangleShape wall(Vector2f(10,10*(i-start+1)));
-          wall.setPosition(10*j, 10*start);
+          RectangleShape wall(Vector2f(Building::ZOOM,Building::ZOOM*(i-start+1)));
+          wall.setPosition(Building::ZOOM*j, Building::ZOOM*start);
           walls_.push_back( wall );
         }
         state = false;
@@ -156,7 +151,7 @@ Building::Building(const string& filename){
   
   //Création des piétons
   cout << "placing pedestrians..." << endl;
-  int N = Building::Npedest;
+  int N = Building::NPEDEST;
   people_ = new Pedest[N];
   for (int i=0; i<N; i++){
     unsigned int posX = rand()%width_;
@@ -165,10 +160,10 @@ Building::Building(const string& filename){
       posX = rand()%width_;
       posY = rand()%length_;
     }
-    people_[i] = Pedest(posX, posY);
+    people_[i] = Pedest(posX, posY, Building::ZOOM);
   }
   
-  cout << Building::Npedest << " pedestrians randomly placed in this floor.\n" << endl;
+  cout << Building::NPEDEST << " pedestrians randomly placed in this floor.\n" << endl;
 }
 
 //=========================== Destructor ===============================
@@ -179,35 +174,6 @@ Building::~Building(){
 }
 
 //=========================== Public Methods ===========================
-
-void Building::drawMap(void) const {
-  cout << endl;
-  for(int j=0; j<length_; j++){
-    for(int i=0; i<width_; i++){
-      char pixel = ' ';
-      if (map_[ i+width_*j] ==1 ) {pixel = '#';}
-      cout << pixel << " ";
-    }   
-    cout << endl;
-  }
-  cout << endl;
-}
-
-void Building::drawTrajectory(vector<pair<int, int>> way) const {
-  cout << endl;
-  for(int j=0; j<length_; j++){
-    for(int i=0; i<width_; i++){
-      char pixel = ' ';
-      if (map_[ i+width_*j] ==1 ) pixel = '#';
-      for (size_t k=0; k<way.size(); k++){
-        if ( i==way[k].first and j==way[k].second ) pixel = '.';
-      }
-      cout << pixel << " ";
-    }
-    cout << endl;
-  }
-  cout << endl;
-}
 
 double Building::getZoneLimNear(unsigned int x, unsigned int y, unsigned int main_dir ){
   unsigned int xmax = width_;
@@ -251,7 +217,7 @@ unsigned int Building::getDirection(unsigned int x, unsigned int y){
 
 void Building::movePeople(void){
   
-  for (int i=0; i<Building::Npedest; i++){
+  for (int i=0; i<Building::NPEDEST; i++){
     int x = people_[i].x();
     int y = people_[i].y();
     if (x>=width_-1 or x<0 or y<0 or y>=length_) continue; //ne bouge plus ceux qui sont sortis
@@ -271,26 +237,26 @@ void Building::movePeople(void){
       case 0: 
         zone_ymax = (double) y;
         zone_ymin = getZoneLimNear(x,y,main_dir);
-        zone_xmin = (double) x - r/10 - 6/10;
-        zone_xmax = (double) x + r/10 + 6/10;
+        zone_xmin = (double) x - r/Building::ZOOM - 6/Building::ZOOM;
+        zone_xmax = (double) x + r/Building::ZOOM + 6/Building::ZOOM;
         break;
       case 1:
         zone_xmin = (double) x;
         zone_xmax = getZoneLimNear(x,y,main_dir);
-        zone_ymin = (double) y - r/10 - 6/10;
-        zone_ymax = (double) y + r/10 + 6/10;
+        zone_ymin = (double) y - r/Building::ZOOM - 6/Building::ZOOM;
+        zone_ymax = (double) y + r/Building::ZOOM + 6/Building::ZOOM;
         break;
       case 2:
         zone_ymin = (double) y;
         zone_ymax = getZoneLimNear(x,y,main_dir);
-        zone_xmin = (double) x - r/10 - 6/10;
-        zone_xmax = (double) x + r/10 + 6/10;
+        zone_xmin = (double) x - r/Building::ZOOM - 6/Building::ZOOM;
+        zone_xmax = (double) x + r/Building::ZOOM + 6/Building::ZOOM;
         break;
       case 3:
         zone_xmax = (double) x;
         zone_xmin = getZoneLimNear(x,y,main_dir);
-        zone_ymin = (double) y - r/10 - 6/10;
-        zone_ymax = (double) y + r/10 + 6/10;
+        zone_ymin = (double) y - r/Building::ZOOM - 6/Building::ZOOM;
+        zone_ymax = (double) y + r/Building::ZOOM + 6/Building::ZOOM;
     }
     
     I += (people_[i].eqSpeed()-I)/2;
@@ -309,13 +275,13 @@ void Building::movePeople(void){
     double x_move = ( (main_dir==1)-(main_dir==3) )*I;
     double y_move = ( (main_dir==2)-(main_dir==0) )*I;
     
-    people_[i].move( x_move , y_move , I);
+    people_[i].move( x_move , y_move , I, Building::ZOOM);
   }
 }
 
 vector<Pedest> Building::scanZone(double zone_xmin, double zone_xmax, double zone_ymin, double zone_ymax){
   vector<Pedest> obstacles;
-  for (int i=0; i<Building::Npedest; i++){
+  for (int i=0; i<Building::NPEDEST; i++){
     double x = people_[i].x();
     double y = people_[i].y();
     if (zone_xmin<x and x<zone_xmax and zone_ymin<y and y<zone_ymax){
@@ -328,7 +294,7 @@ vector<Pedest> Building::scanZone(double zone_xmin, double zone_xmax, double zon
 bool Building::notEmpty(void) const{
   int x;
   int y;
-  for (int i=0; i<Building::Npedest; i++){
+  for (int i=0; i<Building::NPEDEST; i++){
     x = people_[i].x();
     y = people_[i].y();
     if (not (x>=width_-1 or x<0 or y<0 or y>=length_)) return true;

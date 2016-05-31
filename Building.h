@@ -8,10 +8,11 @@ using namespace std;
 using namespace sf;
 
 class Building {
-public:
+ public:
   // =========================== Static attributes =====================
   
-  static int Npedest;
+  static int NPEDEST;
+  static int ZOOM;
   
   // =========================== Constructors ==========================
   
@@ -48,7 +49,7 @@ public:
   vector<Pedest> scanZone(double zone_xmin, double zone_xmax, double zone_ymin, double zone_ymax);
   bool notEmpty(void) const;
   
-protected:
+ protected:
   //======================== Attributes ==================================
   int length_;
   int width_;

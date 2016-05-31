@@ -18,13 +18,9 @@ int main(int argc, char* argv[]){
 
   Building Bataclan(filename);
   
-  //~ Bataclan.drawMap();
-  //~ cout << "\nPath to the exit from (" << Bataclan.people(0).x() << ',' << Bataclan.people(0).y() << ") :\n";
-  //~ Bataclan.drawTrajectory( Bataclan.people(0).pathToExit() );
-  
   // =================== Affichage du Batiment =========================
   
-  RenderWindow fen1(VideoMode(10*Bataclan.width() , 10*Bataclan.length()), "Projet 3BIM", Style::Titlebar | Style::Close);
+  RenderWindow fen1(VideoMode(Building::ZOOM*Bataclan.width() , Building::ZOOM*Bataclan.length()), "Projet 3BIM", Style::Titlebar | Style::Close);
   fen1.setVerticalSyncEnabled(true);
   vector<RectangleShape> walls_ = Bataclan.walls();
   
@@ -39,7 +35,7 @@ int main(int argc, char* argv[]){
     
     //Rafraichissement du dessin
     fen1.clear(Color::Black);
-    for (int i=0; i<Building::Npedest; i++){
+    for (int i=0; i<Building::NPEDEST; i++){
       for (unsigned int j=0; j<walls_.size(); j++){
         fen1.draw(walls_[j]);
       }
