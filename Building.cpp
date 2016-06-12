@@ -1,6 +1,5 @@
 
 #include "Building.h"
-#include "Zone.h"
 
 //================= Definition of static attributes ====================
 
@@ -151,21 +150,68 @@ Building::Building(const string& filename){
   }
   cout << ")\n";
   
-  
+
   //Création d'objets Zone
-  vector<Zone> zonelist;
+  vector<int> xmin_;
+  vector<int> xmax_;
+  vector<int> ymin_;
+  vector<int> ymax_;
   for( unsigned int i=0; i<xborders_.size()-1; i++){
     for( unsigned int j=0; j<yborders_.size()-1; j++){
-      Zone zone_ ( xborders_[i], xborders_[i+1], yborders_[j], yborders_[j+1], map_, width_, length_);
-      zonelist.push_back( zone_ );
+      xmin_.push_back(xborders_[i]);
+      xmax_.push_back(xborders_[i+1]);
+      ymin_.push_back(yborders_[j]);
+      ymax_.push_back(yborders_[j+1]);
     }
   }
-  vector<Zone> exitlist;
-  for (unsigned int i=0; i<zonelist.size(); i++){
-    if (zonelist[i].isExit()) exitlist.push_back(zonelist[i]);
-  }
-  cout << exitlist.size() << " sorties trouvées" << endl;
   
+  //Création de la grille réduite
+  int w = 2*xborders_.size()-1;
+  int l = 2*yborders_.size()-1;
+  int* nodemap_ = new int[w*l];
+  for(int j=0; j<l; j++){
+    for(int i=0; i<w; i++){
+      nodemap_[ i+w*j ] = 0;
+      if (not (i%2)) nodemap_[ i+w*j] = 1;
+      if (not (j%2)) nodemap_[ i+w*j] = 1;
+    }   
+  } 
+  for(unsigned int i=0; i<xmin_.size(); i++){
+    
+    vector<int> directions;
+    if (not map_[ymin_[i]*width_+xmin_[i]+1]) directions.push_back(0);
+    if (not map_[(1+ymin_[i])*width_+xmax_[i]]) directions.push_back(1);
+    if (not map_[(ymax_[i])*width_+xmin_[i]+1]) directions.push_back(2);
+    if (not map_[(1+ymin_[i])*width_+xmin_[i]]) directions.push_back(3);
+    
+    int y = i%(yborders_.size()-1);
+    int x = i/int(yborders_.size()-1);
+    for(unsigned int j=0; j<directions.size(); j++){
+      int a = directions[j];
+      if (a==0) nodemap_[(y+1)*2*w+2*x-2*w+1] = 0;
+      if (a==1) nodemap_[(y+1)*2*w+2*x-w+2] = 0;
+      if (a==2) nodemap_[(y+1)*2*w+2*x+1] = 0;
+      if (a==3) nodemap_[(y+1)*2*w+2*x-w] = 0;
+    }
+  }
+  
+  //flood sur la grille réduite
+  will_tab = new int[w*l];
+  for(unsigned int i=0; i<xmin_.size(); i++){
+    int Y = i%(yborders_.size()-1);
+    int X = i/int(yborders_.size()-1);
+    int x = 2*X+1;
+    int y = 2*Y+1;
+    pair<int, int> start (x,y);
+    vector<pair<int, int>> path_to_exit = findExit(start, nodemap_, w, l);
+    pair<int, int> a = path_to_exit[0];
+    pair<int, int> b = path_to_exit[1];
+    int dir = ((b.first-a.first)>0)+3*((b.first-a.first)<0)+2*((b.second-a.second)>0);
+    will_tab[Y*(xborders_.size()-1)+X] = dir;
+  }
+  
+  delete[] nodemap_;
+  nodemap_ = nullptr;
   
   //Création des piétons
   cout << "placing pedestrians..." << endl;
@@ -189,11 +235,113 @@ Building::Building(const string& filename){
 Building::~Building(){
   delete[] map_;
   map_ = nullptr;
+  delete[] will_tab;
+  will_tab = nullptr;
+  delete[] people_;
+  people_ = nullptr;
 }
 
 //=========================== Public Methods ===========================
 
+vector<pair<int, int>> Building::findExit(const pair<int, int>& start, int* map, int W, int H){
+  
+  // repère tous les points "sortie":
+  vector<pair<int, int>> list_of_exits;
+  for (int i=0; i<W; i++){
+    if (not map[0*W+i]) list_of_exits.push_back( pair<int, int>(i,0) );
+    if (not map[(H-1)*W+i]) list_of_exits.push_back( pair<int, int>(i,(H-1)) );
+  }
+  for (int j=0; j<H; j++){
+    if (not map[j*W+0]) list_of_exits.push_back( pair<int, int>(0,j) );
+    if (not map[j*W+(W-1)]) list_of_exits.push_back( pair<int, int>((W-1),j) );
+  }
+  
+  vector<pair<int, int>> best_way;
+  pair<int, int> coord;
+  pair<int, int> coo;
+  pair<int, int> stop;
+  int k;
+  int* grid = nullptr;
+  int* flood = nullptr;
+
+  //calcule le chemin pour chaque point possible:
+  
+  for (size_t i=0; i<list_of_exits.size(); i++){
+    
+    vector<pair<int, int>> trajectory;
+    stop = list_of_exits[i];
+    grid = new int [H*W];
+    for (int i=0; i<H*W; i++){ grid[i] = -map[i]; }
+    grid[ start.first + W*start.second ] = 1;
+    grid[ stop.first + W*stop.second ] = 0;
+    
+    //innondation jusqu'à atteindre stop ou k=20000
+    k = 1;
+    while ( grid[ stop.first + W*stop.second ]==0 and k<20000){
+      flood = new int[H*W];
+      for (int i=0; i<W*H; i++){ flood[i] = 0; }
+      for (int a=0; a<W; a++){
+        for (int b=0; b<H; b++){
+          if (grid[a+W*b]>0){
+            for (int l=-1; l<2; l++){
+              for (int m=-1; m<2; m++){
+                if (a+l<W and b+m<H and a+l>=0 and b+m>=0){
+                  if (grid[ a+l+W*(b+m) ] != -1 and flood[ a+l+W*(b+m) ] == 0){
+                    flood[ a+l+W*(b+m) ] ++;
+                  }
+                } 
+              }
+            }
+          }
+        }
+      }
+      for (int i=0; i<W*H; i++){ grid[i] += flood[i]; }
+      delete[] flood;
+      flood = nullptr;
+      k++;
+    }
+    
+    //remonter les coordonnées jusqu'à start:
+    coord = stop;
+    int max;
+    while ((coord.first!=start.first or coord.second!=start.second) 
+           and trajectory.size()<50*(unsigned int) W)
+    {
+      trajectory.push_back(coord);
+      max = 0;
+      coo = coord;
+      for (int a=-1; a<2; a++){
+        for (int b=-1; b<2; b++){
+          int i = coo.first + a;
+          int j = coo.second + b;
+          if (i>=0 and i<W and j>=0 and j<H){
+            if ( grid[i+W*j]-(a*b!=0) >= max ){
+              max = grid[i+W*j];
+              coord = make_pair(i,j);
+            }
+          }
+        }
+      }
+    }
+    
+    trajectory.push_back( start);
+    reverse( trajectory.begin(), trajectory.end() );
+    delete[] grid;
+    grid = nullptr;
+    
+    if ( best_way.size() == 0 or trajectory.size() <= best_way.size()){
+      best_way = vector<pair<int, int>>(trajectory);
+    }
+    
+  }
+  
+  return best_way;
+}
+
+
+
 double Building::getZoneLimNear(unsigned int x, unsigned int y, unsigned int main_dir ){
+  //Renvoie la limite de la zone à scanner pour ce piéton (à retravailler)
   unsigned int xmax = width_;
   unsigned int xmin = 0;
   for (unsigned int i=0; i<xborders_.size(); i++){
@@ -223,15 +371,34 @@ double Building::getZoneLimNear(unsigned int x, unsigned int y, unsigned int mai
   return 1;  // ne se produit jamais normalement
 }
 
-unsigned int Building::getDirection(unsigned int x, unsigned int y){
+
+
+unsigned int Building::getDirection(int x, int y){
+  //Détection de la zone dans laquelle il est
+  int k = 0;
+  int l = 0;
+  for(unsigned int i=1; i<xborders_.size(); i++){
+    if (x<xborders_[i]){
+      k=i-1;
+      break;
+    }
+  }
+  for(unsigned int i=1; i<yborders_.size(); i++){
+    if (y<yborders_[i]){
+      l=i-1;
+      break;
+    }
+  }
+  
+  //Renvoie la direction que la volonté du piéton veut prendre
   //haut = 0
   //droite = 1
   //bas = 2
-  //gauche = 3
-  int a = x-y; 
-  
-  return 1*(a!=0 or a==0);
+  //gauche = 3S
+  return will_tab[l*(xborders_.size()-1)+k];
 }
+
+
 
 void Building::movePeople(void){
   
@@ -295,15 +462,19 @@ void Building::movePeople(void){
       }
       
     }
+    // terme de volonté + terme d'évitement d'obstacle à rajouter
     double x_move = ( (main_dir==1)-(main_dir==3) )*I;
     double y_move = ( (main_dir==2)-(main_dir==0) )*I;
-    //à tester pas de dépassement d'un xlim ou ylim défini par les murs
+    // à tester pas de dépassement d'un xlim ou ylim défini par les murs
     
     people_[i].move( x_move , y_move , I, Building::ZOOM);
   }
 }
 
+
+
 vector<Pedest> Building::scanZone(double zone_xmin, double zone_xmax, double zone_ymin, double zone_ymax){
+  // renvoie la liste des piétons dans la zone scannée
   vector<Pedest> obstacles;
   for (int i=0; i<Building::NPEDEST; i++){
     double x = people_[i].x();
@@ -315,7 +486,10 @@ vector<Pedest> Building::scanZone(double zone_xmin, double zone_xmax, double zon
   return obstacles;
 }
 
+
+
 bool Building::notEmpty(void) const{
+  // teste si tous les piétons sont sortis ou non
   int x;
   int y;
   for (int i=0; i<Building::NPEDEST; i++){
@@ -324,4 +498,15 @@ bool Building::notEmpty(void) const{
     if (not (x>=width_ or x<0 or y<0 or y>=length_)) return true;
   }
   return false;
+}
+
+void Building::drawData(int* map, int w, int l) const {
+  cout << endl;
+  for(int j=0; j<l; j++){
+    for(int i=0; i<w; i++){
+      cout << map[i+w*j] << " ";
+    }   
+    cout << endl;
+  }
+  cout << endl;
 }

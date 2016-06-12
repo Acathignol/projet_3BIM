@@ -41,19 +41,22 @@ class Building {
   
   // =========================== Public Methods ========================
   
-  void drawMap(void) const;
-  void drawTrajectory(vector<pair<int, int>> way) const;
+  void drawMap(int* nodemap_, int w , int l) const;
+  void drawData(int* nodemap_, int w , int l) const;
+  void drawTrajectory(int* nodemap_, int w, int l, vector<pair<int, int>> way) const;
   void movePeople(void);
-  unsigned int getDirection(unsigned int x, unsigned int y);
+  unsigned int getDirection(int x, int y);
   double getZoneLimNear(unsigned int x, unsigned int y, unsigned int main_dir );
   vector<Pedest> scanZone(double zone_xmin, double zone_xmax, double zone_ymin, double zone_ymax);
   bool notEmpty(void) const;
+  vector<pair<int, int>> findExit(const pair<int, int>& start, int* map, int W, int H);  
   
  protected:
   //======================== Attributes ==================================
   int length_;
   int width_;
   int* map_;
+  int* will_tab;
   vector<RectangleShape> walls_;
   vector<int> xborders_;
   vector<int> yborders_;
