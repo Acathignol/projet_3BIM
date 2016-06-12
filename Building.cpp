@@ -1,10 +1,11 @@
 
 #include "Building.h"
+#include "Zone.h"
 
 //================= Definition of static attributes ====================
 
 int Building::NPEDEST = 150;
-int Building::ZOOM = 10;
+int Building::ZOOM = 15; //15px = 1m = 1 case de tableau et 1 itération = 1s
 
 //=========================== Constructors =============================
 
@@ -142,12 +143,29 @@ Building::Building(const string& filename){
     cout << xborders_[i];
     cout << " ";
   }
+  sort(yborders_.begin(), yborders_.end());
   cout << ")\nnumber of y edges: " << int(yborders_.size()) << " ( ";
   for (unsigned int i=0; i<yborders_.size(); i++){
     cout << yborders_[i];
     cout << " ";
   }
   cout << ")\n";
+  
+  
+  //Création d'objets Zone
+  vector<Zone> zonelist;
+  for( unsigned int i=0; i<xborders_.size()-1; i++){
+    for( unsigned int j=0; j<yborders_.size()-1; j++){
+      Zone zone_ ( xborders_[i], xborders_[i+1], yborders_[j], yborders_[j+1], map_, width_, length_);
+      zonelist.push_back( zone_ );
+    }
+  }
+  vector<Zone> exitlist;
+  for (unsigned int i=0; i<zonelist.size(); i++){
+    if (zonelist[i].isExit()) exitlist.push_back(zonelist[i]);
+  }
+  cout << exitlist.size() << " sorties trouvées" << endl;
+  
   
   //Création des piétons
   cout << "placing pedestrians..." << endl;
@@ -220,7 +238,7 @@ void Building::movePeople(void){
   for (int i=0; i<Building::NPEDEST; i++){
     int x = people_[i].x();
     int y = people_[i].y();
-    if (x>=width_-1 or x<0 or y<0 or y>=length_) continue; //ne bouge plus ceux qui sont sortis
+    if (x>=width_ or x<0 or y<0 or y>=length_) continue; //ne bouge plus ceux qui sont sortis
     
     int main_dir = getDirection(x,y);
     double I = people_[i].speed();
@@ -232,8 +250,11 @@ void Building::movePeople(void){
     double zone_ymax = 0;
     
     switch (main_dir){
-      //la zone à scanner est entre toi et le bord de la zone ou tu vas,
-      //et de largeur toi + moitié de radius_max de chaque coté
+      //la zone à scanner est entre toi et le bord de la zone ou
+      
+      //Rajouter détection des murs ==> Si oui limite de la zone
+      // ==> Si non visible jusqu'au prochain mur dans cette direction
+      // + détection des murs latéraux.
       case 0: 
         zone_ymax = (double) y;
         zone_ymin = getZoneLimNear(x,y,main_dir);
@@ -263,17 +284,20 @@ void Building::movePeople(void){
     
     vector<Pedest> obstacles = scanZone(zone_xmin, zone_xmax, zone_ymin, zone_ymax);
     if ( obstacles.size() ){
+      
       for (unsigned int i=0; i<obstacles.size(); i++){
         double distance = (double) sqrt( pow(abs(x-obstacles[i].x()),2) + pow(abs(y-obstacles[i].y()),2) );
-        distance -= (r + obstacles[i].radius())/6;
+        distance -= (r + obstacles[i].radius())/ (double) Building::ZOOM;
         if (distance < I ){
           I = distance;
           if (I<0) I=0;
         }
       }
+      
     }
     double x_move = ( (main_dir==1)-(main_dir==3) )*I;
     double y_move = ( (main_dir==2)-(main_dir==0) )*I;
+    //à tester pas de dépassement d'un xlim ou ylim défini par les murs
     
     people_[i].move( x_move , y_move , I, Building::ZOOM);
   }
@@ -297,7 +321,7 @@ bool Building::notEmpty(void) const{
   for (int i=0; i<Building::NPEDEST; i++){
     x = people_[i].x();
     y = people_[i].y();
-    if (not (x>=width_-1 or x<0 or y<0 or y>=length_)) return true;
+    if (not (x>=width_ or x<0 or y<0 or y>=length_)) return true;
   }
   return false;
 }
