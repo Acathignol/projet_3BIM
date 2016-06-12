@@ -20,6 +20,7 @@ class Pedest {
   static int RMIN;
   static int EQSPEEDMIN;
   static int EQSPEEDMAX;
+  static int MODEL;
   
   // =========================== Constructors ==========================
   
@@ -30,8 +31,8 @@ class Pedest {
   
   // =========================== Getters ===============================
   
-  inline int x() const;
-  inline int y() const;
+  inline double x() const;
+  inline double y() const;
   inline CircleShape img() const;
   inline double speed(void) const;
   inline double eqSpeed(void) const;
@@ -60,8 +61,8 @@ class Pedest {
 
 //========================Inline functions' definition==================
 
-inline int Pedest::x() const{ return x_; }
-inline int Pedest::y() const{ return y_; }
+inline double Pedest::x() const{ return x_; }
+inline double Pedest::y() const{ return y_; }
 inline void Pedest::set_mood(const int new_mood){ mood_ = new_mood; }
 inline CircleShape Pedest::img(void) const{ return img_; }
 inline double Pedest::speed() const { return speed_; }

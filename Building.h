@@ -45,7 +45,7 @@ class Building {
   void drawData(int* nodemap_, int w , int l) const;
   void drawTrajectory(int* nodemap_, int w, int l, vector<pair<int, int>> way) const;
   void movePeople(void);
-  unsigned int getDirection(int x, int y);
+  unsigned int getDirection(double x, double y);
   double getZoneLimNear(unsigned int x, unsigned int y, unsigned int main_dir );
   vector<Pedest> scanZone(double zone_xmin, double zone_xmax, double zone_ymin, double zone_ymax);
   bool notEmpty(void) const;
