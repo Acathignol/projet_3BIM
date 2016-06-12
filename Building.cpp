@@ -4,7 +4,7 @@
 //================= Definition of static attributes ====================
 
 int Building::NPEDEST = 150;
-int Building::ZOOM = 10;
+int Building::ZOOM = 15;
 
 //=========================== Constructors =============================
 
@@ -171,6 +171,8 @@ Building::Building(const string& filename){
 Building::~Building(){
   delete[] map_;
   map_ = nullptr;
+  delete[] people_;
+  people_ = nullptr;
 }
 
 //=========================== Public Methods ===========================
@@ -210,8 +212,7 @@ unsigned int Building::getDirection(unsigned int x, unsigned int y){
   //droite = 1
   //bas = 2
   //gauche = 3
-  int a = x-y; 
-  
+  int a = x-y;
   return 1*(a!=0 or a==0);
 }
 
@@ -263,12 +264,24 @@ void Building::movePeople(void){
     
     vector<Pedest> obstacles = scanZone(zone_xmin, zone_xmax, zone_ymin, zone_ymax);
     if ( obstacles.size() ){
+      double dmin = I;
+      vector<Pedest> toAvoid;
+      // Le pieton scanne l'ensemble des obstacles pour savoir lequel est le plus proche
       for (unsigned int i=0; i<obstacles.size(); i++){
-        double distance = (double) sqrt( pow(abs(x-obstacles[i].x()),2) + pow(abs(y-obstacles[i].y()),2) );
+        double distance = (double) sqrt( pow(abs(x-obstacles[i].x()),2) +
+                                        pow(abs(y-obstacles[i].y()),2) );
         distance -= (r + obstacles[i].radius())/6;
-        if (distance < I ){
-          I = distance;
-          if (I<0) I=0;
+        if (distance < dmin ){
+          dmin = distance;
+          toAvoid.push_back(obstacles[i]); //Inutile pour l'instant
+          //I = distance;
+          //if (I<0) I=0; //Ici le pieton s'arrete pour eviter la collision
+        };
+        if (dmin<0) I=0;
+        else if (dmin<I){
+          // Pour l'instant mvt aleatoire
+          double x_move = rand()*I;
+          double y_move = rand()*I;
         }
       }
     }
