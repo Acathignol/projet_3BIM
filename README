@@ -25,5 +25,6 @@ Depuis un terminal, lancez:
 Ou, si vous voulez charger un batiment personnalisé:
   ./main 'path/to/building/plan.bmp'
   
+
 ===== DESCRIPTION DU MODELE ============
 https://www.overleaf.com/5401940bstyqz#/17178647/

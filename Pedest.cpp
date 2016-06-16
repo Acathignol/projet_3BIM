@@ -6,10 +6,11 @@ using namespace std;
 
 //================= Definition of static attributes ====================
 
-int Pedest::RMAX = 6;
-int Pedest::RMIN = 3;
-int Pedest::EQSPEEDMIN = 3;
+int Pedest::RMAX = 6; // 60cm de rayon
+int Pedest::RMIN = 4; // 40cm de rayon
+int Pedest::EQSPEEDMIN = 4;
 int Pedest::EQSPEEDMAX = 7;
+int Pedest::MODEL = 1;
 
 //=========================== Constructors =============================
 
