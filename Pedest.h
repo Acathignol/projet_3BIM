@@ -21,6 +21,11 @@ class Pedest {
   static int EQSPEEDMIN;
   static int EQSPEEDMAX;
   static int MODEL;
+  static double ZONE_XMIN;
+  static double ZONE_XMAX;
+  static double ZONE_YMIN;
+  static double ZONE_YMAX;
+  
   
   // =========================== Constructors ==========================
   

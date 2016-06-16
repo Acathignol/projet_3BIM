@@ -31,8 +31,8 @@ class Building {
   inline int* map() const;
   inline int map(size_t x, size_t y) const;
   inline vector<RectangleShape> walls() const;
-  inline vector<int> xborders() const;
-  inline vector<int> yborders() const;
+  inline vector<float> xborders() const;
+  inline vector<float> yborders() const;
   inline Pedest people(const int i) const;
   
   // =========================== Setters ===============================
@@ -46,8 +46,6 @@ class Building {
   void drawTrajectory(int* nodemap_, int w, int l, vector<pair<int, int>> way) const;
   void movePeople(void);
   unsigned int getDirection(double x, double y);
-  double getZoneLimNear(unsigned int x, unsigned int y, unsigned int main_dir );
-  vector<Pedest> scanZone(double zone_xmin, double zone_xmax, double zone_ymin, double zone_ymax);
   bool notEmpty(void) const;
   vector<pair<int, int>> findExit(const pair<int, int>& start, int* map, int W, int H);  
   
@@ -58,8 +56,8 @@ class Building {
   int* map_;
   int* will_tab;
   vector<RectangleShape> walls_;
-  vector<int> xborders_;
-  vector<int> yborders_;
+  vector<float> xborders_;
+  vector<float> yborders_;
   Pedest* people_;
 
 };
@@ -72,8 +70,8 @@ inline int* Building::map() const{ return map_; }
 inline int Building::map(size_t x, size_t y) const{ return map_[width_*y+x]; }
 inline void Building::setValue(size_t x, size_t y, int value){ map_[width_*y+x] = value; }
 inline vector<RectangleShape> Building::walls() const { return walls_; }
-inline vector<int> Building::xborders() const { return xborders_; }
-inline vector<int> Building::yborders() const { return yborders_; }
+inline vector<float> Building::xborders() const { return xborders_; }
+inline vector<float> Building::yborders() const { return yborders_; }
 inline Pedest Building::people(const int i) const { return people_[i]; }
 
 #endif /* Building_h */
