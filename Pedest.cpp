@@ -11,6 +11,10 @@ int Pedest::RMIN = 4; // 40cm de rayon
 int Pedest::EQSPEEDMIN = 4;
 int Pedest::EQSPEEDMAX = 7;
 int Pedest::MODEL = 1;
+double Pedest::ZONE_XMIN = 0;
+double Pedest::ZONE_XMAX = 0;
+double Pedest::ZONE_YMIN = 0;
+double Pedest::ZONE_YMAX = 0;
 
 //=========================== Constructors =============================
 
@@ -31,7 +35,7 @@ Pedest::Pedest(const int startX, const int startY, int zoom){
   radius_ = (float) r;
   mood_ = 0;
   img_ = CircleShape(r);
-  img_.setPosition(zoom*x_, zoom*y_);
+  img_.setPosition(zoom*x_ - r, zoom*y_ - r);
   img_.setFillColor(Color(Color::Green));
   speed_ = 0;
   eq_speed_ = 0.1*( (double) (rand()%(Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN)+Pedest::EQSPEEDMIN) );
@@ -62,7 +66,7 @@ void Pedest::operator=(const Pedest& model){
 void Pedest::move(double x_move , double y_move , double new_speed, int zoom){
   x_ += x_move;
   y_ += y_move;
-  img_.setPosition(zoom*x_, zoom*y_);
+  img_.setPosition(zoom*x_ -radius_, zoom*y_ -radius_);
   speed_ = new_speed;
 }
 

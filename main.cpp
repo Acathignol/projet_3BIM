@@ -35,6 +35,12 @@ int main(int argc, char* argv[]){
     
     //Rafraichissement du dessin
     fen1.clear(Color::Black);
+    RectangleShape awareness(Vector2f((Pedest::ZONE_XMAX-Pedest::ZONE_XMIN)*Building::ZOOM , (Pedest::ZONE_YMAX-Pedest::ZONE_YMIN)*Building::ZOOM));
+    awareness.setPosition(Pedest::ZONE_XMIN*Building::ZOOM, Pedest::ZONE_YMIN*Building::ZOOM);
+    awareness.setOutlineThickness(1);
+    awareness.setFillColor(Color::Black);
+    awareness.setOutlineColor(Color::Red);
+    
     for (int i=0; i<Bataclan.width(); i++){
       for (int j=0; j<Bataclan.length(); j++){
         RectangleShape wall(Vector2f(Building::ZOOM,Building::ZOOM));
@@ -45,6 +51,7 @@ int main(int argc, char* argv[]){
         fen1.draw(wall);
       }
     }
+    fen1.draw(awareness);
     for (unsigned int j=0; j<walls_.size(); j++){
       fen1.draw(walls_[j]);
     }
