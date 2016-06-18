@@ -3,13 +3,17 @@
 
 //================= Definition of static attributes ====================
 
-int Building::NPEDEST = 10;
+int Building::NPEDEST = 200;
 int Building::ZOOM = 15; //15px = 1m = 1 case de tableau et 1 itération = 1s
 
 
 //=========================== Constructors =============================
 
 Building::Building(const string& filename){
+  
+  // initialize random seed
+  srand (time(NULL));
+  
   //...............................................Ouverture de l'image:
   Image Level;
   if (!Level.loadFromFile(filename))
@@ -412,16 +416,17 @@ void Building::movePeople(void){
         zone_ymax = y + r/Building::ZOOM + float(Pedest::RMAX)/Building::ZOOM;
     }
     
+    // Problème piéton coincé dans le mur...
     double space = (zone_xmax-zone_xmin-I)*Building::ZOOM - r;
     space *= (zone_ymax-zone_ymin-I)*Building::ZOOM - r;
     if (space < 0) I = 0;
     
     // Détection de murs dans la zone scannée
     unsigned int walls_dir = 9;
-    if (main_dir!= 2 and ymax-0.5 < zone_ymax+0.1) { walls_dir = 0; } //remonte
-    if (main_dir!= 0 and walls_dir == 9 and ymin > zone_ymin-0.1) { walls_dir = 2; } //redescends
-    if (main_dir!= 1 and walls_dir == 9 and xmax < zone_xmax+0.1) { walls_dir = 3; } //à gauche
-    if (main_dir!= 3 and walls_dir == 9 and xmin > zone_xmin-0.1) { walls_dir = 1; } //à droite
+    if (main_dir!= 2 and ymax-0.5 < zone_ymax+0.3) { walls_dir = 0; } //remonte
+    if (main_dir!= 0 and walls_dir == 9 and ymin > zone_ymin-0.3) { walls_dir = 2; } //redescends
+    if (main_dir!= 1 and walls_dir == 9 and xmax < zone_xmax+0.3) { walls_dir = 3; } //à gauche
+    if (main_dir!= 3 and walls_dir == 9 and xmin > zone_xmin-0.3) { walls_dir = 1; } //à droite
     
     //Affiche la zone scannée à l'écran
     Pedest::ZONE_XMIN = zone_xmin;
@@ -431,9 +436,6 @@ void Building::movePeople(void){
     
     
     // renvoie la liste des piétons dans la zone scannée
-    double x_col = 0;
-    double y_col = 0;
-    
     vector<Pedest> obstacles;
     for (int i=0; i<Building::NPEDEST; i++){
       double x = people_[i].x();
@@ -444,9 +446,11 @@ void Building::movePeople(void){
     }
     
     // ========= plusieurs modèles d'adaptation aux piétons ============
+    
+    double x_col = 0;
+    double y_col = 0;
     if ( obstacles.size() ){
       double dmin = 2*I;
-      Pedest* nearest;
       switch(Pedest::MODEL){
         case 1:  //On freine et on attend derrière l'obstacle
           for (unsigned int i=0; i<obstacles.size(); i++){
@@ -460,6 +464,7 @@ void Building::movePeople(void){
           break;
           
         case 2:  //On se décale de l'obstacle le plus proche
+          Pedest* nearest;
           for (unsigned int i=0; i<obstacles.size(); i++){
             double distance = sqrt(pow(x-obstacles[i].x(),2) + pow(y-obstacles[i].y(),2));
             distance -= (r + obstacles[i].radius())/ (double) Building::ZOOM;
@@ -468,36 +473,72 @@ void Building::movePeople(void){
               nearest = &obstacles[i];
             }
           }
+          if(dmin<2*I){
+            I=0.8*I;
+            switch (main_dir){
+              case 0:
+                if (nearest->x()<x) x_col = (double) (rand()) / (double)(RAND_MAX);
+                else x_col = -(double) (rand()) / (double)(RAND_MAX);
+                y_col = -(double) (rand()) / (double)(RAND_MAX);
+                break;
+              case 1:
+                if (nearest->y()<y) y_col = (double) (rand()) / (double)(RAND_MAX);
+                else y_col = -(double) (rand()) / (double)(RAND_MAX);
+                x_col = (double) (rand()) / (double)(RAND_MAX);
+                break;
+              case 2:
+                if (nearest->x()<x) x_col = (double) (rand()) / (double)(RAND_MAX);
+                else x_col = -(double) (rand()) / (double)(RAND_MAX);
+                y_col = (double) (rand()) / (double)(RAND_MAX);
+                break;
+              case 3:
+                if (nearest->y()<y) y_col = (double) (rand()) / (double)(RAND_MAX);
+                else y_col = -(double) (rand()) / (double)(RAND_MAX);
+                x_col = -(double) (rand()) / (double)(RAND_MAX);
+                break;
+            }
+          }
           break;
           
         case 3:  //On compte les obstacles à gauche et à droite dans la zone pour prendre tout en compte
+          dmin = I;
+          double x_obs = 0;
+          double y_obs = 0;
+          int count = 0;
+          for (unsigned int i=0; i<obstacles.size(); i++){
+            double distance = sqrt(pow(x-obstacles[i].x(),2) + pow(y-obstacles[i].y(),2));
+            distance -= (r + obstacles[i].radius())/ (double) Building::ZOOM;
+            if (distance<=dmin){
+              x_obs += obstacles[i].x();
+              y_obs += obstacles[i].y();
+              count++;
+            }
+          }
+          x_obs = x_obs/double(count);
+          y_obs= y_obs/double(count);
+          switch (main_dir){
+            case 0:
+              if (x_obs<x) x_col = (double) (rand()) / (double)(RAND_MAX);
+              else x_col = -(double) (rand()) / (double)(RAND_MAX);
+              y_col = -(double) (rand()) / (double)(RAND_MAX);
+              break;
+            case 1:
+              if (y_obs<y) y_col = (double) (rand()) / (double)(RAND_MAX);
+              else y_col = -(double) (rand()) / (double)(RAND_MAX);
+              x_col = (double) (rand()) / (double)(RAND_MAX);
+              break;
+            case 2:
+              if (x_obs<x) x_col = (double) (rand()) / (double)(RAND_MAX);
+              else x_col = -(double) (rand()) / (double)(RAND_MAX);
+              y_col = (double) (rand()) / (double)(RAND_MAX);
+              break;
+            case 3:
+              if (y_obs<y) y_col = (double) (rand()) / (double)(RAND_MAX);
+              else y_col = -(double) (rand()) / (double)(RAND_MAX);
+              x_col = -(double) (rand()) / (double)(RAND_MAX);
+              break;
+          }
           break;
-      }
-
-      // Se déplace en fonction de la position du plus proche obstacle
-      if(dmin<2*I){
-        switch (main_dir){
-          case 0:
-            if (nearest->x()<x) x_col = (double) (rand()) / (double)(RAND_MAX);
-            else x_col = -(double) (rand()) / (double)(RAND_MAX);
-            y_col = -(double) (rand()) / (double)(RAND_MAX);
-            break;
-          case 1:
-            if (nearest->y()<y) y_col = (double) (rand()) / (double)(RAND_MAX);
-            else y_col = -(double) (rand()) / (double)(RAND_MAX);
-            x_col = (double) (rand()) / (double)(RAND_MAX);
-            break;
-          case 2:
-            if (nearest->x()<x) x_col = (double) (rand()) / (double)(RAND_MAX);
-            else x_col = -(double) (rand()) / (double)(RAND_MAX);
-            y_col = (double) (rand()) / (double)(RAND_MAX);
-            break;
-          case 3:
-            if (nearest->y()<y) y_col = (double) (rand()) / (double)(RAND_MAX);
-            else y_col = -(double) (rand()) / (double)(RAND_MAX);
-            x_col = -(double) (rand()) / (double)(RAND_MAX);
-            break;
-        }
       }
     }
     
