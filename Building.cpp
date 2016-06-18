@@ -3,7 +3,7 @@
 
 //================= Definition of static attributes ====================
 
-int Building::NPEDEST = 100;
+int Building::NPEDEST = 10;
 int Building::ZOOM = 15; //15px = 1m = 1 case de tableau et 1 itération = 1s
 
 
@@ -30,7 +30,7 @@ Building::Building(const string& filename){
   }
   
   cout << filename << " successfully loaded." << endl;
-  cout << "Height: " << length_ << endl;
+  cout << "Height: " << length_ << endl;  
   cout << "Width: " << width_ << endl;
   
   //.............................................. recherche des murs :

@@ -8,8 +8,8 @@ using namespace std;
 
 int Pedest::RMAX = 6; // 60cm de rayon
 int Pedest::RMIN = 4; // 40cm de rayon
-int Pedest::EQSPEEDMIN = 1;
-int Pedest::EQSPEEDMAX = 2;
+int Pedest::EQSPEEDMIN = 4;
+int Pedest::EQSPEEDMAX = 7;
 int Pedest::MODEL = 2;
 double Pedest::ZONE_XMIN = 0;
 double Pedest::ZONE_XMAX = 0;
