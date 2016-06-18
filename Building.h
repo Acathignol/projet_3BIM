@@ -3,6 +3,8 @@
 
 #include "Pedest.h"
 #include <SFML/Window.hpp>
+#include <math.h>
+#include <time.h>
 
 using namespace std;
 using namespace sf;
