@@ -21,9 +21,22 @@ Depuis un terminal, lancez:
   
 - Execution:
 Depuis un terminal, lancez:
-  ./main
+  ./escape default
 Ou, si vous voulez charger un batiment personnalisé:
-  ./main 'path/to/building/plan.bmp'
+  ./escape 'path/to/building/plan.bmp'
+Ou, si vous souhaitez en plus régler vous même les paramètres:
+  ./escape   'path/to/building/plan.bmp'   Npiétons  modèle  VitesseLimite  show_graphics
+  
+  'path/to/building/plan.bmp'       ==>    Lien vers une image plan de batiment
+  Npiétons                          ==>    Le nombre d'individus à simuler dans ce batiment
+  modèle                            ==>    La façon dont les piétons gèrent les obstacles
+            1 = Les piétons attendent derrière les obstacles
+            2 = Les piétons se décalent de l'obstacle le plus proche
+            3 = Les piétons se décalent de la moyenne des positions des obstacles
+  VitesseLimite                     ==>    Vitesse Limite moyenne des piétons (en m/s)
+  show_graphics                     ==>    1 pour afficher la simulation, 0 pour faire les calculs
+  
+Dans tous les cas, lance ./escape sans argument vous proposera de les préciser à la main.
   
 
 ===== DESCRIPTION DU MODELE ============

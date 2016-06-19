@@ -41,12 +41,13 @@ int main(int argc, char* argv[]){
   
   // ==================== Définition des paramêtres ====================
   
-  string filename = "batiment.bmp";
+  string filename = "bmp/batiment.bmp";
   unsigned int show_graphics = 1;
   
   switch (argc){
     case 1:
-      cout << "./main [ default ] filename.bmp [ Npedest  model  show? ]" << endl;
+    {
+      cout << "./main [ default ] path/to/file.bmp [ Npedest  model LimSpeed  show? ]" << endl;
       cout << "Nombre de piétons à placer: ";
       scanf("%d", &Building::NPEDEST);
       cout << endl;
@@ -57,11 +58,21 @@ int main(int argc, char* argv[]){
       cout << "Modèle à utiliser: ";
       scanf("%d", &Pedest::MODEL);
       cout << endl;
+      float speed = 0;
+      cout << "Vitesse limite moyenne des piétons? (en m/s): ";
+      scanf("%f", &speed);
+      cout << endl;
+      Pedest::EQSPEEDMAX = (int) (10*speed + 2);
+      Pedest::EQSPEEDMIN = (int) (10*speed - 2);
+      if (Pedest::EQSPEEDMAX<1) Pedest::EQSPEEDMAX=1;
+      if (Pedest::EQSPEEDMAX>20) Pedest::EQSPEEDMAX=20;
+      if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
+      if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
       cout << "Afficher la simulation? (0=Non, 1=Oui): ";
       scanf("%d", &show_graphics);
       cout << endl;
       break;
-    
+    }
     case 2:
     {
       cout << "using default parameters..." << endl;
@@ -73,17 +84,25 @@ int main(int argc, char* argv[]){
       break;
     }
       
-    case 5:
+    case 6:
+    {
       filename = argv[1];
       cout << "using custom parameters..." << endl;
       cout << "using custom building..." << endl;
       Building::NPEDEST = atoi(argv[2]);
       Pedest::MODEL = atoi(argv[3]);
-      show_graphics = atoi(argv[4]);
-    
+      float speed = atof(argv[4]);
+      Pedest::EQSPEEDMAX = (int) (10*speed + 2);
+      Pedest::EQSPEEDMIN = (int) (10*speed - 2);
+      if (Pedest::EQSPEEDMAX<1) Pedest::EQSPEEDMAX=1;
+      if (Pedest::EQSPEEDMAX>20) Pedest::EQSPEEDMAX=20;
+      if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
+      if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
+      show_graphics = atoi(argv[5]);
+    }
   }
-  if (argc>=3 and argc!=5){
-    cout << "./main [ default ] filename.bmp [ Npedest  model  show? ]" << endl;
+  if (argc>=3 and argc!=6){
+    cout << "./main [ default ] path/to/file.bmp [ Npedest  model  LimSpeed  show? ]" << endl;
     exit(-1);
   }
 
