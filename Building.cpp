@@ -3,7 +3,7 @@
 
 //================= Definition of static attributes ====================
 
-int Building::NPEDEST = 200;
+int Building::NPEDEST = 500;
 int Building::ZOOM = 15; //15px = 1m = 1 case de tableau et 1 itération = 1s
 
 
@@ -96,20 +96,20 @@ Building::Building(const string& filename){
   
   cout << "number of x edges: " << int(xborders_.size()) << " ( ";
   for (unsigned int i=0; i<xborders_.size(); i++){
-    RectangleShape wall(Vector2f(1,Building::ZOOM*length_));
-    wall.setPosition(Building::ZOOM*xborders_[i], 0);
-    wall.setFillColor(Color::Red);
-    walls_.push_back( wall );
+    //~ RectangleShape wall(Vector2f(1,Building::ZOOM*length_));
+    //~ wall.setPosition(Building::ZOOM*xborders_[i], 0);
+    //~ wall.setFillColor(Color::Red);
+    //~ walls_.push_back( wall );
     cout << xborders_[i];
     cout << " ";
   }
   sort(yborders_.begin(), yborders_.end());
   cout << ") mètres\nnumber of y edges: " << int(yborders_.size()) << " ( ";
   for (unsigned int i=0; i<yborders_.size(); i++){
-    RectangleShape wall(Vector2f(Building::ZOOM*width_,1));
-    wall.setPosition(0,Building::ZOOM*yborders_[i]);
-    wall.setFillColor(Color::Red);
-    walls_.push_back( wall );
+    //~ RectangleShape wall(Vector2f(Building::ZOOM*width_,1));
+    //~ wall.setPosition(0,Building::ZOOM*yborders_[i]);
+    //~ wall.setFillColor(Color::Red);
+    //~ walls_.push_back( wall );
     cout << yborders_[i];
     cout << " ";
   }
@@ -417,9 +417,9 @@ void Building::movePeople(void){
     }
     
     // Problème piéton coincé dans le mur...
-    double space = (zone_xmax-zone_xmin-I)*Building::ZOOM - r;
-    space *= (zone_ymax-zone_ymin-I)*Building::ZOOM - r;
-    if (space < 0) I = 0;
+    //~ double space = (zone_xmax-zone_xmin-I)*Building::ZOOM - r;
+    //~ space *= (zone_ymax-zone_ymin-I)*Building::ZOOM - r;
+    //~ if (space < 0) I = 0;
     
     // Détection de murs dans la zone scannée
     unsigned int walls_dir = 9;
@@ -429,10 +429,10 @@ void Building::movePeople(void){
     if (main_dir!= 3 and walls_dir == 9 and xmin > zone_xmin-0.3) { walls_dir = 1; } //à droite
     
     //Affiche la zone scannée à l'écran
-    Pedest::ZONE_XMIN = zone_xmin;
-    Pedest::ZONE_XMAX = zone_xmax;
-    Pedest::ZONE_YMIN = zone_ymin;
-    Pedest::ZONE_YMAX = zone_ymax;
+    //~ Pedest::ZONE_XMIN = zone_xmin;
+    //~ Pedest::ZONE_XMAX = zone_xmax;
+    //~ Pedest::ZONE_YMIN = zone_ymin;
+    //~ Pedest::ZONE_YMAX = zone_ymax;
     
     
     // renvoie la liste des piétons dans la zone scannée
