@@ -5,7 +5,7 @@ using namespace std;
 using namespace sf;
 
 
-void update_graphics( RenderWindow& fen1, Building& Bataclan, vector<RectangleShape> walls_ ){
+void update_graphics( RenderWindow& fen1, Building& Bataclan, vector<RectangleShape>& walls_ ){
   //Rafraichissement du dessin
   fen1.clear(Color::Black);
   //~ RectangleShape awareness(Vector2f((Pedest::ZONE_XMAX-Pedest::ZONE_XMIN)*Building::ZOOM , (Pedest::ZONE_YMAX-Pedest::ZONE_YMIN)*Building::ZOOM));
@@ -46,6 +46,18 @@ int main(int argc, char* argv[]){
     filename = argv[1];
     cout << "using custom building..." << endl;
   }
+  
+  cout << "Nombre de piétons à placer:";
+  scanf("%d", &Building::NPEDEST);
+  cout << endl;
+  
+  cout << "Type de modèle:" << endl;
+  cout << "1 = Les piétons attendent derrière les obstacles" << endl;
+  cout << "2 = Les piétons se décalent de l'obstacle le plus proche" << endl;
+  cout << "3 = Les piétons se décalent de la moyenne des positions des obstacles" << endl;
+  cout << "Modèle à utiliser:";
+  scanf("%d", &Pedest::MODEL);
+  cout << endl;
 
   Building Bataclan(filename);
   
@@ -69,6 +81,7 @@ int main(int argc, char* argv[]){
     if (not Bataclan.notEmpty()) fen1.close();
     
     if ( (double) (clock()-start)*100/CLOCKS_PER_SEC > 1){ 
+      //une itération du calcul = 1/100ème de seconde 
       update_graphics(fen1, Bataclan, walls_);
       Bataclan.movePeople();
       start = clock();

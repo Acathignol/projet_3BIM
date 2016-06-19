@@ -4,7 +4,7 @@
 //================= Definition of static attributes ====================
 
 int Building::NPEDEST = 500;
-int Building::ZOOM = 15; //15px = 1m = 1 case de tableau et 1 itération = 1s
+int Building::ZOOM = 15; //15px = 1m = 1 case de tableau et 1 itération = 1s du modèle, 0.01s réel
 
 
 //=========================== Constructors =============================
@@ -53,7 +53,7 @@ Building::Building(const string& filename){
       }
     }
   }
-  for (int j=0; j<width_; j++){
+  for (int j=0; j<width_; j++){//verticaux
     for (int i=0; i<length_; i++){
       if (map_[j+width_*i] and not state){
         start = i;
@@ -101,7 +101,7 @@ Building::Building(const string& filename){
     cout << " ";
   }
   sort(yborders_.begin(), yborders_.end());
-  cout << ") mètres\nnumber of y edges: " << int(yborders_.size()) << " ( ";
+  cout << ") meters\nnumber of y edges: " << int(yborders_.size()) << " ( ";
   for (unsigned int i=0; i<yborders_.size(); i++){
     //~ RectangleShape wall(Vector2f(Building::ZOOM*width_,1));
     //~ wall.setPosition(0,Building::ZOOM*yborders_[i]);
@@ -110,7 +110,7 @@ Building::Building(const string& filename){
     cout << yborders_[i];
     cout << " ";
   }
-  cout << ") mètres\n";
+  cout << ") meters\n";
 
   //......................................... Recherche de la sortie :
   vector<int> xmin_;
@@ -137,7 +137,6 @@ Building::Building(const string& filename){
   } 
   for(unsigned int i=0; i<xmin_.size(); i++){
     vector<int> directions;
-    //~ cout<<"zone: "<<xmin_[i]<<','<<xmax_[i]<<','<<ymin_[i]<<','<<ymax_[i]<<" : ";
     if (not map_[ymin_[i]*width_+xmin_[i]+1]) directions.push_back(0);
     if (not map_[(1+ymin_[i])*width_+xmax_[i]]) directions.push_back(1);
     if (not map_[(ymax_[i])*width_+xmin_[i]+1]) directions.push_back(2);
@@ -146,13 +145,11 @@ Building::Building(const string& filename){
     int x = i/int(yborders_.size()-1);
     for(unsigned int j=0; j<directions.size(); j++){
       int a = directions[j];
-      //~ cout<<a<<" - ";
       if (a==0) nodemap_[(y+1)*2*w+2*x-2*w+1] = 0;
       if (a==1) nodemap_[(y+1)*2*w+2*x-w+2] = 0;
       if (a==2) nodemap_[(y+1)*2*w+2*x+1] = 0;
       if (a==3) nodemap_[(y+1)*2*w+2*x-w] = 0;
     }
-    //~ cout<<endl;
   }
   will_tab = new int[w*l];
   for(unsigned int i=0; i<xmin_.size(); i++){
@@ -168,7 +165,6 @@ Building::Building(const string& filename){
     will_tab[Y*(xborders_.size()-1)+X] = dir;
   }
   this->drawData( will_tab, xborders_.size()-1, yborders_.size()-1);
-  //~ this->drawMap( map_, width_, length_);
   delete[] nodemap_;
   nodemap_ = nullptr;
 
@@ -179,8 +175,6 @@ Building::Building(const string& filename){
   for (int i=0; i<N; i++){
     unsigned int posX = rand()%width_;
     unsigned int posY = rand()%length_;
-    //~ unsigned int posX = 2;
-    //~ unsigned int posY = 2;
     while (this->map(posX, posY)){
       posX = rand()%width_;
       posY = rand()%length_;
@@ -323,9 +317,6 @@ unsigned int Building::getDirection(double x, double y){
   //bas = 2
   //gauche = 3
   
-  //~ cout << l << ',' << k << ": ";
-  //~ cout << "x=" << x << " y=" << y << " - ";
-  //~ cout << will_tab[l*(xborders_.size()-1)+k] << endl;
   return will_tab[l*(xborders_.size()-1)+k];
 
 }
@@ -351,39 +342,33 @@ void Building::movePeople(void){
     double zone_xmax = 0;
     double zone_ymax = 0;
     
-    //Renvoie les coordonnées de la zone dans laquelle est ce piéton
-    double xmax = width_+2.5; //si les piétons sortent du batiment, ils voient plus loin que le mur
+    //Renvoie les coordonnées de la zone dans laquelle est ce piéton (xmin ... ymax)
+    // et les coordonnées de la zone que le piéton perçoit (w_xmin ... w_ymax)
+    double xmax = width_+2.5; 
     double xmin = -2.5;
-    for (unsigned int i=0; i<xborders_.size(); i++){
-      double xlim = xborders_[i];
-      if (xlim>xmin and xlim<x) xmin = xlim; //xmin plus grande frontière inférieure à x
-      if (xlim<xmax and xlim>x) xmax = xlim; //xmax plus petite frontière supérieure à x
-    }
-    double ymax = length_+2.5;
-    double ymin = -2.5;
-    for (unsigned int i=0; i<yborders_.size(); i++){
-      double ylim = yborders_[i];
-      if (ylim>ymin and ylim<y) ymin = ylim;
-      if (ylim<ymax and ylim>y) ymax = ylim;
-    }
-    
-    //Renvoie les coordonnées des murs qui encadrent ce piéton
     double w_xmax = width_+2.5; //si les piétons sortent du batiment, ils voient plus loin que le mur
     double w_xmin = -2.5;
     for (unsigned int i=0; i<xborders_.size(); i++){
       double xlim = xborders_[i];
+      if (xlim>xmin and xlim<x) xmin = xlim; //xmin plus grande frontière inférieure à x
+      if (xlim<xmax and xlim>x) xmax = xlim; //xmax plus petite frontière supérieure à x
       if (map_[width_*((int) y)+((int) xlim)]==0) continue; // si pas de mur à la hauteur du piéton cette limite compte pas
       if (xlim>w_xmin and xlim<x) w_xmin = xlim; //xmin plus grande frontière inférieure à x
       if (xlim<w_xmax and xlim>x) w_xmax = xlim; //xmax plus petite frontière supérieure à x
     }
+    double ymax = length_+2.5;
+    double ymin = -2.5;
     double w_ymax = length_+2.5;
     double w_ymin = -2.5;
     for (unsigned int i=0; i<yborders_.size(); i++){
       double ylim = yborders_[i];
+      if (ylim>ymin and ylim<y) ymin = ylim;
+      if (ylim<ymax and ylim>y) ymax = ylim;
       if (map_[width_*((int) ylim)+((int) x)]==0) continue;
       if (ylim>w_ymin and ylim<y) w_ymin = ylim;
       if (ylim<w_ymax and ylim>y) w_ymax = ylim;
     }
+    
     
     switch (main_dir){
       //la zone à scanner est entre toi et le prochain mur dans la 
