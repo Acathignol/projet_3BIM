@@ -164,7 +164,6 @@ Building::Building(const string& filename){
     int dir = ((b.first-a.first)>0)+3*((b.first-a.first)<0)+2*((b.second-a.second)>0);
     will_tab[Y*(xborders_.size()-1)+X] = dir;
   }
-  this->drawData( will_tab, xborders_.size()-1, yborders_.size()-1);
   delete[] nodemap_;
   nodemap_ = nullptr;
 
@@ -573,30 +572,6 @@ bool Building::notEmpty(void) const{
   return false;
 }
 
-void Building::drawData(int* map, int w, int l) const {
-  cout << endl;
-  cout << "======= Directions à prendre: =======" << endl << endl;
-  for(int j=0; j<l; j++){
-    for(int i=0; i<w; i++){
-      if (map[i+w*j]==0) cout << "↑" << ' ';
-      if (map[i+w*j]==1) cout << "→" << ' ';
-      if (map[i+w*j]==2) cout << "↓" << ' ';
-      if (map[i+w*j]==3) cout << "←" << ' ';
-    }   
-    cout << endl;
-  }
-  cout << endl;
-}
-
-void Building::drawMap(int* map, int w, int l) const {
-  cout << endl;
-  for(int j=0; j<l; j++){
-    for(int i=0; i<w; i++){
-      char pixel = ' ';
-      if (map[ i+w*j] ==1 ) {pixel = '#';}
-      cout << pixel << " ";
-    }   
-    cout << endl;
-  }
-  cout << endl;
+void Building::studyPeople(unsigned int time){
+  cout << time << " secondes écoulées" << endl;
 }

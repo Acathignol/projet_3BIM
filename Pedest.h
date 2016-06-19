@@ -31,7 +31,6 @@ class Pedest {
   
   Pedest();
   Pedest(const int startX, const int startY, int zoom);
-  Pedest(const Pedest& model);
   void operator=(const Pedest& model);
   
   // =========================== Getters ===============================

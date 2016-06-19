@@ -41,16 +41,6 @@ Pedest::Pedest(const int startX, const int startY, int zoom){
   eq_speed_ = 0.1*( (double) (rand()%(Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN)+Pedest::EQSPEEDMIN) );
 }
 
-Pedest::Pedest(const Pedest& model){
-  x_ = model.x_;
-  y_ = model.y_;
-  radius_ = model.radius_;
-  mood_ = model.mood_;
-  img_ = model.img_;
-  speed_ = model.speed_;
-  eq_speed_ = model.eq_speed_;
-}
-
 void Pedest::operator=(const Pedest& model){
   x_ = model.x_;
   y_ = model.y_;
