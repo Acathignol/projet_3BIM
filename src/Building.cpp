@@ -325,7 +325,7 @@ void Building::movePeople(void){
   for (int i=0; i<Building::NPEDEST; i++){
     double x = people_[i].x();
     double y = people_[i].y();
-    if (x>width_+2 or x<0 or y<0 or y>length_+2) continue; //ne bouge plus ceux qui sont sortis
+    if (people_[i].isOut()) continue; //ne bouge plus ceux qui sont sortis
     double I = people_[i].speed();
     float r = people_[i].radius();
     
@@ -556,7 +556,7 @@ void Building::movePeople(void){
     double x_final = x_move*I/hypothenuse;
     double y_final = y_move*I/hypothenuse;
     
-    people_[i].move( x_final , y_final , I, Building::ZOOM);
+    people_[i].move( x_final , y_final , I, Building::ZOOM, width_, length_);
   }
 }
 
@@ -572,6 +572,13 @@ bool Building::notEmpty(void) const{
   return false;
 }
 
-void Building::studyPeople(unsigned int time){
-  cout << time << " secondes écoulées" << endl;
+void Building::studyPeople(void){
+  
+  ofstream fspeed;
+  fspeed.open("speed.txt", ios::out | ios::app);
+  for (int i=0; i<Building::NPEDEST; i++){
+    fspeed << people_[i].speed() << ' ';
+  }
+  fspeed << endl;
+  fspeed.close();
 }

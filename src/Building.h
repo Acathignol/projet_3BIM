@@ -4,7 +4,7 @@
 #include "Pedest.h"
 #include <SFML/Window.hpp>
 #include <math.h>
-//~ #include <time.h>
+#include <fstream>
 
 using namespace std;
 using namespace sf;
@@ -36,7 +36,7 @@ class Building {
   // =========================== Public Methods ========================
   
   void movePeople(void);
-  void studyPeople(unsigned int time);
+  void studyPeople(void);
   bool notEmpty(void) const;
   
  protected:

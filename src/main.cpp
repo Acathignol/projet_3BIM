@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
   switch (argc){
     case 1:
     {
-      cout << "./main [ default ] path/to/file.bmp [ Npedest  model LimSpeed  show? ]" << endl;
+      cout << "./escape [ default ] path/to/file.bmp [ Npedest  model LimSpeed  show? ]" << endl;
       cout << "Nombre de piétons à placer: ";
       scanf("%d", &Building::NPEDEST);
       cout << endl;
@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
     }
   }
   if (argc>=3 and argc!=6){
-    cout << "./main [ default ] path/to/file.bmp [ Npedest  model  LimSpeed  show? ]" << endl;
+    cout << "./escape [ default ] path/to/file.bmp [ Npedest  model  LimSpeed  show? ]" << endl;
     exit(-1);
   }
 
@@ -111,43 +111,47 @@ int main(int argc, char* argv[]){
   // =================== Simulation =========================
   
   unsigned int time = 0; // en secondes
+  int success = EXIT_SUCCESS;
   switch (show_graphics){
     case 1:
-    {
-      RenderWindow fen1(VideoMode(Building::ZOOM*Bataclan.width() , Building::ZOOM*Bataclan.length()), "Projet 3BIM", Style::Titlebar | Style::Close);
-      fen1.setVerticalSyncEnabled(true);
-      vector<RectangleShape> walls_ = Bataclan.walls();
-      update_graphics(fen1, Bataclan, walls_);
-      
-      clock_t start;
-      start = clock();
-      while (fen1.isOpen()){
+      {
+        RenderWindow fen1(VideoMode(Building::ZOOM*Bataclan.width() , Building::ZOOM*Bataclan.length()), "Projet 3BIM", Style::Titlebar | Style::Close);
+        fen1.setVerticalSyncEnabled(true);
+        vector<RectangleShape> walls_ = Bataclan.walls();
+        update_graphics(fen1, Bataclan, walls_);
         
-        //Gestion des évênements
-        Event action;
-        while (fen1.pollEvent(action)){
-          if (action.type == Event::Closed)
-            fen1.close();
+        clock_t start;
+        start = clock();
+        while (fen1.isOpen()){
+          
+          //Gestion des évênements
+          Event action;
+          while (fen1.pollEvent(action)){
+            if (action.type == Event::Closed)
+              fen1.close();
+          }
+          if (not Bataclan.notEmpty()) fen1.close();
+          
+          if ( (double) (clock()-start)*100/CLOCKS_PER_SEC > 1){ 
+            //une itération du calcul = 1/100ème de seconde 
+            update_graphics(fen1, Bataclan, walls_);
+            Bataclan.movePeople();
+            start = clock();
+            time ++;
+          }
         }
-        if (not Bataclan.notEmpty()) fen1.close();
-        
-        if ( (double) (clock()-start)*100/CLOCKS_PER_SEC > 1){ 
-          //une itération du calcul = 1/100ème de seconde 
-          update_graphics(fen1, Bataclan, walls_);
+        break;
+      }
+    case 0:
+      {
+        success += system("if [ -d 'results' ]; then rm results/speed.txt; else mkdir results; fi");
+        while (Bataclan.notEmpty()){
           Bataclan.movePeople();
-          start = clock();
+          Bataclan.studyPeople();
           time ++;
         }
+        success += system("mv speed.txt results/speed.txt");
       }
-    }
-    case 0:
-    {
-      while (Bataclan.notEmpty()){
-        Bataclan.movePeople();
-        Bataclan.studyPeople(time);
-        time ++;
-      }
-    }
   }
   cout << "Everybody found an exit in " << time << " seconds !" << endl;
   return EXIT_SUCCESS;

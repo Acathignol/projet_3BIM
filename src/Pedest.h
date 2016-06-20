@@ -41,6 +41,7 @@ class Pedest {
   inline double speed(void) const;
   inline double eqSpeed(void) const;
   inline float radius(void) const;
+  inline bool isOut(void) const;
   
   //=========================== Setters ================================
   
@@ -48,7 +49,7 @@ class Pedest {
   
   //=========================== Public Methods =========================
 
-  void move(double x_move , double y_move , double new_speed, int zoom);
+  void move(double x_move , double y_move , double new_speed, int zoom, int w, int l);
 
  protected :
   //=========================== Attributes =============================
@@ -60,6 +61,7 @@ class Pedest {
   CircleShape img_;
   double speed_;
   double eq_speed_;
+  bool is_out;
   
 };
 
@@ -72,5 +74,6 @@ inline CircleShape Pedest::img(void) const{ return img_; }
 inline double Pedest::speed() const { return speed_; }
 inline double Pedest::eqSpeed() const { return eq_speed_; }
 inline float Pedest::radius() const { return radius_; }
+inline bool Pedest::isOut() const { return is_out; }
 
 #endif // Pedest_H__

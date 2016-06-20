@@ -26,6 +26,7 @@ Pedest::Pedest() {
   img_ = CircleShape();
   speed_ = 0;
   eq_speed_ = 0;
+  is_out = false;
 }
 
 Pedest::Pedest(const int startX, const int startY, int zoom){
@@ -39,6 +40,7 @@ Pedest::Pedest(const int startX, const int startY, int zoom){
   img_.setFillColor(Color(Color::Green));
   speed_ = 0;
   eq_speed_ = 0.1*( (double) (rand()%(Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN)+Pedest::EQSPEEDMIN) );
+  is_out = false;
 }
 
 void Pedest::operator=(const Pedest& model){
@@ -49,14 +51,16 @@ void Pedest::operator=(const Pedest& model){
   img_ = model.img_;
   speed_ = model.speed_;
   eq_speed_ = model.eq_speed_;
+  is_out = false;
 }
 
 //=========================== Public Methods ===========================
 
-void Pedest::move(double x_move , double y_move , double new_speed, int zoom){
+void Pedest::move(double x_move , double y_move , double new_speed, int zoom, int w, int l){
   x_ += x_move;
   y_ += y_move;
   img_.setPosition(zoom*x_ -radius_, zoom*y_ -radius_);
   speed_ = new_speed;
+  if (x_>w+2 or x_<-1 or y_<-1 or y_>l+2) is_out = true;
 }
 
