@@ -61,6 +61,6 @@ void Pedest::move(double x_move , double y_move , double new_speed, int zoom, in
   y_ += y_move;
   img_.setPosition(zoom*x_ -radius_, zoom*y_ -radius_);
   speed_ = new_speed;
-  if (x_>w+2 or x_<-1 or y_<-1 or y_>l+2) is_out = true;
+  if (x_>w+2 or x_<-2 or y_<-2 or y_>l+2) is_out = true;
 }
 

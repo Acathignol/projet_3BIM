@@ -174,7 +174,7 @@ int main(int argc, char* argv[]){
           }
           if (not Bataclan.notEmpty()) fen1.close();
           
-          if ( (double) (clock()-start)*100/CLOCKS_PER_SEC > 1){ 
+          if ( (double) (clock()-start)/CLOCKS_PER_SEC > 1){ 
             //une itération du calcul = 1/100ème de seconde 
             update_graphics(fen1, Bataclan, walls_);
             Bataclan.movePeople();

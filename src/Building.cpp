@@ -7,7 +7,6 @@ int Building::NPEDEST = 500;
 int Building::SHOWWALLS = 0;
 int Building::ZOOM = 15; //15px = 1m = 1 case de tableau et 1 itération = 1s du modèle, 0.01s réel
 
-
 //=========================== Constructors =============================
 
 Building::Building(const string& filename){
