@@ -126,7 +126,7 @@ int main(int argc, char* argv[]){
     cout << "Pedestrians move from the average position of obstacles" << endl;
   }
   if (not show_graphics) cout << "Data files saved to results/ folder." << endl;
-  cout << "=======================================\n" << endl;
+  cout << "=======================================" << endl;
   
   
   unsigned int time = 0; // en secondes
@@ -163,7 +163,10 @@ int main(int argc, char* argv[]){
       }
     case 0:
       {
-        success += system("if [ -d 'results' ]; then rm results/speed.txt results/exit-time.txt; else mkdir results; fi");
+        //~ success += system("if [ -f speed.txt]; then rm speed.txt; fi");
+        //~ success += system("if [ -f exit-time.txt]; then rm exit-time.txt; fi");
+        success += system("if [ -f density-at-0000.ppm ]; then rm *.ppm; fi");
+        success += system("if [ -d 'results' ]; then rm results/speed.txt results/exit-time.txt results/density.gif; else mkdir results; fi");
         while (Bataclan.notEmpty()){
           Bataclan.movePeople();
           Bataclan.studyPeople(time);
@@ -171,8 +174,12 @@ int main(int argc, char* argv[]){
         }
         success += system("mv speed.txt results/speed.txt");
         success += system("mv exit-time.txt results/exit-time.txt");
+        cout << "creating .gif..." << endl;
+        success += system("convert -delay 5 -loop 0 density-at-*.ppm density.gif");
+        success += system("mv density.gif results/density.gif");
+        success += system("rm *.ppm");
       }
   }
-  cout << "Everybody found an exit in " << time << " seconds !" << endl;
+  cout << "\nEverybody found an exit in " << time-1 << " seconds !" << endl;
   return EXIT_SUCCESS;
 }

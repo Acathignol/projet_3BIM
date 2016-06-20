@@ -562,29 +562,66 @@ void Building::movePeople(void){
 
 bool Building::notEmpty(void) const{
   // teste si tous les piétons sont sortis ou non
-  int x;
-  int y;
   for (int i=0; i<Building::NPEDEST; i++){
-    x = people_[i].x();
-    y = people_[i].y();
-    if (not (x>=width_ or x<0 or y<0 or y>=length_)) return true;
+    if (not people_[i].isOut()) return true;
   }
   return false;
 }
 
 void Building::studyPeople(unsigned int time){
   
+  int* density_ = new int[length_*width_];
+  for (int i=0; i<width_; i++){
+    for (int j=0; j<length_; j++){
+      density_[i+width_*j] = - map_[i+width_*j];
+    }
+  }
   ofstream fspeed, ftime;
   fspeed.open("speed.txt", ios::out | ios::app);
-  for (int i=0; i<Building::NPEDEST; i++){
-    fspeed << people_[i].speed() << ' ';
-    if (find(gone_.begin(), gone_.end(), i) == gone_.end() and people_[i].isOut()){
-      gone_.push_back(i);
+  for (int k=0; k<Building::NPEDEST; k++){
+    fspeed << people_[k].speed() << ' ';
+    if (find(gone_.begin(), gone_.end(), k) == gone_.end() and people_[k].isOut()){
+      gone_.push_back(k);
       ftime.open("exit-time.txt", ios::out | ios::app);
-      ftime << "piéton " << i << " sorti en " << time << " secondes" << endl;
+      ftime << "piéton " << k << " sorti en " << time << " secondes" << endl;
       ftime.close();
     }
+    if (not people_[k].strictIsOut(width_, length_)) density_[((int) people_[k].x())+width_*((int) people_[k].y())] ++;
   }
   fspeed << endl;
   fspeed.close();
+  int max = *max_element(density_,density_+width_*length_);
+  unsigned char* data_ = new unsigned char[ width_*length_*3 ];
+  
+  for (int i=0; i<width_; i++){
+    for (int j=0; j<length_; j++){
+      if (density_[i+width_*j]==-1){
+        data_[(width_*j+i)*3] = (unsigned char) 255;
+        data_[(width_*j+i)*3+1] = (unsigned char) 255;
+        data_[(width_*j+i)*3+2] = (unsigned char) 255;
+      }
+      else {
+        data_[(width_*j+i)*3] = (unsigned char) (255 * density_[i+width_*j]/((double) max));
+        data_[(width_*j+i)*3+1] = (unsigned char) 0;
+        data_[(width_*j+i)*3+2] = (unsigned char) 0;
+      }
+    }
+  }
+  
+  string num = to_string(time);
+  if (time<10) num = "0"+num;
+  if (time<100) num = "0"+num;
+  if (time<1000) num = "0"+num;
+  string filename = "density-at-"+num+".ppm";
+  fstream f( filename, ios::out | ios::trunc | ios::binary);
+  f << "P6\n" << width_ << " " << length_ << "\n" << 255 << "\n";
+  f.write((char*)data_ , sizeof(char)*width_*length_*3);
+  f.close();
+  
+  
+  
+  delete[] data_;
+  delete[] density_;
+  data_ = nullptr;
+  density_ = nullptr;
 }

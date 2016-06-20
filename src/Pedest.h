@@ -50,6 +50,7 @@ class Pedest {
   //=========================== Public Methods =========================
 
   void move(double x_move , double y_move , double new_speed, int zoom, int w, int l);
+  inline bool strictIsOut(int w, int l) const;
 
  protected :
   //=========================== Attributes =============================
@@ -75,5 +76,6 @@ inline double Pedest::speed() const { return speed_; }
 inline double Pedest::eqSpeed() const { return eq_speed_; }
 inline float Pedest::radius() const { return radius_; }
 inline bool Pedest::isOut() const { return is_out; }
+inline bool Pedest::strictIsOut(int w, int l) const { return (x_>w or x_<0 or y_<0 or y_>l); }
 
 #endif // Pedest_H__
