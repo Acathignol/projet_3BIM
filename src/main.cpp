@@ -41,9 +41,11 @@ int main(int argc, char* argv[]){
   
   // ==================== Définition des paramêtres ====================
   
-  string filename = "bmp/batiment.bmp";
+  //string filename = "/Users/Marianne/Documents/3BIM/projet_3BIM/bmp/bimcave.bmp";
+  string filename = "bmp/bimcave.bmp";
   unsigned int show_graphics = 1;
-  
+  double fluidite = 10;
+
   switch (argc){
     case 1:
     {
@@ -62,12 +64,8 @@ int main(int argc, char* argv[]){
       cout << "Average limit speed of pedestrians ? (in m/s): ";
       scanf("%f", &speed);
       cout << endl;
-      Pedest::EQSPEEDMAX = (int) (10*speed + 2);
-      Pedest::EQSPEEDMIN = (int) (10*speed - 2);
-      if (Pedest::EQSPEEDMAX<1) Pedest::EQSPEEDMAX=1;
-      if (Pedest::EQSPEEDMAX>20) Pedest::EQSPEEDMAX=20;
-      if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
-      if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
+      Pedest::EQSPEEDMAX = (speed + speed/2)/fluidite;
+      Pedest::EQSPEEDMIN = (speed - speed/2)/fluidite;
       cout << "Show the simulation? (0=No, 1=Yes): ";
       scanf("%d", &show_graphics);
       cout << endl;
@@ -175,6 +173,7 @@ int main(int argc, char* argv[]){
           if (not Bataclan.notEmpty()) fen1.close();
           
           if ( (double) (clock()-start)/CLOCKS_PER_SEC > 1){ 
+          if ( (double) (clock()-start)*fluidite/CLOCKS_PER_SEC > 1){
             //une itération du calcul = 1/100ème de seconde 
             update_graphics(fen1, Bataclan, walls_);
             Bataclan.movePeople();
