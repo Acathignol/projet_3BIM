@@ -8,8 +8,8 @@ using namespace std;
 
 int Pedest::RMAX = 6; // 60cm de rayon
 int Pedest::RMIN = 4; // 40cm de rayon
-int Pedest::EQSPEEDMIN = 4;
-int Pedest::EQSPEEDMAX = 8;
+double Pedest::EQSPEEDMIN = 1;
+double Pedest::EQSPEEDMAX = 3;
 int Pedest::MODEL = 3;
 double Pedest::ZONE_XMIN = 0;
 double Pedest::ZONE_XMAX = 0;
@@ -39,7 +39,7 @@ Pedest::Pedest(const int startX, const int startY, int zoom){
   img_.setPosition(zoom*x_ - r, zoom*y_ - r);
   img_.setFillColor(Color(Color::Green));
   speed_ = 0;
-  eq_speed_ = 0.1*( (double) (rand()%(Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN)+Pedest::EQSPEEDMIN) );
+  eq_speed_ = 0.1*( (double) (rand()%(int)(10*(Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN))+10*Pedest::EQSPEEDMIN) );
   is_out = false;
 }
 
@@ -61,6 +61,6 @@ void Pedest::move(double x_move , double y_move , double new_speed, int zoom, in
   y_ += y_move;
   img_.setPosition(zoom*x_ -radius_, zoom*y_ -radius_);
   speed_ = new_speed;
-  if (x_>w+2 or x_<-1 or y_<-1 or y_>l+2) is_out = true;
+  if (x_>w+2 or x_<-2 or y_<-2 or y_>l+2) is_out = true;
 }
 

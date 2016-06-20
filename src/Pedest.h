@@ -18,8 +18,8 @@ class Pedest {
 
   static int RMAX;
   static int RMIN;
-  static int EQSPEEDMIN;
-  static int EQSPEEDMAX;
+  static double EQSPEEDMIN;
+  static double EQSPEEDMAX;
   static int MODEL;
   static double ZONE_XMIN;
   static double ZONE_XMAX;
