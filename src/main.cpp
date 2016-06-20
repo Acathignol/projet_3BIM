@@ -44,7 +44,7 @@ int main(int argc, char* argv[]){
   //string filename = "/Users/Marianne/Documents/3BIM/projet_3BIM/bmp/bimcave.bmp";
   string filename = "bmp/bimcave.bmp";
   unsigned int show_graphics = 1;
-  double fluidite = 1;
+  double fluidite = 3;
 
   switch (argc){
     case 1:
@@ -164,14 +164,12 @@ int main(int argc, char* argv[]){
           }
           if (not Bataclan.notEmpty()) fen1.close();
           
-          if ( (double) (clock()-start)/CLOCKS_PER_SEC > 1){ 
-            if ( (double) (clock()-start)*fluidite/CLOCKS_PER_SEC > 1){
-              //une itération du calcul = 1/100ème de seconde 
-              update_graphics(fen1, Bataclan, walls_);
-              Bataclan.movePeople();
-              start = clock();
-              time ++;
-            }
+          if ( (double) (clock()-start)*fluidite/CLOCKS_PER_SEC > 1){
+            //une itération du calcul = 1/fluiditième de seconde 
+            update_graphics(fen1, Bataclan, walls_);
+            Bataclan.movePeople();
+            start = clock();
+            time ++;
           }
         }
         break;
