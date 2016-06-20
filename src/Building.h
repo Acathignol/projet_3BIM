@@ -15,6 +15,7 @@ class Building {
   
   static int NPEDEST;
   static int ZOOM;
+  static int SHOWWALLS;
   
   // =========================== Constructors ==========================
   

@@ -4,6 +4,7 @@
 //================= Definition of static attributes ====================
 
 int Building::NPEDEST = 500;
+int Building::SHOWWALLS = 0;
 int Building::ZOOM = 15; //15px = 1m = 1 case de tableau et 1 itération = 1s du modèle, 0.01s réel
 
 
@@ -93,20 +94,24 @@ Building::Building(const string& filename){
   
   cout << "number of x edges: " << int(xborders_.size()) << " ( ";
   for (unsigned int i=0; i<xborders_.size(); i++){
-    //~ RectangleShape wall(Vector2f(1,Building::ZOOM*length_));
-    //~ wall.setPosition(Building::ZOOM*xborders_[i], 0);
-    //~ wall.setFillColor(Color::Red);
-    //~ walls_.push_back( wall );
+    if (Building::SHOWWALLS){
+      RectangleShape wall(Vector2f(1,Building::ZOOM*length_));
+      wall.setPosition(Building::ZOOM*xborders_[i], 0);
+      wall.setFillColor(Color::Red);
+      walls_.push_back( wall );
+    }
     cout << xborders_[i];
     cout << " ";
   }
   sort(yborders_.begin(), yborders_.end());
   cout << ") meters\nnumber of y edges: " << int(yborders_.size()) << " ( ";
   for (unsigned int i=0; i<yborders_.size(); i++){
-    //~ RectangleShape wall(Vector2f(Building::ZOOM*width_,1));
-    //~ wall.setPosition(0,Building::ZOOM*yborders_[i]);
-    //~ wall.setFillColor(Color::Red);
-    //~ walls_.push_back( wall );
+    if (Building::SHOWWALLS){
+      RectangleShape wall(Vector2f(Building::ZOOM*width_,1));
+      wall.setPosition(0,Building::ZOOM*yborders_[i]);
+      wall.setFillColor(Color::Red);
+      walls_.push_back( wall );
+    }
     cout << yborders_[i];
     cout << " ";
   }

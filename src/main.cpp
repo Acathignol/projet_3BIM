@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
   switch (argc){
     case 1:
     {
-      cout << "./escape [ default ] path/to/file.bmp [ Npedest  model LimSpeed  show? ]" << endl;
+      cout << "./escape [ default ] path/to/file.bmp [ Npedest  model LimSpeed  show? [ show-limits? ] ]" << endl;
       cout << "Number of pedestrians to put in: ";
       scanf("%d", &Building::NPEDEST);
       cout << endl;
@@ -68,9 +68,14 @@ int main(int argc, char* argv[]){
       if (Pedest::EQSPEEDMAX>20) Pedest::EQSPEEDMAX=20;
       if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
       if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
-      cout << "Show the simulation? (0=Non, 1=Oui): ";
+      cout << "Show the simulation? (0=No, 1=Yes): ";
       scanf("%d", &show_graphics);
       cout << endl;
+      if (show_graphics){
+        cout << "Show limits ? (0=No, 1=Yes): ";
+        scanf("%d", &Building::SHOWWALLS);
+        cout << endl;
+      }
       break;
     }
     case 2:
@@ -99,10 +104,28 @@ int main(int argc, char* argv[]){
       if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
       if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
       show_graphics = atoi(argv[5]);
+      break;
+    }
+    case 7:
+    {
+      filename = argv[1];
+      cout << "using custom parameters..." << endl;
+      cout << "using custom building..." << endl;
+      Building::NPEDEST = atoi(argv[2]);
+      Pedest::MODEL = atoi(argv[3]);
+      float speed = atof(argv[4]);
+      Pedest::EQSPEEDMAX = (int) (10*speed + 2);
+      Pedest::EQSPEEDMIN = (int) (10*speed - 2);
+      if (Pedest::EQSPEEDMAX<1) Pedest::EQSPEEDMAX=1;
+      if (Pedest::EQSPEEDMAX>20) Pedest::EQSPEEDMAX=20;
+      if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
+      if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
+      show_graphics = atoi(argv[5]);
+      Building::SHOWWALLS = atoi(argv[6]);
     }
   }
-  if (argc>=3 and argc!=6){
-    cout << "./escape [ default ] path/to/file.bmp [ Npedest  model  LimSpeed  show? ]" << endl;
+  if (argc>=3 and argc!=6 and argc!=7){
+    cout << "./escape [ default ] path/to/file.bmp [ Npedest  model  LimSpeed  show? [ showLimits? ] ]" << endl;
     exit(-1);
   }
 
