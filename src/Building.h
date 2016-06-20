@@ -36,7 +36,7 @@ class Building {
   // =========================== Public Methods ========================
   
   void movePeople(void);
-  void studyPeople(void);
+  void studyPeople(unsigned int time);
   bool notEmpty(void) const;
   
  protected:
@@ -54,6 +54,7 @@ class Building {
   vector<float> xborders_;
   vector<float> yborders_;
   Pedest* people_;
+  vector<int> gone_;
 };
 
 //========================Inline functions' definition==================

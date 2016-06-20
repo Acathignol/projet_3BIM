@@ -572,12 +572,18 @@ bool Building::notEmpty(void) const{
   return false;
 }
 
-void Building::studyPeople(void){
+void Building::studyPeople(unsigned int time){
   
-  ofstream fspeed;
+  ofstream fspeed, ftime;
   fspeed.open("speed.txt", ios::out | ios::app);
   for (int i=0; i<Building::NPEDEST; i++){
     fspeed << people_[i].speed() << ' ';
+    if (find(gone_.begin(), gone_.end(), i) == gone_.end() and people_[i].isOut()){
+      gone_.push_back(i);
+      ftime.open("exit-time.txt", ios::out | ios::app);
+      ftime << "piéton " << i << " sorti en " << time << " secondes" << endl;
+      ftime.close();
+    }
   }
   fspeed << endl;
   fspeed.close();

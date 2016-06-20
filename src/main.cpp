@@ -48,18 +48,18 @@ int main(int argc, char* argv[]){
     case 1:
     {
       cout << "./escape [ default ] path/to/file.bmp [ Npedest  model LimSpeed  show? ]" << endl;
-      cout << "Nombre de piétons à placer: ";
+      cout << "Number of pedestrians to put in: ";
       scanf("%d", &Building::NPEDEST);
       cout << endl;
-      cout << "Type de modèle:" << endl;
-      cout << "1 = Les piétons attendent derrière les obstacles" << endl;
-      cout << "2 = Les piétons se décalent de l'obstacle le plus proche" << endl;
-      cout << "3 = Les piétons se décalent de la moyenne des positions des obstacles" << endl;
-      cout << "Modèle à utiliser: ";
+      cout << "Model type:" << endl;
+      cout << "1 = Pedestrians wait behind the obstacles" << endl;
+      cout << "2 = Pedestrians move from the nearest obstacle" << endl;
+      cout << "3 = Pedestrians move from the average position of obstacles" << endl;
+      cout << "Model to use ? : ";
       scanf("%d", &Pedest::MODEL);
       cout << endl;
       float speed = 0;
-      cout << "Vitesse limite moyenne des piétons? (en m/s): ";
+      cout << "Average limit speed of pedestrians ? (in m/s): ";
       scanf("%f", &speed);
       cout << endl;
       Pedest::EQSPEEDMAX = (int) (10*speed + 2);
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]){
       if (Pedest::EQSPEEDMAX>20) Pedest::EQSPEEDMAX=20;
       if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
       if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
-      cout << "Afficher la simulation? (0=Non, 1=Oui): ";
+      cout << "Show the simulation? (0=Non, 1=Oui): ";
       scanf("%d", &show_graphics);
       cout << endl;
       break;
@@ -110,6 +110,25 @@ int main(int argc, char* argv[]){
   
   // =================== Simulation =========================
   
+  cout << "=======================================" << endl;
+  cout << "Building: " << filename << endl;
+  cout << "Number of pedestrians: " << Building::NPEDEST << endl;
+  cout << "Average limit speed of pedestrians: " << (Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN)/20.0 << endl;
+  cout << "Model used: ";
+  switch (Pedest::MODEL){
+   case 1: 
+    cout << "Pedestrians wait behind the obstacles" << endl;
+    break;
+   case 2:
+    cout << "Pedestrians move from the nearest obstacle" << endl;
+    break;
+   case 3:
+    cout << "Pedestrians move from the average position of obstacles" << endl;
+  }
+  if (not show_graphics) cout << "Data files saved to results/ folder." << endl;
+  cout << "=======================================\n" << endl;
+  
+  
   unsigned int time = 0; // en secondes
   int success = EXIT_SUCCESS;
   switch (show_graphics){
@@ -144,13 +163,14 @@ int main(int argc, char* argv[]){
       }
     case 0:
       {
-        success += system("if [ -d 'results' ]; then rm results/speed.txt; else mkdir results; fi");
+        success += system("if [ -d 'results' ]; then rm results/speed.txt results/exit-time.txt; else mkdir results; fi");
         while (Bataclan.notEmpty()){
           Bataclan.movePeople();
-          Bataclan.studyPeople();
+          Bataclan.studyPeople(time);
           time ++;
         }
         success += system("mv speed.txt results/speed.txt");
+        success += system("mv exit-time.txt results/exit-time.txt");
       }
   }
   cout << "Everybody found an exit in " << time << " seconds !" << endl;
