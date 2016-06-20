@@ -44,7 +44,7 @@ int main(int argc, char* argv[]){
   //string filename = "/Users/Marianne/Documents/3BIM/projet_3BIM/bmp/bimcave.bmp";
   string filename = "bmp/bimcave.bmp";
   unsigned int show_graphics = 1;
-  double fluidite = 10;
+  double fluidite = 1;
 
   switch (argc){
     case 1:
@@ -95,12 +95,8 @@ int main(int argc, char* argv[]){
       Building::NPEDEST = atoi(argv[2]);
       Pedest::MODEL = atoi(argv[3]);
       float speed = atof(argv[4]);
-      Pedest::EQSPEEDMAX = (int) (10*speed + 2);
-      Pedest::EQSPEEDMIN = (int) (10*speed - 2);
-      if (Pedest::EQSPEEDMAX<1) Pedest::EQSPEEDMAX=1;
-      if (Pedest::EQSPEEDMAX>20) Pedest::EQSPEEDMAX=20;
-      if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
-      if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
+      Pedest::EQSPEEDMAX = (speed + speed/2)/fluidite;
+      Pedest::EQSPEEDMIN = (speed - speed/2)/fluidite;
       show_graphics = atoi(argv[5]);
       break;
     }
@@ -112,12 +108,8 @@ int main(int argc, char* argv[]){
       Building::NPEDEST = atoi(argv[2]);
       Pedest::MODEL = atoi(argv[3]);
       float speed = atof(argv[4]);
-      Pedest::EQSPEEDMAX = (int) (10*speed + 2);
-      Pedest::EQSPEEDMIN = (int) (10*speed - 2);
-      if (Pedest::EQSPEEDMAX<1) Pedest::EQSPEEDMAX=1;
-      if (Pedest::EQSPEEDMAX>20) Pedest::EQSPEEDMAX=20;
-      if (Pedest::EQSPEEDMIN<1) Pedest::EQSPEEDMIN=1;
-      if (Pedest::EQSPEEDMIN>20) Pedest::EQSPEEDMIN=20;
+      Pedest::EQSPEEDMAX = (speed + speed/2)/fluidite;
+      Pedest::EQSPEEDMIN = (speed - speed/2)/fluidite;
       show_graphics = atoi(argv[5]);
       Building::SHOWWALLS = atoi(argv[6]);
     }
@@ -134,7 +126,7 @@ int main(int argc, char* argv[]){
   cout << "=======================================" << endl;
   cout << "Building: " << filename << endl;
   cout << "Number of pedestrians: " << Building::NPEDEST << endl;
-  cout << "Average limit speed of pedestrians: " << (Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN)/20.0 << endl;
+  cout << "Average limit speed of pedestrians: " << (Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN)/2 << endl;
   cout << "Model used: ";
   switch (Pedest::MODEL){
    case 1: 
@@ -173,12 +165,13 @@ int main(int argc, char* argv[]){
           if (not Bataclan.notEmpty()) fen1.close();
           
           if ( (double) (clock()-start)/CLOCKS_PER_SEC > 1){ 
-          if ( (double) (clock()-start)*fluidite/CLOCKS_PER_SEC > 1){
-            //une itération du calcul = 1/100ème de seconde 
-            update_graphics(fen1, Bataclan, walls_);
-            Bataclan.movePeople();
-            start = clock();
-            time ++;
+            if ( (double) (clock()-start)*fluidite/CLOCKS_PER_SEC > 1){
+              //une itération du calcul = 1/100ème de seconde 
+              update_graphics(fen1, Bataclan, walls_);
+              Bataclan.movePeople();
+              start = clock();
+              time ++;
+            }
           }
         }
         break;
