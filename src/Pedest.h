@@ -18,7 +18,7 @@ class Pedest {
 
   static double RMAX;
   static double RMIN;
-  static int MOOD;
+  static double MOOD;
   static double EQSPEEDMIN;
   static double EQSPEEDMAX;
   static int MODEL;

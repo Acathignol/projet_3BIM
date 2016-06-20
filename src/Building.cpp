@@ -175,10 +175,8 @@ Building::Building(const string& filename){
   cout << "placing pedestrians..." << endl;
   
   int N = Building::NPEDEST;
-  Pedest::RMIN = Pedest::RMIN + 0.5*Pedest::MOOD;
-  Pedest::RMAX = Pedest::RMAX + 0.5*Pedest::MOOD;
-  Pedest::EQSPEEDMIN = Pedest::EQSPEEDMIN + 0.5*Pedest::MOOD;
-  Pedest::EQSPEEDMAX = Pedest::EQSPEEDMAX + 0.5*Pedest::MOOD;
+  Pedest::RMIN = Pedest::RMIN + Pedest::MOOD;
+  Pedest::RMAX = Pedest::RMAX + Pedest::MOOD;
   people_ = new Pedest[N];
   for (int i=0; i<N; i++){
     unsigned int posX = rand()%width_;
@@ -511,8 +509,8 @@ void Building::movePeople(void){
           if (count>0) {
             x_obs = x_obs/double(count);
             y_obs= y_obs/double(count);
-            int new_dir = getDirection(x_obs,y_obs);
-            if (main_dir != new_dir) main_dir = new_dir;
+            //int new_dir = getDirection(x_obs,y_obs);
+            //if (main_dir != new_dir) main_dir = new_dir;
             switch (main_dir){
               case 0:
                 if (x_obs<x) x_col = (double) (rand()) / (double)(RAND_MAX);

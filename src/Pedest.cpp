@@ -6,9 +6,9 @@ using namespace std;
 
 //================= Definition of static attributes ====================
 
-int Pedest::MOOD = 0;
-double Pedest::RMAX = 6; // 60cm de rayon
-double Pedest::RMIN = 4; // 40cm de rayon
+double Pedest::MOOD = 0;
+double Pedest::RMAX = 7; // 60cm de rayon
+double Pedest::RMIN = 3; // 40cm de rayon
 double Pedest::EQSPEEDMIN = 1;
 double Pedest::EQSPEEDMAX = 3;
 int Pedest::MODEL = 3;

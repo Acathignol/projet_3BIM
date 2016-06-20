@@ -63,12 +63,15 @@ int main(int argc, char* argv[]){
       cout << "Model to use ? : ";
       scanf("%d", &Pedest::MODEL);
       cout << endl;
+      cout << "Mood (between 0 and 1) : ";
+      scanf("%lf", &Pedest::MOOD);
+      cout << endl;
       float speed = 0;
       cout << "Average limit speed of pedestrians ? (in m/s): ";
       scanf("%f", &speed);
       cout << endl;
-      Pedest::EQSPEEDMAX = (speed + speed/2)/fluidite;
-      Pedest::EQSPEEDMIN = (speed - speed/2)/fluidite;
+      Pedest::EQSPEEDMAX = (Pedest::MOOD+1)*(speed + speed/2)/fluidite;
+      Pedest::EQSPEEDMIN = (Pedest::MOOD+1)*(speed - speed/2)/fluidite;
       cout << "Show the simulation? (0=No, 1=Yes): ";
       scanf("%d", &show_graphics);
       cout << endl;
