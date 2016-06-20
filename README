@@ -18,7 +18,7 @@ Sur Fedora:
 - Compilation:
 Depuis un terminal, lancez:
   mkdir obj
-puis
+Puis
   make
   
 - Execution:
