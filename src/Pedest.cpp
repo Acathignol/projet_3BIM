@@ -6,8 +6,9 @@ using namespace std;
 
 //================= Definition of static attributes ====================
 
-int Pedest::RMAX = 6; // 60cm de rayon
-int Pedest::RMIN = 4; // 40cm de rayon
+int Pedest::MOOD = 0;
+double Pedest::RMAX = 6; // 60cm de rayon
+double Pedest::RMIN = 4; // 40cm de rayon
 double Pedest::EQSPEEDMIN = 1;
 double Pedest::EQSPEEDMAX = 3;
 int Pedest::MODEL = 3;
@@ -32,7 +33,7 @@ Pedest::Pedest() {
 Pedest::Pedest(const int startX, const int startY, int zoom){
   x_ = startX;
   y_ = startY;
-  unsigned int r = rand()%(Pedest::RMAX-Pedest::RMIN)+Pedest::RMIN;
+  unsigned int r = rand()%(int)(Pedest::RMAX-Pedest::RMIN)+Pedest::RMIN;
   radius_ = (float) r;
   mood_ = 0;
   img_ = CircleShape(r);

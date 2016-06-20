@@ -173,7 +173,12 @@ Building::Building(const string& filename){
 
   //..............................................Création des piétons :
   cout << "placing pedestrians..." << endl;
+  
   int N = Building::NPEDEST;
+  Pedest::RMIN = Pedest::RMIN + 0.5*Pedest::MOOD;
+  Pedest::RMAX = Pedest::RMAX + 0.5*Pedest::MOOD;
+  Pedest::EQSPEEDMIN = Pedest::EQSPEEDMIN + 0.5*Pedest::MOOD;
+  Pedest::EQSPEEDMAX = Pedest::EQSPEEDMAX + 0.5*Pedest::MOOD;
   people_ = new Pedest[N];
   for (int i=0; i<N; i++){
     unsigned int posX = rand()%width_;

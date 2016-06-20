@@ -41,11 +41,14 @@ int main(int argc, char* argv[]){
   
   // ==================== Définition des paramêtres ====================
   
-  //string filename = "/Users/Marianne/Documents/3BIM/projet_3BIM/bmp/bimcave.bmp";
-  string filename = "bmp/bimcave.bmp";
+  string filename = "/Users/Marianne/Documents/3BIM/projet_3BIM/bmp/bimcave.bmp";
+  //string filename = "bmp/bimcave.bmp";
   unsigned int show_graphics = 1;
-  double fluidite = 3;
-
+  double fluidite = 10;
+//  Pedest::MOOD = 1; //Essais
+//  Pedest::EQSPEEDMIN = Pedest::EQSPEEDMIN/fluidite;
+//  Pedest::EQSPEEDMAX = Pedest::EQSPEEDMAX/fluidite;
+  
   switch (argc){
     case 1:
     {

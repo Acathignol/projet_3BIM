@@ -16,8 +16,9 @@ class Pedest {
  public :
   //================= Definition of static attributes ====================
 
-  static int RMAX;
-  static int RMIN;
+  static double RMAX;
+  static double RMIN;
+  static int MOOD;
   static double EQSPEEDMIN;
   static double EQSPEEDMAX;
   static int MODEL;
