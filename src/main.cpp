@@ -41,10 +41,10 @@ int main(int argc, char* argv[]){
   
   // ==================== Définition des paramêtres ====================
   
-  string filename = "/Users/Marianne/Documents/3BIM/projet_3BIM/bmp/bimcave.bmp";
-  //string filename = "bmp/bimcave.bmp";
+  //~ string filename = "/Users/Marianne/Documents/3BIM/projet_3BIM/bmp/bimcave.bmp";
+  string filename = "bmp/bimcave.bmp";
   unsigned int show_graphics = 1;
-  double fluidite = 10;
+  double fluidite = 4;
 //  Pedest::MOOD = 1; //Essais
 //  Pedest::EQSPEEDMIN = Pedest::EQSPEEDMIN/fluidite;
 //  Pedest::EQSPEEDMAX = Pedest::EQSPEEDMAX/fluidite;
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]){
   switch (argc){
     case 1:
     {
-      cout << "./escape [ default ] path/to/file.bmp [ Npedest  model LimSpeed  show? [ show-limits? ] ]" << endl;
+      cout << "./escape [ default ] path/to/file.bmp [ Npedest  model LimSpeed  mood  show? [ show-limits? ] ]" << endl;
       cout << "Number of pedestrians to put in: ";
       scanf("%d", &Building::NPEDEST);
       cout << endl;
@@ -93,19 +93,6 @@ int main(int argc, char* argv[]){
       break;
     }
       
-    case 6:
-    {
-      filename = argv[1];
-      cout << "using custom parameters..." << endl;
-      cout << "using custom building..." << endl;
-      Building::NPEDEST = atoi(argv[2]);
-      Pedest::MODEL = atoi(argv[3]);
-      float speed = atof(argv[4]);
-      Pedest::EQSPEEDMAX = (speed + speed/2)/fluidite;
-      Pedest::EQSPEEDMIN = (speed - speed/2)/fluidite;
-      show_graphics = atoi(argv[5]);
-      break;
-    }
     case 7:
     {
       filename = argv[1];
@@ -116,12 +103,27 @@ int main(int argc, char* argv[]){
       float speed = atof(argv[4]);
       Pedest::EQSPEEDMAX = (speed + speed/2)/fluidite;
       Pedest::EQSPEEDMIN = (speed - speed/2)/fluidite;
-      show_graphics = atoi(argv[5]);
-      Building::SHOWWALLS = atoi(argv[6]);
+      Pedest::MOOD = atof(argv[5]);
+      show_graphics = atoi(argv[6]);
+      break;
+    }
+    case 8:
+    {
+      filename = argv[1];
+      cout << "using custom parameters..." << endl;
+      cout << "using custom building..." << endl;
+      Building::NPEDEST = atoi(argv[2]);
+      Pedest::MODEL = atoi(argv[3]);
+      float speed = atof(argv[4]);
+      Pedest::EQSPEEDMAX = (speed + speed/2)/fluidite;
+      Pedest::EQSPEEDMIN = (speed - speed/2)/fluidite;
+      Pedest::MOOD = atof(argv[5]);
+      show_graphics = atoi(argv[6]);
+      Building::SHOWWALLS = atoi(argv[7]);
     }
   }
-  if (argc>=3 and argc!=6 and argc!=7){
-    cout << "./escape [ default ] path/to/file.bmp [ Npedest  model  LimSpeed  show? [ showLimits? ] ]" << endl;
+  if (argc>=3 and argc!=7 and argc!=8){
+    cout << "./escape [ default ] path/to/file.bmp [ Npedest  model  LimSpeed  mood  show? [ showLimits? ] ]" << endl;
     exit(-1);
   }
 
@@ -144,6 +146,7 @@ int main(int argc, char* argv[]){
    case 3:
     cout << "Pedestrians move from the average position of obstacles" << endl;
   }
+  cout << "Mood of the population: " << Pedest::MOOD*100 << "% angry" << endl;
   if (not show_graphics) cout << "Data files saved to results/ folder." << endl;
   cout << "=======================================" << endl;
   

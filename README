@@ -27,7 +27,7 @@ Depuis un terminal, lancez:
 Ou, si vous voulez charger un batiment personnalisé:
   ./escape 'path/to/building/plan.bmp'
 Ou, si vous souhaitez en plus régler vous même les paramètres:
-  ./escape   'path/to/building/plan.bmp'   Npiétons  modèle  VitesseLimite  show_graphics
+  ./escape   'path/to/building/plan.bmp'   Npiétons  modèle  VitesseLimite  mood  show_graphics show_limits
   
   'path/to/building/plan.bmp'       ==>    Lien vers une image plan de batiment
   Npiétons                          ==>    Le nombre d'individus à simuler dans ce batiment
@@ -36,7 +36,9 @@ Ou, si vous souhaitez en plus régler vous même les paramètres:
             2 = Les piétons se décalent de l'obstacle le plus proche
             3 = Les piétons se décalent de la moyenne des positions des obstacles
   VitesseLimite                     ==>    Vitesse Limite moyenne des piétons (en m/s)
+  mood                              ==>    Etat de stress de la population (0=calme, 1=stressée)
   show_graphics                     ==>    1 pour afficher la simulation, 0 pour faire les calculs
+  show_limits (si show_graphics=1)  ==>    1 pour afficher les limites de zone, 0 sinon
   
 Dans tous les cas, lance ./escape sans argument vous proposera de les préciser à la main.
   
