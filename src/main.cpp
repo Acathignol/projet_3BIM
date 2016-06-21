@@ -44,7 +44,7 @@ int main(int argc, char* argv[]){
   //~ string filename = "/Users/Marianne/Documents/3BIM/projet_3BIM/bmp/bimcave.bmp";
   string filename = "bmp/bimcave.bmp";
   unsigned int show_graphics = 1;
-  double fluidite = 4;
+  double fluidite = 20;
 //  Pedest::MOOD = 1; //Essais
 //  Pedest::EQSPEEDMIN = Pedest::EQSPEEDMIN/fluidite;
 //  Pedest::EQSPEEDMAX = Pedest::EQSPEEDMAX/fluidite;

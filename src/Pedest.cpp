@@ -7,8 +7,8 @@ using namespace std;
 //================= Definition of static attributes ====================
 
 double Pedest::MOOD = 0;
-double Pedest::RMAX = 7; // 60cm de rayon
-double Pedest::RMIN = 4; // 40cm de rayon
+double Pedest::RMAX = 12; // 60cm de rayon
+double Pedest::RMIN = 9; // 40cm de rayon
 double Pedest::EQSPEEDMIN = 1;
 double Pedest::EQSPEEDMAX = 3;
 int Pedest::MODEL = 3;
@@ -40,7 +40,7 @@ Pedest::Pedest(const int startX, const int startY, int zoom){
   img_.setPosition(zoom*x_ - r, zoom*y_ - r);
   img_.setFillColor(Color(Color::Green));
   speed_ = 0;
-  eq_speed_ = 0.1*( (double) (rand()%(int)(10*(Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN))+10*Pedest::EQSPEEDMIN) );
+  eq_speed_ = 0.5*( (double) (rand()%(int)(10*(Pedest::EQSPEEDMAX-Pedest::EQSPEEDMIN))+10*Pedest::EQSPEEDMIN) );
   is_out = false;
 }
 
